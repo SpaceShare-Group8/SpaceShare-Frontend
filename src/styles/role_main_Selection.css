@@ -29,13 +29,24 @@ body {
 
 /* the whole screen: stacks top -> middle -> bottom in normal flow
    (previously used position:relative + top:Npx offsets, which don't
-   reserve space and break as soon as the viewport size changes) */
+   reserve space and break as soon as the viewport size changes).
+   Centers the card and caps its height (see .wrapper) instead of
+   forcing it to stretch to whatever the browser window's height
+   happens to be - that's what was leaving a big dead gap under the
+   Continue button/dragger on tall windows. */
 .role_selection_page {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
     width: 100%;
-    background-color: var(--background_color);
+    background-color: var(--page_backdrop);
+    padding: 24px 0;
+}
+
+.brand_panel {
+    display: none;
 }
 
 /* margin-left is intentionally its own value, not the wrapper's 30px
@@ -84,12 +95,16 @@ body {
 
 /* main section */
 
+/* min-height caps out at 860px instead of chasing 100vh forever, so
+   .bottom_area's margin-top: auto (further down) only ever creates a
+   sensible, bounded gap - not one sized to whatever the browser
+   window happens to be */
 .wrapper {
-    flex: 1;
     display: flex;
     flex-direction: column;
     width: 100%;
     max-width: 480px;
+    min-height: min(100vh, 860px);
     margin: 0 auto;
     padding: 30px;
 }
@@ -100,12 +115,15 @@ body {
     gap: 10px;
 }
 
+/* no fixed width/height here on purpose - a hardcoded height clips
+   or overlaps the next line as soon as font-size/line-height change
+   at a wider breakpoint (this is what caused the heading to overlap
+   the "You can always..." text on desktop). font-size/line-height
+   values themselves are unchanged from the original. */
 .intro_message {
     font-weight: bold;
     font-size: 16px;
     line-height: 45px;
-    width: 275px;
-    height: 90px;
 }
 
 .intro_message span {
@@ -114,8 +132,6 @@ body {
 
 .intro_text {
     font-size: 16px;
-    height: 45px;
-    width: 291px;
     line-height: 22px;
     letter-spacing: -0.41%;
 }
@@ -248,11 +264,12 @@ p.paragraph_2 {
     flex-direction: column;
     gap: 16px;
     width: 100%;
-    /* was margin-top: auto, which glued this to the very bottom of
-       the viewport and left a huge gap on tall windows - fixed
-       spacing keeps it close to the cards instead */
-    margin-top: 48px;
-    padding: 24px 0 10px;
+    /* margin-top: auto pins this near the bottom of the card, same as
+       before - but now .wrapper's height is capped (see above)
+       instead of chasing the full browser window, so the gap this
+       creates is always bounded instead of ballooning on tall windows */
+    margin-top: auto;
+    padding-top: 24px;
 }
 
 .role_selection_bottom .role_cont_btn {
@@ -319,24 +336,15 @@ p.paragraph_2 {
     }
 }
 
-/* Tablet and up: page is being viewed in a browser, not just a phone
-   simulator, so give it room to breathe and stop it from stretching
-   edge-to-edge */
+/* Tablet: page is being viewed in a browser, not held as a phone, so
+   render the screen as a floating card over a backdrop instead of
+   stretching it edge-to-edge */
 @media (min-width: 600px) {
-    body {
-        background-color: var(--page_backdrop);
-    }
-
     .role_selection_page {
-        align-items: center;
-        justify-content: center;
         padding: 40px 20px;
-        background-color: var(--page_backdrop);
     }
 
     .wrapper {
-        max-width: 480px;
-        min-height: 780px;
         background-color: var(--background_color);
         border-radius: 24px;
         box-shadow: 0 20px 60px rgba(5, 38, 89, 0.15);
@@ -349,26 +357,81 @@ p.paragraph_2 {
     }
 }
 
-/* Desktop: let the two role cards sit side by side and cap overall
-   line length for readability */
+/* Desktop: a real two-panel layout (brand panel + form), not just a
+   scaled-up phone card floating in empty space. This is the classic
+   split-screen onboarding pattern - full height on both sides, no
+   floating-card chrome. */
 @media (min-width: 1024px) {
+    .role_selection_page {
+        flex-direction: row;
+        align-items: stretch;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 0;
+        background-color: var(--background_color);
+    }
+
+    .brand_panel {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 1 1 45%;
+        max-width: 560px;
+        padding: 60px;
+        background: linear-gradient(160deg, var(--primary_color) 0%, #08386e 100%);
+        color: var(--primary_container);
+    }
+
+    .brand_panel_content {
+        max-width: 380px;
+    }
+
+    .brand_panel_logo {
+        font-weight: 800;
+        font-size: 20px;
+        letter-spacing: 0.5px;
+        margin-bottom: 48px;
+        opacity: 0.9;
+    }
+
+    .brand_panel_content h2 {
+        font-size: 34px;
+        font-weight: 700;
+        line-height: 1.25;
+        margin-bottom: 16px;
+    }
+
+    .brand_panel_copy {
+        font-size: 15px;
+        line-height: 1.6;
+        opacity: 0.85;
+    }
+
     .wrapper {
-        max-width: 640px;
-        padding: 40px 48px 32px;
+        flex: 1 1 55%;
+        max-width: 560px;
+        min-height: 100vh;
+        justify-content: center;
+        background-color: var(--background_color);
+        border-radius: 0;
+        box-shadow: none;
+        padding: 40px 64px;
+        margin: 0;
     }
 
     .role_top {
-        max-width: 480px;
+        max-width: 420px;
     }
 
     .intro_message {
-        font-size: 20px;
-        line-height: 52px;
+        font-size: 26px;
+        line-height: 1.3;
     }
 
     .role_selection_middle {
         flex-direction: row;
         flex-wrap: wrap;
+        max-width: 420px;
     }
 
     .first_selector_tole,
@@ -377,9 +440,13 @@ p.paragraph_2 {
     }
 
     .bottom_area {
-        max-width: 320px;
-        margin-left: auto;
-        margin-right: auto;
+        max-width: 420px;
+        /* on desktop the whole block (heading + cards + button) is
+           vertically centered as one unit via .wrapper's
+           justify-content: center - margin-top: auto would fight
+           that and shove the button down to the very bottom edge
+           of a full-height panel instead */
+        margin-top: 40px;
     }
 }
 
