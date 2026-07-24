@@ -303,6 +303,16 @@ p.paragraph_2 {
     cursor: not-allowed;
 }
 
+.role_error {
+    font-size: 13px;
+    color: #d92d20;
+    text-align: center;
+}
+
+.role_error[hidden] {
+    display: none;
+}
+
 
 .dragger {
     width: 135px;

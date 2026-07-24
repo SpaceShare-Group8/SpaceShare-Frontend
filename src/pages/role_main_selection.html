@@ -87,7 +87,7 @@
         <div class="role_selection_middle">
           <label class="first_selector_tole">
             <div class="radio_btn">
-              <input type="radio" name="radio" />
+              <input type="radio" name="radio" value="seeker" />
             </div>
 
             <div class="first_mess">
@@ -98,7 +98,7 @@
 
           <label class="second_selector_tole">
             <div class="radio_btn">
-              <input type="radio" name="radio" />
+              <input type="radio" name="radio" value="host" />
             </div>
 
             <div class="second_mess">
@@ -115,12 +115,17 @@
         <!-- bottom -->
         <div class="bottom_area">
           <div class="role_selection_bottom">
-            <button class="role_cont_btn">Continue</button>
+            <button class="role_cont_btn" id="roleContinueBtn" disabled>
+              Continue
+            </button>
           </div>
+          <p class="role_error" id="roleError" role="alert" hidden></p>
 
           <div class="dragger"></div>
         </div>
       </section>
     </main>
+
+    <script type="module" src="../scripts/role_main_selection.js"></script>
   </body>
 </html>
