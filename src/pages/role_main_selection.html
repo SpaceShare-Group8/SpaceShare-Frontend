@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SpaceShare</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"
+    />
+    <link rel="stylesheet" href="../styles/role_main_Selection.css" />
+  </head>
+  <body>
+    <main class="role_selection_page">
+      <section class="wrapper">
+        <!-- top section -->
+        <div class="btn_back">
+          <!-- back/return sign -->
+          <button type="button" aria-label="Go back">
+            <!-- <span class="material-symbols-outlined"> arrow_back_ios </span> -->
+            <i class="ph ph-caret-left"></i>
+          </button>
+        </div>
+
+        <div class="role_top">
+          <div class="intro_message">
+            <h1>
+              What brings you to
+              <span>SpaceShare</span>?
+            </h1>
+          </div>
+
+          <div>
+            <p class="intro_text">
+              You can always list a space later - this just sets your home
+              screen.
+            </p>
+          </div>
+        </div>
+
+        <!-- middle section -->
+        <!-- each label wraps its radio, so clicking anywhere on the
+             card selects it - not just the small radio dot -->
+        <div class="role_selection_middle">
+          <label class="first_selector_tole">
+            <div class="radio_btn">
+              <input type="radio" name="radio" />
+            </div>
+
+            <div class="first_mess">
+              <h3 class="text_message 1">Find a Space</h3>
+              <p class="paragraph_1">Book studios, venues and rooms nearby.</p>
+            </div>
+          </label>
+
+          <label class="second_selector_tole">
+            <div class="radio_btn">
+              <input type="radio" name="radio" />
+            </div>
+
+            <div class="second_mess">
+              <h3 class="text_message 2">List a Space</h3>
+              <p class="paragraph_2">
+                Earn from a room, studio or venue you manage.
+              </p>
+            </div>
+          </label>
+        </div>
+
+        <!-- btm selection -->
+
+        <!-- bottom -->
+        <div class="bottom_area">
+          <div class="role_selection_bottom">
+            <button class="role_cont_btn">Continue</button>
+          </div>
+
+          <div class="dragger"></div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

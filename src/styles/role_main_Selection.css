@@ -1,0 +1,395 @@
+@import url('https://fonts.cdnfonts.com/css/frank-black');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --color-text: #000000;
+    --primary_color: #052659;
+    --text_span_color: #111;
+    --btn_color: #2862BC;
+    --primary_container: #ffffff;
+    --secondary_container: #052659;
+    --radio_btn: #d9d9d9;
+    --radio_selector_tbn: #2862BC;
+    --background_color: #f5f5f5;
+    --page_backdrop: #eef1f6;
+}
+
+body {
+    font-family: sans-serif;
+    background-color: var(--background_color);
+    width: 100vw;
+    min-height: 100vh;
+    overflow: none;
+}
+
+/* the whole screen: stacks top -> middle -> bottom in normal flow
+   (previously used position:relative + top:Npx offsets, which don't
+   reserve space and break as soon as the viewport size changes) */
+.role_selection_page {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+    background-color: var(--background_color);
+}
+
+/* margin-left is intentionally its own value, not the wrapper's 30px
+   content padding - the icon is meant to sit closer to the edge than
+   the heading/cards, not share their inset */
+.btn_back {
+    display: flex;
+    width: 12px;
+    height: 24px;
+    margin-right: 1px;
+    margin-bottom: 20px;
+    margin-left: -14px;
+    background: none;
+    color: var(--btn_color);
+}
+
+.btn_back button {
+    display: flex;
+    align-items: flex-start;
+    /* width: 100%;
+    height: 100%; */
+    border: none;
+    border-radius: 50%;
+    background: none;
+    color: inherit;
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.15s ease-in-out, background-color 0.15s ease;
+}
+
+/* grows on hover to match the Figma prototype, instead of shrinking */
+.btn_back button:hover {
+    background-color: rgba(40, 98, 188, 0.1);
+    transform: scale(1.18);
+}
+
+.btn_back button:active {
+    transform: scale(0.92);
+}
+
+.btn_back button:focus-visible {
+    outline: 2px solid var(--btn_color);
+    outline-offset: 2px;
+}
+
+
+/* main section */
+
+.wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+.role_top {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.intro_message {
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 45px;
+    width: 275px;
+    height: 90px;
+}
+
+.intro_message span {
+    color: var(--primary_color);
+}
+
+.intro_text {
+    font-size: 16px;
+    height: 45px;
+    width: 291px;
+    line-height: 22px;
+    letter-spacing: -0.41%;
+}
+
+
+/* middle section */
+.role_selection_middle {
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: 40px;
+}
+
+.first_selector_tole,
+.second_selector_tole {
+    display: flex;
+    gap: 10px;
+    background-color: var(--primary_container);
+    border: 1.5px solid transparent;
+    border-radius: 15px;
+    width: 100%;
+    padding: 20px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+}
+
+/* hover previews the selection; :has(input:checked) keeps that same
+   look once the card is actually picked - same treatment for both,
+   per the Figma states (default / hovered-or-picked) */
+.first_selector_tole:is(:hover, :has(input:checked)),
+.second_selector_tole:is(:hover, :has(input:checked)) {
+    background-color: var(--secondary_container);
+    color: var(--primary_container);
+    border-color: var(--radio_selector_tbn);
+    box-shadow: 0 4px 14px rgba(5, 38, 89, 0.12);
+}
+
+.first_selector_tole:active,
+.second_selector_tole:active {
+    transform: scale(0.99);
+}
+
+.first_mess,
+.second_mess {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    width: 100%;
+}
+
+h3.text_message {
+    font-weight: bold;
+    font-size: 26px;
+    line-height: 45px;
+    width: 100%;
+}
+
+p.paragraph_1,
+p.paragraph_2 {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+    width: 100%;
+    /* no hardcoded color here - inherits black by default, and
+       switches to white with the rest of the card's text on
+       hover/selected (see :is(:hover, :has(...)) rule above) */
+    letter-spacing: -0.41%;
+}
+
+.radio_btn {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+/* Custom radio: outer ring is always --radio_btn (#d9d9d9), the
+   inner dot is --radio_selector_tbn (#2862bc) and only appears once
+   selected. Built with appearance:none + a ::before dot rather than
+   relying on native radio styling, since native radios can't be
+   themed consistently across browsers. */
+.radio_btn input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    display: grid;
+    place-content: center;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    border-radius: 50%;
+    border: 1.5px solid var(--radio_btn);
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.radio_btn input[type="radio"]::before {
+    content: "";
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background-color: var(--radio_selector_tbn);
+    transform: scale(0);
+    transition: transform 0.15s ease;
+}
+
+.radio_btn input[type="radio"]:checked::before {
+    transform: scale(1);
+}
+
+/* hovering the card previews the checked look on its own radio too -
+   the ring stays --radio_btn either way, only the dot appears */
+.first_selector_tole:hover .radio_btn input[type="radio"]::before,
+.second_selector_tole:hover .radio_btn input[type="radio"]::before {
+    transform: scale(1);
+}
+
+.radio_btn input[type="radio"]:focus-visible {
+    outline: 2px solid var(--radio_selector_tbn);
+    outline-offset: 2px;
+}
+
+
+/* bottom area */
+.bottom_area {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    /* was margin-top: auto, which glued this to the very bottom of
+       the viewport and left a huge gap on tall windows - fixed
+       spacing keeps it close to the cards instead */
+    margin-top: 48px;
+    padding: 24px 0 10px;
+}
+
+.role_selection_bottom .role_cont_btn {
+    width: 100%;
+    height: 54px;
+    background-color: var(--radio_selector_tbn);
+    border-radius: 20px;
+    border: none;
+    color: var(--primary_container);
+    font-size: 16px;
+    align-self: center;
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.1s ease, opacity 0.15s ease;
+}
+
+.role_selection_bottom .role_cont_btn:hover {
+    background-color: #1f4c96;
+}
+
+.role_selection_bottom .role_cont_btn:active {
+    transform: scale(0.98);
+}
+
+.role_selection_bottom .role_cont_btn:focus-visible {
+    outline: 2px solid var(--primary_color);
+    outline-offset: 3px;
+}
+
+.role_selection_bottom .role_cont_btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+.dragger {
+    width: 135px;
+    height: 5px;
+    background-color: #000000;
+    align-self: center;
+    border-radius: 5px;
+}
+
+
+/* ============ RESPONSIVE ============ */
+
+/* Small phones (iPhone SE etc.) - tighten up spacing so nothing
+   gets cramped or clipped */
+@media (max-width: 360px) {
+    .wrapper {
+        padding: 20px 16px 16px;
+    }
+
+    .role_selection_middle {
+        margin-top: 24px;
+    }
+
+    h3.text_message {
+        font-size: 22px;
+        line-height: 30px;
+    }
+
+    .intro_message {
+        font-size: 15px;
+    }
+}
+
+/* Tablet and up: page is being viewed in a browser, not just a phone
+   simulator, so give it room to breathe and stop it from stretching
+   edge-to-edge */
+@media (min-width: 600px) {
+    body {
+        background-color: var(--page_backdrop);
+    }
+
+    .role_selection_page {
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        background-color: var(--page_backdrop);
+    }
+
+    .wrapper {
+        max-width: 480px;
+        min-height: 780px;
+        background-color: var(--background_color);
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(5, 38, 89, 0.15);
+        padding: 30px 32px 24px;
+    }
+
+    /* the iOS home-indicator bar only makes sense on an actual phone */
+    .dragger {
+        display: none;
+    }
+}
+
+/* Desktop: let the two role cards sit side by side and cap overall
+   line length for readability */
+@media (min-width: 1024px) {
+    .wrapper {
+        max-width: 640px;
+        padding: 40px 48px 32px;
+    }
+
+    .role_top {
+        max-width: 480px;
+    }
+
+    .intro_message {
+        font-size: 20px;
+        line-height: 52px;
+    }
+
+    .role_selection_middle {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .first_selector_tole,
+    .second_selector_tole {
+        width: calc(50% - 10px);
+    }
+
+    .bottom_area {
+        max-width: 320px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* Respect users who've asked for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+    .first_selector_tole,
+    .second_selector_tole,
+    .role_selection_bottom .role_cont_btn,
+    .btn_back button {
+        transition: none;
+    }
+}
