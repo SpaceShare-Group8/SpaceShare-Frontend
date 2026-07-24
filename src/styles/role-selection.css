@@ -1,0 +1,209 @@
+/* Role Selection — onboarding screen
+   Matches Figma: FILE-1-Core-Seeker-Flow, node 36-3773 */
+
+:root {
+  --color-navy: #10254e;
+  --color-navy-text: #0f1d3a;
+  --color-blue: #3366ff;
+  --color-blue-dark: #2952cc;
+  --color-text: #12172b;
+  --color-text-muted: #6b7280;
+  --color-border: #e2e5eb;
+  --color-surface: #ffffff;
+  --color-bg: #ffffff;
+  --radius-card: 14px;
+  --radius-pill: 28px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.role-selection {
+  max-width: 420px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: 20px 24px 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Back button */
+.back-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--color-blue);
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 20px;
+  border-radius: 50%;
+}
+
+.back-btn:hover {
+  background: rgba(51, 102, 255, 0.08);
+}
+
+.back-btn:focus-visible {
+  outline: 2px solid var(--color-blue);
+  outline-offset: 2px;
+}
+
+/* Heading */
+h1 {
+  font-size: 26px;
+  line-height: 1.25;
+  font-weight: 700;
+  margin: 0 0 12px;
+  color: var(--color-text);
+}
+
+h1 .brand {
+  color: var(--color-blue);
+}
+
+.subtitle {
+  margin: 0 0 28px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+/* Role option cards */
+.role-options {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.role-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  padding: 18px 16px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+  font: inherit;
+  color: inherit;
+}
+
+.role-card:focus-visible {
+  outline: 2px solid var(--color-blue);
+  outline-offset: 2px;
+}
+
+.role-card .radio-dot {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  border-radius: 50%;
+  border: 1.5px solid #c7cbd4;
+  background: var(--color-surface);
+  position: relative;
+}
+
+.role-card .role-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.role-card .role-card-text strong {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.role-card .role-card-text span {
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--color-text-muted);
+}
+
+/* Selected state */
+.role-card.selected {
+  background: var(--color-navy);
+  border-color: var(--color-navy);
+}
+
+.role-card.selected .radio-dot {
+  border-color: #ffffff;
+  background: var(--color-navy);
+}
+
+.role-card.selected .radio-dot::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.role-card.selected .role-card-text strong,
+.role-card.selected .role-card-text span {
+  color: #ffffff;
+}
+
+/* Continue button */
+.continue-btn {
+  margin-top: auto;
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--color-blue);
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+}
+
+.continue-btn:hover:not(:disabled) {
+  background: var(--color-blue-dark);
+}
+
+.continue-btn:focus-visible {
+  outline: 2px solid var(--color-blue-dark);
+  outline-offset: 2px;
+}
+
+.continue-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.error-message {
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: #d92d20;
+  text-align: center;
+}
+
+.error-message[hidden] {
+  display: none;
+}
+
+@media (min-width: 480px) {
+  .role-selection {
+    padding-top: 40px;
+  }
+}
