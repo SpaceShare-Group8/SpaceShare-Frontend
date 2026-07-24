@@ -371,18 +371,39 @@ p.paragraph_2 {
         background-color: var(--background_color);
     }
 
+    /* the panel used to just center one small text block in a huge
+       navy rectangle - now it's laid out top-to-bottom (logo / headline
+       / feature list / footer line) so the height is actually used,
+       plus a couple of soft glow blobs for depth instead of a flat fill */
     .brand_panel {
+        position: relative;
         display: flex;
-        align-items: center;
-        justify-content: center;
         flex: 1 1 45%;
         max-width: 560px;
-        padding: 60px;
+        padding: 56px 60px;
+        overflow: hidden;
         background: linear-gradient(160deg, var(--primary_color) 0%, #08386e 100%);
         color: var(--primary_container);
     }
 
+    .brand_panel_glow {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+            radial-gradient(380px 380px at 10% 8%, rgba(255, 255, 255, 0.10), transparent 60%),
+            radial-gradient(460px 460px at 95% 85%, rgba(88, 140, 255, 0.30), transparent 60%),
+            radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+        background-size: auto, auto, 24px 24px;
+    }
+
     .brand_panel_content {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 100%;
         max-width: 380px;
     }
 
@@ -390,12 +411,19 @@ p.paragraph_2 {
         font-weight: 800;
         font-size: 20px;
         letter-spacing: 0.5px;
-        margin-bottom: 48px;
         opacity: 0.9;
     }
 
+    /* no margin: auto here - .brand_panel_content already spaces its
+       4 children (logo / main / features / footer) evenly via
+       justify-content: space-between, an auto margin would hijack
+       all of that free space for itself */
+    .brand_panel_main {
+        margin-bottom: 12px;
+    }
+
     .brand_panel_content h2 {
-        font-size: 34px;
+        font-size: 32px;
         font-weight: 700;
         line-height: 1.25;
         margin-bottom: 16px;
@@ -405,6 +433,41 @@ p.paragraph_2 {
         font-size: 15px;
         line-height: 1.6;
         opacity: 0.85;
+    }
+
+    .brand_panel_features {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        margin-bottom: 40px;
+    }
+
+    .brand_panel_features li {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .brand_panel_features i {
+        flex: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.12);
+        font-size: 15px;
+        color: #9fc0ff;
+    }
+
+    .brand_panel_footer {
+        font-size: 13px;
+        letter-spacing: 0.2px;
+        color: rgba(255, 255, 255, 0.55);
     }
 
     .wrapper {
