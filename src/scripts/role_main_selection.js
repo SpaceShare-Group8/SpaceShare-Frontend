@@ -1,13 +1,15 @@
 // src/scripts/role_main_selection.js
 // Wires up src/pages/role_main_selection.html: tracks which role card is
-// selected, enables Continue once one is picked, and submits the choice
-// via the API client in src/api/onboarding.js.
+// selected, enables Continue once one is picked, and remembers the choice.
+//
+// This screen does NOT call the API - confirmed with Backend that `role`
+// is a field on POST /api/auth/register itself, not a separate endpoint.
+// See src/api/onboarding.js for where that saved value gets read back out.
 
-import { submitUserRole } from "../api/onboarding.js";
+import { saveSelectedRole } from "../api/onboarding.js";
 
 const roleInputs = Array.from(document.querySelectorAll('.role_selection_middle input[type="radio"]'));
 const continueBtn = document.getElementById("roleContinueBtn");
-const errorEl = document.getElementById("roleError");
 const backBtn = document.querySelector(".btn_back button");
 
 function getSelectedRole() {
@@ -20,10 +22,7 @@ function updateContinueState() {
 }
 
 roleInputs.forEach((input) => {
-  input.addEventListener("change", () => {
-    updateContinueState();
-    hideError();
-  });
+  input.addEventListener("change", updateContinueState);
 });
 
 updateContinueState();
@@ -32,40 +31,14 @@ backBtn?.addEventListener("click", () => {
   window.history.back();
 });
 
-continueBtn.addEventListener("click", async () => {
+continueBtn.addEventListener("click", () => {
   const role = getSelectedRole();
   if (!role) return;
 
-  setLoading(true);
-  hideError();
+  saveSelectedRole(role);
 
-  try {
-    await submitUserRole(role);
-
-    // "this just sets your home screen" - remember it locally so the
-    // rest of the app can route to the right home screen next launch
-    localStorage.setItem("homeScreen", role);
-
-    const nextPage = role === "host" ? "host-home.html" : "search.html";
-    window.location.href = nextPage;
-  } catch (err) {
-    showError("Something went wrong saving that - please try again.");
-    console.error("submitUserRole failed:", err);
-  } finally {
-    setLoading(false);
-  }
+  // TODO: confirm the real next screen with the team - this should be
+  // wherever registration (full name/email/phone/password) actually
+  // happens, since that request is what needs to carry this saved role.
+  window.location.href = "signup.html";
 });
-
-function setLoading(isLoading) {
-  continueBtn.disabled = isLoading || !getSelectedRole();
-  continueBtn.textContent = isLoading ? "Continue…" : "Continue";
-}
-
-function showError(message) {
-  errorEl.textContent = message;
-  errorEl.hidden = false;
-}
-
-function hideError() {
-  errorEl.hidden = true;
-}

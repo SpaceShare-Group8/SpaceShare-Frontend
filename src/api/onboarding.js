@@ -1,61 +1,40 @@
 // src/api/onboarding.js
 //
-// API client for the onboarding / role-selection step.
+// Role selection storage for the "What brings you to SpaceShare?" screen.
 //
-// NOTE ON THE ENDPOINT: PRD §16.1 ("Authentication") only documents
-// /api/auth/register, /login, /refresh and /me — there's no endpoint yet
-// for "set role / home screen preference" on an already-registered user.
-// This assumes a PATCH /api/users/me/role endpoint (consistent with the
-// Users table's `roles[]` field in §6). Confirm the exact path/shape with
-// Backend before merging — per the README, everything else in the app can
-// keep using submitUserRole() unchanged once the real call is swapped in.
+// CONFIRMED with Backend (SpaceShare-Backend/src/auth/auth.validation.js,
+// registerValidation): `role` is an optional field on POST /api/auth/register
+// itself - there is no separate endpoint to set it afterward, and no
+// users/ module exists yet for a PATCH /api/users/me/role call.
+//
+// So this screen does NOT call the API at all. It just remembers the
+// choice locally. Whichever screen actually submits registration
+// (full_name/email/phone/password) needs to read getSelectedRole() and
+// include it in that request body, e.g.:
+//
+//   fetch(`${API_BASE_URL}/api/auth/register`, {
+//     method: "POST",
+//     body: JSON.stringify({ full_name, email, password, role: getSelectedRole() }),
+//     ...
+//   })
 
-const API_BASE_URL =
-  (typeof window !== "undefined" && window.__ENV__ && window.__ENV__.API_BASE_URL) ||
-  "http://localhost:4000";
-
-const USE_MOCK = true; // flip to false once the backend endpoint is live
+const STORAGE_KEY = "spaceshare:selectedRole";
 
 /**
- * Persist the user's chosen role / home screen preference.
+ * Save the user's chosen role so it can be included in the eventual
+ * POST /api/auth/register call.
  * @param {"seeker"|"host"} role
- * @returns {Promise<{ success: boolean, role: string }>}
  */
-export async function submitUserRole(role) {
+export function saveSelectedRole(role) {
   if (!["seeker", "host"].includes(role)) {
     throw new Error(`Invalid role: ${role}`);
   }
-
-  if (USE_MOCK) {
-    return mockSubmitUserRole(role);
-  }
-
-  const response = await fetch(`${API_BASE_URL}/api/users/me/role`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${getAccessToken()}`,
-    },
-    body: JSON.stringify({ role }),
-  });
-
-  if (!response.ok) {
-    const body = await response.json().catch(() => ({}));
-    throw new Error(body.message || `Request failed with status ${response.status}`);
-  }
-
-  return response.json();
+  localStorage.setItem(STORAGE_KEY, role);
 }
 
-function mockSubmitUserRole(role) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({ success: true, role });
-    }, 400);
-  });
-}
-
-function getAccessToken() {
-  // Placeholder until the real auth/session module lands in src/api/auth.js
-  return localStorage.getItem("accessToken") || "";
+/**
+ * @returns {"seeker"|"host"|null}
+ */
+export function getSelectedRole() {
+  return localStorage.getItem(STORAGE_KEY);
 }
