@@ -10,13 +10,12 @@
 // So this screen does NOT call the API at all. It just remembers the
 // choice locally. Whichever screen actually submits registration
 // (full_name/email/phone/password) needs to read getSelectedRole() and
-// include it in that request body, e.g.:
+// include it in that request body, using register() from src/api/auth.js:
 //
-//   fetch(`${API_BASE_URL}/api/auth/register`, {
-//     method: "POST",
-//     body: JSON.stringify({ full_name, email, password, role: getSelectedRole() }),
-//     ...
-//   })
+//   import { register } from "./auth.js";
+//   import { getSelectedRole } from "./onboarding.js";
+//
+//   register({ full_name, email, password, role: getSelectedRole() });
 
 const STORAGE_KEY = "spaceshare:selectedRole";
 
