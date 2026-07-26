@@ -1,207 +1,216 @@
-// src/scripts/booking.js
-// Wires up src/pages/booking.html: an interactive calendar, hourly
-// time slot picker, live booking summary, and a booking-type toggle
-// (Request vs Instant).
-//
-// MOCK DATA NOTE: there's no bookings/availability API built yet (see
-// SpaceShare-Backend's src/ layout - a bookings/ module is planned but
-// not implemented). So "unavailable" dates/slots below are hardcoded
-// just to match the Figma states visually. Once a real availability
-// endpoint exists, swap MOCK_UNAVAILABLE_DAYS/MOCK_UNAVAILABLE_SLOTS
-// for a real fetch of that workspace's actual booked slots.
+// booking.js - handles the booking type dropdown, calendar, time slots and summary
 
-const RATE_PER_HOUR = 15000;
-const WORKSPACE_NAME = "Hub One Workspace";
-
-// Days-of-month that are already booked, regardless of which month is
-// showing - purely to mirror the two greyed-out dates in the design.
-const MOCK_UNAVAILABLE_DAYS = [8, 17];
-
-const TIME_SLOTS = [
+const RATE = 15000;
+const BAD_DAYS = [8, 17]; // already booked, just hardcoded for now since there's no api for it yet
+const SLOTS = [
   "08:00-09:00", "09:00-10:00", "10:00-11:00", "11:00-12:00",
   "12:00-13:00", "13:00-14:00", "14:00-15:00", "15:00-16:00",
   "16:00-17:00", "17:00-18:00", "18:00-19:00", "19:00-20:00",
 ];
-const MOCK_UNAVAILABLE_SLOTS = ["13:00-14:00"];
+const BAD_SLOTS = ["08:00-09:00", "15:00-16:00"]; // matches the greyed out ones in the figma
 
-const WEEKDAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-const MONTH_LABELS = [
+const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const months = [
   "January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December",
 ];
 
-const calendarMonthEl = document.getElementById("calendarMonth");
-const calendarGridEl = document.getElementById("calendarGrid");
-const prevMonthBtn = document.getElementById("prevMonth");
-const nextMonthBtn = document.getElementById("nextMonth");
-const timeSlotsEl = document.getElementById("timeSlots");
-const bookingTypeSelect = document.getElementById("bookingType");
-const bookingTypeNoteText = document.getElementById("bookingTypeNoteText");
-const requestBtn = document.getElementById("requestBookingBtn");
-const requestBtnLabel = document.getElementById("requestBtnLabel");
-const bookingFootnote = document.getElementById("bookingFootnote");
+const calMonthEl = document.getElementById("calendarMonth");
+const calGridEl = document.getElementById("calendarGrid");
+const prevBtn = document.getElementById("prevMonth");
+const nextBtn = document.getElementById("nextMonth");
+const slotsEl = document.getElementById("timeSlots");
+const typeSelect = document.getElementById("bookingType");
+const typeNoteText = document.getElementById("bookingTypeNoteText");
+const payNoteText = document.getElementById("paymentNoteText");
+const reqBtn = document.getElementById("requestBookingBtn");
+const reqBtnLabel = document.getElementById("requestBtnLabel");
 const backBtn = document.querySelector(".back_btn");
 
-const summaryDateEl = document.getElementById("summaryDate");
-const summaryTimeEl = document.getElementById("summaryTime");
-const summaryTotalEl = document.getElementById("summaryTotal");
+const sumDate = document.getElementById("summaryDate");
+const sumTime = document.getElementById("summaryTime");
+const sumDuration = document.getElementById("summaryDuration");
+const sumTotal = document.getElementById("summaryTotal");
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);
 
 let viewYear = today.getFullYear();
-let viewMonth = today.getMonth(); // 0-11
-let selectedDate = null; // { year, month, day }
-let selectedSlot = null; // e.g. "08:00-09:00"
+let viewMonth = today.getMonth();
+let pickedDate = null;
 
-function isPastDate(year, month, day) {
-  return new Date(year, month, day) < today;
-}
+// range selection - click a slot to start, click a later one to finish
+// the range (fills everything between). clicking again after that
+// starts a fresh range.
+let rangeStart = null;
+let rangeEnd = null;
 
-function isUnavailableDate(day) {
-  return MOCK_UNAVAILABLE_DAYS.includes(day);
-}
+function drawCalendar() {
+  calMonthEl.textContent = `${months[viewMonth]} ${viewYear}`;
 
-function formatMoney(amount) {
-  return `₦${amount.toLocaleString("en-NG")}`;
-}
+  const firstDay = new Date(viewYear, viewMonth, 1).getDay();
+  const totalDays = new Date(viewYear, viewMonth + 1, 0).getDate();
 
-function renderCalendar() {
-  calendarMonthEl.textContent = `${MONTH_LABELS[viewMonth]} ${viewYear}`;
-
-  const firstWeekday = new Date(viewYear, viewMonth, 1).getDay();
-  const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
-
-  calendarGridEl.innerHTML = "";
-
-  for (let i = 0; i < firstWeekday; i++) {
-    calendarGridEl.appendChild(document.createElement("span"));
+  calGridEl.innerHTML = "";
+  for (let i = 0; i < firstDay; i++) {
+    calGridEl.appendChild(document.createElement("span"));
   }
 
-  for (let day = 1; day <= daysInMonth; day++) {
+  for (let d = 1; d <= totalDays; d++) {
     const btn = document.createElement("button");
     btn.type = "button";
-    btn.className = "calendar_day";
-    btn.textContent = String(day);
+    btn.className = "cal_day";
+    btn.textContent = d;
 
-    const disabled = isPastDate(viewYear, viewMonth, day) || isUnavailableDate(day);
-    btn.disabled = disabled;
+    const past = new Date(viewYear, viewMonth, d) < today;
+    const booked = BAD_DAYS.includes(d);
+    btn.disabled = past || booked;
 
-    const isSelected =
-      selectedDate &&
-      selectedDate.year === viewYear &&
-      selectedDate.month === viewMonth &&
-      selectedDate.day === day;
-    btn.classList.toggle("selected", Boolean(isSelected));
-
-    if (!disabled) {
-      btn.addEventListener("click", () => {
-        selectedDate = { year: viewYear, month: viewMonth, day };
-        renderCalendar();
-        updateSummary();
-      });
+    if (pickedDate && pickedDate.y === viewYear && pickedDate.m === viewMonth && pickedDate.d === d) {
+      btn.classList.add("selected");
     }
 
-    calendarGridEl.appendChild(btn);
+    if (!btn.disabled) {
+      btn.onclick = () => {
+        pickedDate = { y: viewYear, m: viewMonth, d };
+        drawCalendar();
+        updateSummary();
+      };
+    }
+
+    calGridEl.appendChild(btn);
   }
 
-  // Don't let people navigate to months before the current one
-  prevMonthBtn.disabled = viewYear === today.getFullYear() && viewMonth === today.getMonth();
+  // can't go back before this month
+  prevBtn.disabled = viewYear === today.getFullYear() && viewMonth === today.getMonth();
 }
 
-prevMonthBtn.addEventListener("click", () => {
-  viewMonth -= 1;
+prevBtn.onclick = () => {
+  viewMonth--;
   if (viewMonth < 0) {
     viewMonth = 11;
-    viewYear -= 1;
+    viewYear--;
   }
-  renderCalendar();
-});
+  drawCalendar();
+};
 
-nextMonthBtn.addEventListener("click", () => {
-  viewMonth += 1;
+nextBtn.onclick = () => {
+  viewMonth++;
   if (viewMonth > 11) {
     viewMonth = 0;
-    viewYear += 1;
+    viewYear++;
   }
-  renderCalendar();
-});
+  drawCalendar();
+};
 
-function renderTimeSlots() {
-  timeSlotsEl.innerHTML = "";
+function drawSlots() {
+  slotsEl.innerHTML = "";
 
-  TIME_SLOTS.forEach((slot) => {
+  SLOTS.forEach((slot, i) => {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "time_slot";
     btn.textContent = slot;
+    btn.disabled = BAD_SLOTS.includes(slot);
 
-    const disabled = MOCK_UNAVAILABLE_SLOTS.includes(slot);
-    btn.disabled = disabled;
-    btn.classList.toggle("selected", slot === selectedSlot);
+    const inRange = rangeStart !== null && i >= rangeStart && i <= (rangeEnd ?? rangeStart);
+    if (inRange) btn.classList.add("selected");
 
-    if (!disabled) {
-      btn.addEventListener("click", () => {
-        selectedSlot = slot;
-        renderTimeSlots();
-        updateSummary();
-      });
+    if (!btn.disabled) {
+      btn.onclick = () => pickSlot(i);
     }
 
-    timeSlotsEl.appendChild(btn);
+    slotsEl.appendChild(btn);
   });
 }
 
-function updateSummary() {
-  if (selectedDate) {
-    const dateObj = new Date(selectedDate.year, selectedDate.month, selectedDate.day);
-    const weekday = WEEKDAY_LABELS[dateObj.getDay()];
-    const ordinal = getOrdinal(selectedDate.day);
-    summaryDateEl.textContent = `${weekday}, ${ordinal} ${MONTH_LABELS[selectedDate.month]} ${selectedDate.year}`;
+function pickSlot(i) {
+  if (rangeStart === null) {
+    rangeStart = i;
+    rangeEnd = null;
+  } else if (rangeEnd === null) {
+    if (i > rangeStart && !rangeHasBadSlot(rangeStart, i)) {
+      rangeEnd = i;
+    } else {
+      // clicked backwards or the range would cross a booked slot -
+      // just start over from here
+      rangeStart = i;
+      rangeEnd = null;
+    }
   } else {
-    summaryDateEl.textContent = "Select a date";
+    rangeStart = i;
+    rangeEnd = null;
   }
 
-  summaryTimeEl.textContent = selectedSlot || "Select a time slot";
-  summaryTotalEl.textContent = selectedSlot ? formatMoney(RATE_PER_HOUR) : formatMoney(0);
-
-  requestBtn.disabled = !(selectedDate && selectedSlot);
+  drawSlots();
+  updateSummary();
 }
 
-function getOrdinal(day) {
-  if (day % 10 === 1 && day !== 11) return `${day}st`;
-  if (day % 10 === 2 && day !== 12) return `${day}nd`;
-  if (day % 10 === 3 && day !== 13) return `${day}rd`;
-  return `${day}th`;
+function rangeHasBadSlot(start, end) {
+  for (let i = start; i <= end; i++) {
+    if (BAD_SLOTS.includes(SLOTS[i])) return true;
+  }
+  return false;
 }
 
-function applyBookingType() {
-  const isInstant = bookingTypeSelect.value === "instant";
-  bookingTypeNoteText.textContent = isInstant
-    ? "Your booking will be confirmed instantly - no host approval needed."
+function updateSummary() {
+  if (pickedDate) {
+    const dObj = new Date(pickedDate.y, pickedDate.m, pickedDate.d);
+    sumDate.textContent = `${weekdays[dObj.getDay()]}, ${ordinal(pickedDate.d)} ${months[pickedDate.m]} ${pickedDate.y}`;
+  } else {
+    sumDate.textContent = "Select a date";
+  }
+
+  if (rangeStart !== null) {
+    const start = SLOTS[rangeStart].split("-")[0];
+    const end = SLOTS[rangeEnd ?? rangeStart].split("-")[1];
+    sumTime.textContent = `${start}-${end}`;
+
+    const hours = (rangeEnd ?? rangeStart) - rangeStart + 1;
+    sumDuration.textContent = hours === 1 ? "1 Hour" : `${hours} Hours`;
+    sumTotal.textContent = `₦${(hours * RATE).toLocaleString("en-NG")}`;
+  } else {
+    sumTime.textContent = "Select a time";
+    sumDuration.textContent = "-";
+    sumTotal.textContent = "0";
+  }
+
+  reqBtn.disabled = !(pickedDate && rangeStart !== null);
+}
+
+function ordinal(d) {
+  if (d % 10 === 1 && d !== 11) return d + "st";
+  if (d % 10 === 2 && d !== 12) return d + "nd";
+  if (d % 10 === 3 && d !== 13) return d + "rd";
+  return d + "th";
+}
+
+// swap the copy depending on booking type - request needs host approval,
+// instant just needs payment
+function applyType() {
+  const instant = typeSelect.value === "instant";
+  typeNoteText.textContent = instant
+    ? "You can book and access the space immediately after payment."
     : "Your booking requires host approval before confirmation.";
-  requestBtnLabel.textContent = isInstant ? "Confirm Booking" : "Request Booking";
-  bookingFootnote.textContent = isInstant
-    ? "You'll get instant confirmation once payment is complete."
-    : "You'll be notified once your booking request has been reviewed.";
+  payNoteText.textContent = instant
+    ? "Complete payment to instantly confirm your booking."
+    : "The host typically responds within 24 hours.";
+  reqBtnLabel.textContent = instant ? "Proceed to Payment" : "Request Booking";
 }
 
-bookingTypeSelect.addEventListener("change", applyBookingType);
+typeSelect.onchange = applyType;
 
-backBtn.addEventListener("click", () => {
-  window.history.back();
-});
+backBtn.onclick = () => window.history.back();
 
-requestBtn.addEventListener("click", () => {
-  if (!selectedDate || !selectedSlot) return;
+reqBtn.onclick = () => {
+  if (reqBtn.disabled) return;
+  // no bookings endpoint on the backend yet so this doesn't actually
+  // send anything - just a placeholder so the button does something
+  reqBtnLabel.textContent = "Sent ✓";
+  reqBtn.disabled = true;
+};
 
-  // No bookings API exists yet to actually call here (see note at the
-  // top of this file) - this is a placeholder confirmation only.
-  requestBtnLabel.textContent = "Request sent ✓";
-  requestBtn.disabled = true;
-});
-
-renderCalendar();
-renderTimeSlots();
-applyBookingType();
+drawCalendar();
+drawSlots();
+applyType();
 updateSummary();

@@ -1,191 +1,241 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Booking Details · SpaceShare</title>
     <link
       rel="stylesheet"
       type="text/css"
       href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
     />
+    
     <link
       rel="stylesheet"
       type="text/css"
-      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/thin/style.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
     />
     <link rel="stylesheet" href="../styles/booking.css" />
-</head>
-<body>
-    <div class="app_shell">
-      <!-- Desktop-only sidebar (see @media (min-width: 1024px)) -->
-      <aside class="side_nav">
-        <div class="side_nav_logo">
-          <i class="ph-fill ph-square-half" aria-hidden="true"></i>
-          <span>SpaceShare</span>
+  </head>
+  <body>
+    <section class="booking_page">
+      <!-- desktop view -->
+      <!-- first section -->
+      <div class="top_bar">
+        <!--top menu -->
+        <div class="top_menu">
+          <div class="top_menu_left_logo_section">
+            <img
+              src="/src/Images/Spaceshare_logo.png"
+              alt="SpaceShare"
+              class="logo"
+            />
+            <span class="logo_name">SpaceShare</span>
+          </div>
+
+          <div class="top_menu_middle_search_section">
+            <label for="" class="search_bar">
+              <i class="ph ph-magnifying-glass"></i>
+              <input type="text" placeholder="Search workspace..." />
+            </label>
+          </div>
+
+          <div class="top_menu_right_user_section">
+            <i class="ph-thin ph-user-circle"></i>
+            <i class="ph ph-caret-down"></i>
+          </div>
         </div>
+      </div>
 
-        <label class="side_nav_search">
-          <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
-          <input type="text" placeholder="Search workspace..." />
-        </label>
 
-        <nav class="side_nav_links">
-          <a href="#" class="side_nav_link">
-            <i class="ph ph-house" aria-hidden="true"></i>Home
-          </a>
-          <a href="#" class="side_nav_link active" aria-current="page">
-            <i class="ph-fill ph-calendar-check" aria-hidden="true"></i>Bookings
-          </a>
-          <a href="#" class="side_nav_link">
-            <i class="ph ph-heart" aria-hidden="true"></i>Favorites
-          </a>
-          <a href="#" class="side_nav_link">
-            <i class="ph ph-chat-circle" aria-hidden="true"></i>Messages
-          </a>
-        </nav>
 
-        <button type="button" class="side_nav_help">
-          <i class="ph ph-headset" aria-hidden="true"></i>
-          <span class="side_nav_help_text">
-            <strong>Need Help?</strong>
-            <span>Contact our support team for assistance.</span>
-          </span>
-          <i class="ph ph-arrow-right" aria-hidden="true"></i>
-        </button>
+
+
+
+      <!-- aside menu -->
+      <div class="main_bar">
+
+        <aside class="aside_bar_menu">
+            <div class="aside_left_menu">
+                <nav class="main_left_tabs">
+                    <span class="nav_tab one" id="nav_tab_one">
+                        <i class="ph ph-house"></i>
+                        Home
+                    </span>
+                    <span class="nav_tab" id="nav_tab_two">
+                        <i class="ph ph-calendar-blank"></i>
+                        Bookings
+                    </span>
+                    <span class="nav_tab three" id="nav_tab_three">
+                        <i class="ph ph-heart"></i>
+                        Favorites
+                    </span>
+                    <span class="nav_tab four" id="nav_tab_four">
+                        <i class="ph ph-chat"></i>
+                        Messages
+                    </span>
+                    
+                    <button class="help_desk">
+                        <i class="ph ph-headset"></i>
+
+                        <div class="help_contact">
+                            <div class="btn_help_me">
+                                <h5 class="first_c">Need Help?</h5>
+                                
+                                <h5 class="second_c">Contact our support team for assistance.</h5>
+
+                                <i class="ph ph-caret-right"></i>
+                            </div>
+                        </div>
+                    </button>
+          </nav>
+        </div>
       </aside>
 
-      <main class="booking_page">
-        <div class="booking_header">
-          <button type="button" class="back_btn" aria-label="Go back">
-            <i class="ph ph-caret-left" aria-hidden="true"></i>
-          </button>
-          <h1>Booking Details</h1>
+
+
+
+
+      <!-- pay careful attention -->
+
+
+
+<!-- ////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+      //////////////////////////////////////////////// -->
+    <main class="booking_main">
+
+      <div class="booking_header">
+        <!-- the arrow shouldn't show in the desktop view  -->
+      <button type="button" class="back_btn" aria-label="Go back">
+          <i class="ph ph-caret-left" aria-hidden="true"></i>
+        </button>
+
+        <h1>Booking Details</h1>
+      </div>
+
+      <!-- book_content + right_book_calendar sit side by side on
+      desktop (see media query), stacked on mobile. reused the empty
+      wrapper div that was already here instead of adding a new one -->
+      <div class="left_side_booking_content">
+
+      <!-- Booking content goes here -->
+       <!-- left book content -->
+     <div class="book_content">
+        <!-- one part -->
+        <div class="content">
+            <img
+            src="/src/Images/booking_img_1.jpg"
+            alt="space"
+            class="booking_img"
+          />
+          <span class="work_space">Co-working Space</span>
+
         </div>
 
-        <div class="booking_layout">
-          <!-- Workspace details -->
-          <section class="workspace_panel">
-            <div class="workspace_photo" role="img" aria-label="Photo of Hub One Workspace">
-              <i class="ph-fill ph-image" aria-hidden="true"></i>
-              <span class="workspace_badge">Co-working Space</span>
-            </div>
 
-            <h2 class="workspace_title">Hub One Workspace</h2>
-            <p class="workspace_desc">
-              A modern style of meeting room perfect for conference and
-              exclusive meetings.
-            </p>
+           <!-- second part -->
+          <div class="details_extra">
+            <h5 class="booking_title">Hub One Workspace</h5>
+          <p class="booking_desc">
+            A modern style of meeting room perfect for conference and exclusive
+            meetings.
+          </p>
+          </div>
 
-            <div class="workspace_meta">
-              <span class="workspace_location">
-                <i class="ph-fill ph-map-pin" aria-hidden="true"></i>
-                Lekki phase one, Lagos
-              </span>
-              <span class="workspace_distance">2.5 km away</span>
-            </div>
 
-            <div class="workspace_meta">
-              <span class="workspace_rating">
-                <i class="ph-fill ph-star" aria-hidden="true"></i>
-                4.8 (120 reviews)
-              </span>
-              <span class="workspace_rate">&#8358;15,000 / hour</span>
-            </div>
-          </section>
+          <div class="content_booking_location">
+        <span class="loc_top">
+          <i class="ph ph-map-pin"></i>
+          Lekki phase one, Lagos
+          </span>
+          <p>2.5 km away</p>
+</div>
+        <div class="loc_bottom">
 
-          <!-- Booking controls -->
-          <section class="booking_panel">
-            <div class="field_group">
-              <label class="field_label" for="bookingType">Booking Type</label>
-              <div class="select_wrap">
-                <i class="ph-fill ph-clock-countdown select_icon" aria-hidden="true"></i>
-                <select id="bookingType">
-                  <option value="request">Request Booking</option>
-                  <option value="instant">Instant Booking</option>
-                </select>
-                <i class="ph ph-caret-down select_caret" aria-hidden="true"></i>
-              </div>
-              <p class="info_banner" id="bookingTypeNote">
-                <i class="ph-fill ph-info" aria-hidden="true"></i>
-                <span id="bookingTypeNoteText">
-                  Your booking requires host approval before confirmation.
-                </span>
-              </p>
-            </div>
+          <i class="ph ph-star"></i>
 
-            <div class="field_group">
-              <p class="field_label">Select Date</p>
-              <div class="calendar">
-                <div class="calendar_header">
-                  <button type="button" class="calendar_nav" id="prevMonth" aria-label="Previous month">
-                    <i class="ph ph-caret-left" aria-hidden="true"></i>
-                  </button>
-                  <span class="calendar_month" id="calendarMonth"></span>
-                  <button type="button" class="calendar_nav" id="nextMonth" aria-label="Next month">
-                    <i class="ph ph-caret-right" aria-hidden="true"></i>
-                  </button>
-                </div>
-                <div class="calendar_weekdays">
-                  <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
-                </div>
-                <div class="calendar_grid" id="calendarGrid"></div>
-              </div>
-            </div>
+          <div class="loc_rate">
+            <p>4.8 (120 reviews)</p>
+            <p> <i class="ph ph-currency-ngn"></i>15,000/hour</p>
+          </div>
 
-            <div class="field_group">
-              <p class="field_label">Available Time Slots (Hourly)</p>
-              <div class="time_slots" id="timeSlots"></div>
-            </div>
-
-            <div class="field_group">
-              <p class="field_label">Booking Summary</p>
-              <dl class="summary_list">
-                <div class="summary_row">
-                  <dt><i class="ph ph-buildings" aria-hidden="true"></i>Workspace</dt>
-                  <dd id="summaryWorkspace">Hub One Workspace</dd>
-                </div>
-                <div class="summary_row">
-                  <dt><i class="ph ph-calendar" aria-hidden="true"></i>Date</dt>
-                  <dd id="summaryDate">Select a date</dd>
-                </div>
-                <div class="summary_row">
-                  <dt><i class="ph ph-clock" aria-hidden="true"></i>Time</dt>
-                  <dd id="summaryTime">Select a time slot</dd>
-                </div>
-                <div class="summary_row">
-                  <dt><i class="ph ph-hourglass" aria-hidden="true"></i>Duration</dt>
-                  <dd id="summaryDuration">1 Hour</dd>
-                </div>
-                <div class="summary_row">
-                  <dt><i class="ph ph-tag" aria-hidden="true"></i>Rate</dt>
-                  <dd id="summaryRate">&#8358;15,000 / hour</dd>
-                </div>
-                <div class="summary_row summary_total">
-                  <dt><i class="ph-fill ph-receipt" aria-hidden="true"></i>Total</dt>
-                  <dd id="summaryTotal">&#8358;0</dd>
-                </div>
-              </dl>
-            </div>
-
-            <p class="info_banner subtle">
-              <i class="ph-fill ph-info" aria-hidden="true"></i>
-              The host typically responds within 24 hours.
-            </p>
-
-            <button type="button" class="request_btn" id="requestBookingBtn" disabled>
-              <span id="requestBtnLabel">Request Booking</span>
-              <i class="ph ph-arrow-right" aria-hidden="true"></i>
-            </button>
-
-            <p class="booking_footnote" id="bookingFootnote">
-              You'll be notified once your booking request has been reviewed.
-            </p>
-          </section>
         </div>
-      </main>
-    </div>
+
+     </div>
+
+      <!-- right book section (calendar) -->
+      <div class="right_book_calendar">
+
+        <div class="field_group">
+          <label for="bookingType">Booking Type</label>
+          <div class="select_wrap">
+            <i class="ph ph-clock-countdown"></i>
+            <select id="bookingType">
+              <option value="request">Request Booking</option>
+              <option value="instant">Instant Booking</option>
+            </select>
+            <i class="ph ph-caret-down"></i>
+          </div>
+          <p class="info_banner" id="bookingTypeNote">
+            <i class="ph ph-info"></i>
+            <span id="bookingTypeNoteText">Your booking requires host approval before confirmation.</span>
+          </p>
+        </div>
+
+        <div class="field_group">
+          <label>Select Date</label>
+          <div class="calendar">
+            <div class="cal_top">
+              <button type="button" class="cal_nav" id="prevMonth"><i class="ph ph-caret-left"></i></button>
+              <span id="calendarMonth"></span>
+              <button type="button" class="cal_nav" id="nextMonth"><i class="ph ph-caret-right"></i></button>
+            </div>
+            <div class="cal_weekdays">
+              <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+            </div>
+            <div class="cal_days" id="calendarGrid"></div>
+          </div>
+        </div>
+
+        <div class="field_group">
+          <label>Available Time Slots (Hourly)</label>
+          <div class="time_slots" id="timeSlots"></div>
+        </div>
+
+        <div class="field_group">
+          <label>Booking Summary</label>
+          <div class="summary_box">
+            <div class="summary_row"><span><i class="ph ph-buildings"></i>Workspace</span><span id="summaryWorkspace">Hub One Workspace</span></div>
+            <div class="summary_row"><span><i class="ph ph-calendar"></i>Date</span><span id="summaryDate">Select a date</span></div>
+            <div class="summary_row"><span><i class="ph ph-clock"></i>Time</span><span id="summaryTime">Select a time</span></div>
+            <div class="summary_row"><span><i class="ph ph-hourglass"></i>Duration</span><span id="summaryDuration">-</span></div>
+            <div class="summary_row"><span><i class="ph ph-currency-ngn"></i>Rate</span><span id="summaryRate">15,000/hour</span></div>
+            <div class="summary_row summary_total"><span><i class="ph-fill ph-receipt"></i>Total</span><span id="summaryTotal">0</span></div>
+          </div>
+        </div>
+
+        <p class="info_banner" id="paymentNote">
+          <i class="ph ph-info"></i>
+          <span id="paymentNoteText">The host typically responds within 24 hours.</span>
+        </p>
+
+        <button type="button" class="request_btn" id="requestBookingBtn" disabled>
+          <span id="requestBtnLabel">Request Booking</span>
+          <i class="ph ph-arrow-right"></i>
+        </button>
+
+      </div>
+
+      </div>
+
+    </main>
+    </section>
 
     <script type="module" src="../scripts/booking.js"></script>
-</body>
+  </body>
 </html>
