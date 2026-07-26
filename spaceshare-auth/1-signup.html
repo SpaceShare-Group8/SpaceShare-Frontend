@@ -113,9 +113,10 @@
       await loginUser({ email, password });
       await getCurrentUserProfile();
 
-      // TODO: point this at your actual app's home/landing page once you
-      // know what it's called (e.g. book.html from the booking flow).
-      window.location.href = "3-role-selection.html";
+      // Role selection is handled by a teammate's screen (before signup,
+      // per their src/pages/role_main_selection.html), so this just goes
+      // straight home now. TODO: point this at the real home page filename.
+      window.location.href = "home.html";
     } catch (err) {
       errorEl.textContent = err.message;
       errorEl.classList.add("visible");

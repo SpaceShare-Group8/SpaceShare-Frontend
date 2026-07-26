@@ -38,7 +38,7 @@ function registerUser({ name, email, password, role = "seeker" }) {
 }
 
 // POST /api/auth/login — real endpoint, section 15.1. Called right after
-
+// register succeeds, per backend's confirmed register -> login -> me flow.
 async function loginUser({ email, password }) {
   const data = await apiRequest("/api/auth/login", {
     method: "POST",
