@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Space-Share — Log in</title>
+<link rel="stylesheet" href="css/auth.css" />
+</head>
+<body>
+<div class="phone">
+  <div class="back-row">
+    <button class="back-btn" onclick="window.history.back()">&larr;</button>
+  </div>
+
+  <div class="screen-content">
+    <h1 class="title">Welcome back to <span class="accent">SpaceShare</span></h1>
+    <p class="subtitle">Log in</p>
+    <p class="helper-text">Enter your details to continue where you left off.</p>
+
+    <form id="login-form">
+      <div class="field">
+        <span class="icon">&#9993;</span>
+        <input type="email" id="email" placeholder="Enter your email" required />
+      </div>
+      <div class="field">
+        <span class="icon">&#128274;</span>
+        <input type="password" id="password" placeholder="Enter your password" required />
+      </div>
+      <p class="error-text" id="form-error"></p>
+
+      <button type="submit" class="primary-btn" id="login-btn">Log in</button>
+    </form>
+
+    <p class="switch-row">
+      Don't have an account? <a href="1-signup.html">Sign up</a>
+    </p>
+  </div>
+</div>
+
+<script src="js/auth-api.js"></script>
+<script>
+  const form = document.getElementById("login-form");
+  const errorEl = document.getElementById("form-error");
+  const loginBtn = document.getElementById("login-btn");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+
+    errorEl.classList.remove("visible");
+    loginBtn.disabled = true;
+    loginBtn.textContent = "Logging in...";
+
+    try {
+      await loginUser({ email, password });
+      await getCurrentUserProfile();
+
+      // Returning users already picked their role during signup, so this
+      // skips role selection and goes straight into the app.
+      // TODO: point this at your actual app's home/landing page once you
+      // know what it's called (e.g. book.html from the booking flow).
+      window.location.href = "home.html";
+    } catch (err) {
+      errorEl.textContent = err.message;
+      errorEl.classList.add("visible");
+    } finally {
+      loginBtn.disabled = false;
+      loginBtn.textContent = "Log in";
+    }
+  });
+</script>
+</body>
+</html>

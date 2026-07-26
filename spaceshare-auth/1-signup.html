@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Space-Share — Sign up</title>
+<link rel="stylesheet" href="css/auth.css" />
+</head>
+<body>
+<div class="phone">
+  <div class="status-bar">
+    <span>9:41</span>
+    <span>&#128246; &#128225; &#128267;</span>
+  </div>
+  <div class="back-row">
+    <button class="back-btn" onclick="window.history.back()">&larr;</button>
+  </div>
+
+  <div class="screen-content">
+    <h1 class="title">Welcome to <span class="accent">SpaceShare</span></h1>
+    <p class="subtitle">Create an Account</p>
+    <p class="helper-text">Enjoy seamless space bookings or rent yours with ease.</p>
+
+    <form id="signup-form">
+      <div class="field">
+        <span class="icon">&#128100;</span>
+        <input type="text" id="full-name" placeholder="Full name" required />
+      </div>
+      <div class="field">
+        <span class="icon">&#9993;</span>
+        <input type="email" id="email" placeholder="Enter your email" required />
+      </div>
+      <div class="field">
+        <span class="icon">&#128274;</span>
+        <input type="password" id="password" placeholder="Enter your password" required />
+      </div>
+      <div class="field">
+        <span class="icon">&#128274;</span>
+        <input type="password" id="confirm-password" placeholder="Confirm your password" required />
+      </div>
+      <p class="error-text" id="form-error"></p>
+
+      <div class="checkbox-row">
+        <input type="checkbox" id="terms" required />
+        <label for="terms">I agree with <a href="#">Terms and conditions</a></label>
+      </div>
+
+      <button type="submit" class="primary-btn" id="signup-btn" disabled>Sign Up</button>
+    </form>
+
+    <p class="switch-row">
+      Already have an account? <a href="4-login.html">Log in</a>
+    </p>
+  </div>
+</div>
+
+<script src="js/auth-api.js"></script>
+<script>
+  const form = document.getElementById("signup-form");
+  const errorEl = document.getElementById("form-error");
+  const submitBtn = document.getElementById("signup-btn");
+
+  // These are the fields that must all be filled (plus the checkbox ticked)
+  // before the button switches from disabled/grey to enabled/blue —
+  // matching the two "Sign up" states in the Figma design.
+  const nameInput = document.getElementById("full-name");
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
+  const confirmInput = document.getElementById("confirm-password");
+  const termsInput = document.getElementById("terms");
+
+  function updateButtonState() {
+    const allFilled =
+      nameInput.value.trim() &&
+      emailInput.value.trim() &&
+      passwordInput.value &&
+      confirmInput.value &&
+      termsInput.checked;
+
+    submitBtn.disabled = !allFilled;
+  }
+
+  [nameInput, emailInput, passwordInput, confirmInput, termsInput].forEach((field) => {
+    field.addEventListener("input", updateButtonState);
+    field.addEventListener("change", updateButtonState);
+  });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById("full-name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirm-password").value;
+
+    errorEl.classList.remove("visible");
+
+    if (password !== confirmPassword) {
+      errorEl.textContent = "Passwords don't match.";
+      errorEl.classList.add("visible");
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Signing up...";
+
+    try {
+      await registerUser({ name, email, password });
+
+      // Backend confirmed OTP isn't part of the registration flow for now,
+      // so we log the user in immediately after registering, same as the
+      // register -> login -> me flow they documented.
+      await loginUser({ email, password });
+      await getCurrentUserProfile();
+
+      // TODO: point this at your actual app's home/landing page once you
+      // know what it's called (e.g. book.html from the booking flow).
+      window.location.href = "3-role-selection.html";
+    } catch (err) {
+      errorEl.textContent = err.message;
+      errorEl.classList.add("visible");
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Sign Up";
+    }
+  });
+</script>
+</body>
+</html>
