@@ -1,4 +1,4 @@
-/* Shared styles for the Space-Share auth screens (Sign up -> OTP -> Verified). */
+/* Shared styles for SpaceShare auth screens (Sign up -> Role Selection -> Verified). */
 
 :root {
   --color-primary: #1C2541;
@@ -10,7 +10,9 @@
   --font-main: 'Segoe UI', system-ui, sans-serif;
 }
 
-* { box-sizing: border-box; }
+* { 
+  box-sizing: border-box; 
+}
 
 body {
   margin: 0;
@@ -23,8 +25,7 @@ body {
   padding: 80px 16px;
 }
 
-/* Card that holds each screen. Desktop-first: this is the default (larger) size,
-   and the media queries below shrink it down for tablet and mobile. */
+/* Card container for authentication screens */
 .phone {
   width: 440px;
   min-height: 720px;
@@ -36,7 +37,7 @@ body {
   flex-direction: column;
 }
 
-/* Tablet and smaller: shrink the card and reduce outer padding. */
+/* Tablet viewport adjustments */
 @media (max-width: 900px) {
   body {
     padding: 40px 16px;
@@ -48,7 +49,7 @@ body {
   }
 }
 
-/* Phones: let the card fill the width and drop the fixed min-height. */
+/* Mobile viewport adjustments */
 @media (max-width: 420px) {
   body {
     padding: 16px;
@@ -61,7 +62,7 @@ body {
   }
 }
 
-/* Fake status bar, purely visual */
+/* Status bar */
 .status-bar {
   height: 44px;
   display: flex;
@@ -117,7 +118,7 @@ h1.title .accent {
   line-height: 1.5;
 }
 
-/* Form fields (Sign up screen) */
+/* Form fields */
 .field {
   display: flex;
   align-items: center;
@@ -160,7 +161,7 @@ h1.title .accent {
   text-decoration: underline;
 }
 
-/* Primary button, shared across all screens */
+/* Shared primary button */
 .primary-btn {
   width: 100%;
   background: var(--color-primary);
