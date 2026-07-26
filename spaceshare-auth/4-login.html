@@ -28,7 +28,7 @@
       </div>
       <p class="error-text" id="form-error"></p>
 
-      <button type="submit" class="primary-btn" id="login-btn">Log in</button>
+      <button type="submit" class="primary-btn" id="login-btn" disabled>Log in</button>
     </form>
 
     <p class="switch-row">
@@ -43,11 +43,25 @@
   const errorEl = document.getElementById("form-error");
   const loginBtn = document.getElementById("login-btn");
 
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
+
+  // ADDED: Enable/disable submit button dynamically based on input completion
+  function updateButtonState() {
+    const allFilled = emailInput.value.trim() && passwordInput.value;
+    loginBtn.disabled = !allFilled;
+  }
+
+  [emailInput, passwordInput].forEach((field) => {
+    field.addEventListener("input", updateButtonState);
+    field.addEventListener("change", updateButtonState);
+  });
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
 
     errorEl.classList.remove("visible");
     loginBtn.disabled = true;
