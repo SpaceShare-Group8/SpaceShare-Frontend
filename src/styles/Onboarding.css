@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 .hero{
-    background: linear-gradient(to bottom , rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8)), url(assests/image1.jpeg);
+    background: linear-gradient(to bottom , rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.8)), url(../../assests/image3.jpeg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -46,29 +46,53 @@ flex-grow: 0;
 
 }
 .text-wrapper{
-    padding-top: 20px;
+    padding-top: 30px;
+    /* margin-bottom: 35px; */
 }
 .button-container{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
-    padding-top: 30px;
+    padding-bottom: 15px;
+   
     gap: 18px;
     isolation: isolate;
     border: none;
 }
-.skip-btn{
-    text-decoration: none;
-    background: #D9D9D9;
-    height: 56px;
-    width: 173px;
+.startBtn{
+   text-decoration: none;
+    background: #2862BC;
+    color: white;
+    height: 46px;
+    width: 310px; 
     display: flex;
+    border-radius: 25px;
     justify-content: center;
     align-items: center;
-    border-radius: 25px;
-    color: black;
-    transition: all 0.3s ease;
+    padding: 17px 67px 18px 68px;
 }
+.startBtn:hover{
+    background: #D9D9D9;
+    color: black;
+}
+.loginBtn{
+    text-decoration: none;
+    background: #D9D9D9;
+    color: black;
+    height: 46px;
+    width: 310px; 
+    display: flex;
+    border-radius: 25px;
+    justify-content: center;
+    align-items: center;
+    padding: 17px 67px 18px 68px;
+}
+.loginBtn:hover{
+    background: #2862BC;
+    color: white;
+}
+
+
 .skip-btn:hover{
     background: #2862BC;
     color: white;
@@ -89,10 +113,3 @@ flex-grow: 0;
     background: #D9D9D9;
     color: black;
 }
-
-
-
-
-
-
-
