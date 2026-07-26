@@ -1,0 +1,525 @@
+@import url('https://fonts.cdnfonts.com/css/frank-black');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --color-text: #000000;
+    --primary_color: #052659;
+    --text_span_color: #111;
+    --btn_color: #2862BC;
+    --primary_container: #ffffff;
+    --secondary_container: #052659;
+    --radio_btn: #d9d9d9;
+    --radio_selector_tbn: #2862BC;
+    --background_color: #f5f5f5;
+    --page_backdrop: #eef1f6;
+}
+
+body {
+    font-family: sans-serif;
+    background-color: var(--background_color);
+    width: 100vw;
+    min-height: 100vh;
+    overflow: none;
+}
+
+/* the whole screen: stacks top -> middle -> bottom in normal flow
+   (previously used position:relative + top:Npx offsets, which don't
+   reserve space and break as soon as the viewport size changes).
+   Centers the card and caps its height (see .wrapper) instead of
+   forcing it to stretch to whatever the browser window's height
+   happens to be - that's what was leaving a big dead gap under the
+   Continue button/dragger on tall windows. */
+.role_selection_page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    width: 100%;
+    background-color: var(--page_backdrop);
+    padding: 24px 0;
+}
+
+.brand_panel {
+    display: none;
+}
+
+/* margin-left is intentionally its own value, not the wrapper's 30px
+   content padding - the icon is meant to sit closer to the edge than
+   the heading/cards, not share their inset */
+.btn_back {
+    display: flex;
+    width: 12px;
+    height: 24px;
+    margin-right: 1px;
+    margin-bottom: 20px;
+    margin-left: -14px;
+    background: none;
+    color: var(--btn_color);
+}
+
+.btn_back button {
+    display: flex;
+    align-items: flex-start;
+    /* width: 100%;
+    height: 100%; */
+    border: none;
+    border-radius: 50%;
+    background: none;
+    color: inherit;
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.15s ease-in-out, background-color 0.15s ease;
+}
+
+/* grows on hover to match the Figma prototype, instead of shrinking */
+.btn_back button:hover {
+    background-color: rgba(40, 98, 188, 0.1);
+    transform: scale(1.18);
+}
+
+.btn_back button:active {
+    transform: scale(0.92);
+}
+
+.btn_back button:focus-visible {
+    outline: 2px solid var(--btn_color);
+    outline-offset: 2px;
+}
+
+
+/* main section */
+
+/* min-height caps out at 860px instead of chasing 100vh forever, so
+   .bottom_area's margin-top: auto (further down) only ever creates a
+   sensible, bounded gap - not one sized to whatever the browser
+   window happens to be */
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 480px;
+    min-height: min(100vh, 860px);
+    margin: 0 auto;
+    padding: 30px;
+}
+
+.role_top {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* no fixed width/height here on purpose - a hardcoded height clips
+   or overlaps the next line as soon as font-size/line-height change
+   at a wider breakpoint (this is what caused the heading to overlap
+   the "You can always..." text on desktop). font-size/line-height
+   values themselves are unchanged from the original. */
+.intro_message {
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 45px;
+}
+
+.intro_message span {
+    color: var(--primary_color);
+}
+
+.intro_text {
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: -0.41%;
+}
+
+
+/* middle section */
+.role_selection_middle {
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: 40px;
+}
+
+.first_selector_tole,
+.second_selector_tole {
+    display: flex;
+    gap: 10px;
+    background-color: var(--primary_container);
+    border: 1.5px solid transparent;
+    border-radius: 15px;
+    width: 100%;
+    padding: 20px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+}
+
+/* hover previews the selection; :has(input:checked) keeps that same
+   look once the card is actually picked - same treatment for both,
+   per the Figma states (default / hovered-or-picked) */
+.first_selector_tole:is(:hover, :has(input:checked)),
+.second_selector_tole:is(:hover, :has(input:checked)) {
+    background-color: var(--secondary_container);
+    color: var(--primary_container);
+    border-color: var(--radio_selector_tbn);
+    box-shadow: 0 4px 14px rgba(5, 38, 89, 0.12);
+}
+
+.first_selector_tole:active,
+.second_selector_tole:active {
+    transform: scale(0.99);
+}
+
+.first_mess,
+.second_mess {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    width: 100%;
+}
+
+h3.text_message {
+    font-weight: bold;
+    font-size: 26px;
+    line-height: 45px;
+    width: 100%;
+}
+
+p.paragraph_1,
+p.paragraph_2 {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+    width: 100%;
+    /* no hardcoded color here - inherits black by default, and
+       switches to white with the rest of the card's text on
+       hover/selected (see :is(:hover, :has(...)) rule above) */
+    letter-spacing: -0.41%;
+}
+
+.radio_btn {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+/* Custom radio: outer ring is always --radio_btn (#d9d9d9), the
+   inner dot is --radio_selector_tbn (#2862bc) and only appears once
+   selected. Built with appearance:none + a ::before dot rather than
+   relying on native radio styling, since native radios can't be
+   themed consistently across browsers. */
+.radio_btn input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    display: grid;
+    place-content: center;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    border-radius: 50%;
+    border: 1.5px solid var(--radio_btn);
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.radio_btn input[type="radio"]::before {
+    content: "";
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background-color: var(--radio_selector_tbn);
+    transform: scale(0);
+    transition: transform 0.15s ease;
+}
+
+.radio_btn input[type="radio"]:checked::before {
+    transform: scale(1);
+}
+
+/* hovering the card previews the checked look on its own radio too -
+   the ring stays --radio_btn either way, only the dot appears */
+.first_selector_tole:hover .radio_btn input[type="radio"]::before,
+.second_selector_tole:hover .radio_btn input[type="radio"]::before {
+    transform: scale(1);
+}
+
+.radio_btn input[type="radio"]:focus-visible {
+    outline: 2px solid var(--radio_selector_tbn);
+    outline-offset: 2px;
+}
+
+
+/* bottom area */
+.bottom_area {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    /* margin-top: auto pins this near the bottom of the card, same as
+       before - but now .wrapper's height is capped (see above)
+       instead of chasing the full browser window, so the gap this
+       creates is always bounded instead of ballooning on tall windows */
+    margin-top: auto;
+    padding-top: 24px;
+}
+
+.role_selection_bottom .role_cont_btn {
+    width: 100%;
+    height: 54px;
+    background-color: var(--radio_selector_tbn);
+    border-radius: 20px;
+    border: none;
+    color: var(--primary_container);
+    font-size: 16px;
+    align-self: center;
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.1s ease, opacity 0.15s ease;
+}
+
+.role_selection_bottom .role_cont_btn:hover {
+    background-color: #1f4c96;
+}
+
+.role_selection_bottom .role_cont_btn:active {
+    transform: scale(0.98);
+}
+
+.role_selection_bottom .role_cont_btn:focus-visible {
+    outline: 2px solid var(--primary_color);
+    outline-offset: 3px;
+}
+
+.role_selection_bottom .role_cont_btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+.dragger {
+    width: 135px;
+    height: 5px;
+    background-color: #000000;
+    align-self: center;
+    border-radius: 5px;
+}
+
+
+/* ============ RESPONSIVE ============ */
+
+/* Small phones (iPhone SE etc.) - tighten up spacing so nothing
+   gets cramped or clipped */
+@media (max-width: 360px) {
+    .wrapper {
+        padding: 20px 16px 16px;
+    }
+
+    .role_selection_middle {
+        margin-top: 24px;
+    }
+
+    h3.text_message {
+        font-size: 22px;
+        line-height: 30px;
+    }
+
+    .intro_message {
+        font-size: 15px;
+    }
+}
+
+/* Tablet: page is being viewed in a browser, not held as a phone, so
+   render the screen as a floating card over a backdrop instead of
+   stretching it edge-to-edge */
+@media (min-width: 600px) {
+    .role_selection_page {
+        padding: 40px 20px;
+    }
+
+    .wrapper {
+        background-color: var(--background_color);
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(5, 38, 89, 0.15);
+        padding: 30px 32px 24px;
+    }
+
+    /* the iOS home-indicator bar only makes sense on an actual phone */
+    .dragger {
+        display: none;
+    }
+}
+
+/* Desktop: a real two-panel layout (brand panel + form), not just a
+   scaled-up phone card floating in empty space. This is the classic
+   split-screen onboarding pattern - full height on both sides, no
+   floating-card chrome. */
+@media (min-width: 1024px) {
+    .role_selection_page {
+        flex-direction: row;
+        align-items: stretch;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 0;
+        background-color: var(--background_color);
+    }
+
+    /* the panel used to just center one small text block in a huge
+       navy rectangle - now it's laid out top-to-bottom (logo / headline
+       / feature list / footer line) so the height is actually used,
+       plus a couple of soft glow blobs for depth instead of a flat fill */
+    .brand_panel {
+        position: relative;
+        display: flex;
+        flex: 1 1 45%;
+        max-width: 560px;
+        padding: 56px 60px;
+        overflow: hidden;
+        background: linear-gradient(160deg, var(--primary_color) 0%, #08386e 100%);
+        color: var(--primary_container);
+    }
+
+    .brand_panel_glow {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+            radial-gradient(380px 380px at 10% 8%, rgba(255, 255, 255, 0.10), transparent 60%),
+            radial-gradient(460px 460px at 95% 85%, rgba(88, 140, 255, 0.30), transparent 60%),
+            radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+        background-size: auto, auto, 24px 24px;
+    }
+
+    .brand_panel_content {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 380px;
+    }
+
+    .brand_panel_logo {
+        font-weight: 800;
+        font-size: 20px;
+        letter-spacing: 0.5px;
+        opacity: 0.9;
+    }
+
+    /* no margin: auto here - .brand_panel_content already spaces its
+       4 children (logo / main / features / footer) evenly via
+       justify-content: space-between, an auto margin would hijack
+       all of that free space for itself */
+    .brand_panel_main {
+        margin-bottom: 12px;
+    }
+
+    .brand_panel_content h2 {
+        font-size: 32px;
+        font-weight: 700;
+        line-height: 1.25;
+        margin-bottom: 16px;
+    }
+
+    .brand_panel_copy {
+        font-size: 15px;
+        line-height: 1.6;
+        opacity: 0.85;
+    }
+
+    .brand_panel_features {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        margin-bottom: 40px;
+    }
+
+    .brand_panel_features li {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .brand_panel_features i {
+        flex: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.12);
+        font-size: 15px;
+        color: #9fc0ff;
+    }
+
+    .brand_panel_footer {
+        font-size: 13px;
+        letter-spacing: 0.2px;
+        color: rgba(255, 255, 255, 0.55);
+    }
+
+    .wrapper {
+        flex: 1 1 55%;
+        max-width: 560px;
+        min-height: 100vh;
+        justify-content: center;
+        background-color: var(--background_color);
+        border-radius: 0;
+        box-shadow: none;
+        padding: 40px 64px;
+        margin: 0;
+    }
+
+    .role_top {
+        max-width: 420px;
+    }
+
+    .intro_message {
+        font-size: 26px;
+        line-height: 1.3;
+    }
+
+    .role_selection_middle {
+        flex-direction: row;
+        flex-wrap: wrap;
+        max-width: 420px;
+    }
+
+    .first_selector_tole,
+    .second_selector_tole {
+        width: calc(50% - 10px);
+    }
+
+    .bottom_area {
+        max-width: 420px;
+        /* on desktop the whole block (heading + cards + button) is
+           vertically centered as one unit via .wrapper's
+           justify-content: center - margin-top: auto would fight
+           that and shove the button down to the very bottom edge
+           of a full-height panel instead */
+        margin-top: 40px;
+    }
+}
+
+/* Respect users who've asked for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+    .first_selector_tole,
+    .second_selector_tole,
+    .role_selection_bottom .role_cont_btn,
+    .btn_back button {
+        transition: none;
+    }
+}
