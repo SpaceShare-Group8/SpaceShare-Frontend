@@ -1,6 +1,8 @@
 // API calls for the sign up flow.
-// Set this to your real backend URL once you have it (same as the rest of Space-Share).
-const API_BASE_URL = "https://spaceshare-backend-cor9.onrender.com";
+// Dynamic API base URL: defaults to local backend on port 5000 during development, falls back to Render in production.
+const API_BASE_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+  ? "http://localhost:5000"
+  : "https://spaceshare-backend-cor9.onrender.com";
 
 async function apiRequest(path, { method = "GET", body, auth = false } = {}) {
   const headers = { "Content-Type": "application/json" };
@@ -29,29 +31,39 @@ async function apiRequest(path, { method = "GET", body, auth = false } = {}) {
   return data;
 }
 
-// POST /api/auth/register — real endpoint, section 15.1.
-function registerUser({ name, email, password, role = "seeker" }) {
+// POST /api/auth/register — includes required phone field per PRD Section 11.1 & 14
+function registerUser({ name, email, phone, password, role = "seeker" }) {
   return apiRequest("/api/auth/register", {
     method: "POST",
-    body: { name, email, password, role }
+    body: { name, email, phone, password, role }
   });
 }
 
-// POST /api/auth/login — real endpoint, section 15.1. Called right after
-// register succeeds, per backend's confirmed register -> login -> me flow.
+// POST /api/auth/login — called right after register succeeds
 async function loginUser({ email, password }) {
   const data = await apiRequest("/api/auth/login", {
     method: "POST",
     body: { email, password }
   });
-  if (data && data.accessToken) {
-    localStorage.setItem("spaceshare_token", data.accessToken);
+  
+  // Extract token handling both direct and nested response structures
+  const token = data?.accessToken || data?.data?.accessToken;
+  if (token) {
+    localStorage.setItem("spaceshare_token", token);
   }
   return data;
 }
 
-// GET /api/auth/me — real endpoint, section 15.1. Called after login to
-// confirm the session and get the logged-in user's profile/role.
+// GET /api/auth/me — confirm session and retrieve profile details
 function getCurrentUserProfile() {
   return apiRequest("/api/auth/me", { auth: true });
+}
+
+// PATCH /api/auth/me — persists role selection (seeker/host) to backend
+function updateUserRole(role) {
+  return apiRequest("/api/auth/me", {
+    method: "PATCH",
+    auth: true,
+    body: { role }
+  });
 }
