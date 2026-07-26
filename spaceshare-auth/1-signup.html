@@ -30,6 +30,11 @@
         <span class="icon">&#9993;</span>
         <input type="email" id="email" placeholder="Enter your email" required />
       </div>
+      <!-- ADDED: Required phone number input field per PRD Section 11.1 & 14 -->
+      <div class="field">
+        <span class="icon">&#128222;</span>
+        <input type="tel" id="phone" placeholder="Phone number" required />
+      </div>
       <div class="field">
         <span class="icon">&#128274;</span>
         <input type="password" id="password" placeholder="Enter your password" required />
@@ -65,6 +70,8 @@
   // matching the two "Sign up" states in the Figma design.
   const nameInput = document.getElementById("full-name");
   const emailInput = document.getElementById("email");
+  // ADDED: Track phone input state
+  const phoneInput = document.getElementById("phone");
   const passwordInput = document.getElementById("password");
   const confirmInput = document.getElementById("confirm-password");
   const termsInput = document.getElementById("terms");
@@ -73,6 +80,7 @@
     const allFilled =
       nameInput.value.trim() &&
       emailInput.value.trim() &&
+      phoneInput.value.trim() && // ADDED: Phone validation check
       passwordInput.value &&
       confirmInput.value &&
       termsInput.checked;
@@ -80,7 +88,7 @@
     submitBtn.disabled = !allFilled;
   }
 
-  [nameInput, emailInput, passwordInput, confirmInput, termsInput].forEach((field) => {
+  [nameInput, emailInput, phoneInput, passwordInput, confirmInput, termsInput].forEach((field) => {
     field.addEventListener("input", updateButtonState);
     field.addEventListener("change", updateButtonState);
   });
@@ -90,6 +98,7 @@
 
     const name = document.getElementById("full-name").value.trim();
     const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim(); // ADDED: Extract phone value
     const password = document.getElementById("password").value;
     const confirmPassword = document.getElementById("confirm-password").value;
 
@@ -105,7 +114,8 @@
     submitBtn.textContent = "Signing up...";
 
     try {
-      await registerUser({ name, email, password });
+      // UPDATED: Included phone parameter in payload
+      await registerUser({ name, email, phone, password });
 
       // Backend confirmed OTP isn't part of the registration flow for now,
       // so we log the user in immediately after registering, same as the
@@ -116,7 +126,8 @@
       // Role selection is handled by a teammate's screen (before signup,
       // per their src/pages/role_main_selection.html), so this just goes
       // straight home now. TODO: point this at the real home page filename.
-      window.location.href = "home.html";
+      // UPDATED: Pointing to role selection screen to persist selection to backend per PRD
+      window.location.href = "3-role-selection.html";
     } catch (err) {
       errorEl.textContent = err.message;
       errorEl.classList.add("visible");
