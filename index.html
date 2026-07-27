@@ -4,128 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SpaceShare — On-Demand Workspace Marketplace</title>
-    <link rel="stylesheet" href="styles/auth.css">
-    <style>
-        :root {
-            --primary-color: #0f172a;
-            --accent-color: #2563eb;
-            --bg-color: #f8fafc;
-            --text-color: #334155;
-        }
-        body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        header {
-            background: white;
-            border-bottom: 1px solid #e2e8f0;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo {
-            font-weight: 700;
-            font-size: 1.25rem;
-            color: var(--primary-color);
-            text-decoration: none;
-        }
-        .nav-links a {
-            margin-left: 1.5rem;
-            text-decoration: none;
-            color: var(--text-color);
-            font-weight: 500;
-        }
-        .nav-links a.btn-primary {
-            background-color: var(--accent-color);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 0.375rem;
-        }
-        main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 2rem;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        h1 {
-            font-size: 2.5rem;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-        }
-        p {
-            font-size: 1.125rem;
-            line-height: 1.6;
-            margin-bottom: 2rem;
-            color: #64748b;
-        }
-        .cta-buttons {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.375rem;
-            font-weight: 600;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .btn-main {
-            background-color: var(--accent-color);
-            color: white;
-        }
-        .btn-outline {
-            border: 1px solid #cbd5e1;
-            color: var(--primary-color);
-            background: white;
-        }
-        footer {
-            text-align: center;
-            padding: 1.5rem;
-            font-size: 0.875rem;
-            color: #94a3b8;
-            border-top: 1px solid #e2e8f0;
-            background: white;
-        }
-    </style>
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
 
-    <header>
-        <a href="index.html" class="logo">SpaceShare</a>
-        <nav class="nav-links">
-            <a href="pages/search.html">Explore Spaces</a>
-            <a href="pages/login.html">Sign In</a>
-            <a href="pages/signup.html" class="btn-primary">Get Started</a>
-        </nav>
-    </header>
-
-    <main>
-        <h1>Find, Compare, and Book Reliable Workspaces in Nigeria</h1>
-        <p>The first app that treats power and internet reliability as a community-verified search filter. Instantly book desks, meeting rooms, and private offices by the hour[cite: 2].</p>
-        
-        <div class="cta-buttons">
-            <a href="pages/search.html" class="btn btn-main">Find Me Power Now</a>
-            <a href="pages/signup.html" class="btn btn-outline">List Your Space</a>
+    <!-- Background Slider Container -->
+    <div class="hero-slider" id="heroSlider">
+        <!-- Slide 1 -->
+        <div class="slide active" style="background-color: #333333;">
+            <div class="slide-overlay"></div>
         </div>
-    </main>
+        <!-- Slide 2 -->
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80');">
+            <div class="slide-overlay"></div>
+        </div>
+        <!-- Slide 3 -->
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1920&q=80');">
+            <div class="slide-overlay"></div>
+        </div>
+    </div>
 
-    <footer>
-        &copy; 2026 SpaceShare. All rights reserved.
-    </footer>
+    <!-- Main Content Wrapper -->
+    <div class="page-container">
+        <!-- Header / Navigation -->
+        <header class="header">
+            <div class="logo-container">
+                <div class="logo-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 4h3v16H6V4zm9 0h3v16h-3V4z" fill="white"/>
+                    </svg>
+                </div>
+                <span class="logo-text">SpaceShare</span>
+            </div>
+        </header>
 
+        <!-- Hero Content Section -->
+        <main class="hero-content">
+            <div class="badge" id="slideBadge">FIND YOUR SPACE</div>
+            
+            <h1 class="hero-title" id="slideTitle">SpaceShare puts inspiring workspaces at your finger tips</h1>
+            
+            <p class="hero-subtitle" id="slideSubtitle">Browse, book and unlock unique spaces tailored to your vibe, anywhere and anytime.</p>
+        </main>
+
+        <!-- Footer Actions & Pagination -->
+        <footer class="hero-footer">
+            <div class="pagination-dots">
+                <span class="dot active" data-index="0"></span>
+                <span class="dot" data-index="1"></span>
+                <span class="dot" data-index="2"></span>
+            </div>
+
+            <div class="action-buttons">
+                <a href="pages/login.html" class="btn btn-secondary">Sign in</a>
+                <a href="pages/signup.html" class="btn btn-primary">Get Started</a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="index.js"></script>
 </body>
 </html>
