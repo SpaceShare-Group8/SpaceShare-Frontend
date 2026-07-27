@@ -1,11 +1,15 @@
+import { API_BASE_URL } from './api/config.js';
+
 document.addEventListener("DOMContentLoaded", () => {
+    // Optional: Log connection availability using your backend configuration
+    console.log("Connecting SpaceShare backend to:", API_BASE_URL);
+
     const slides = document.querySelectorAll(".slide");
     const dots = document.querySelectorAll(".dot");
     const slideBadge = document.getElementById("slideBadge");
     const slideTitle = document.getElementById("slideTitle");
     const slideSubtitle = document.getElementById("slideSubtitle");
 
-    // Slide content configuration matching your Figma screens
     const slideData = [
         {
             badge: "FIND YOUR SPACE",
@@ -18,26 +22,26 @@ document.addEventListener("DOMContentLoaded", () => {
             subtitle: "Access premium rooms and co-working spaces designed to fuel team productivity."
         },
         {
-            badge: "CONNECT & COLLABORATE",
+            badge: "HOST, SHARE & EARN",
             title: "Host, Share and Earn",
             subtitle: "List your underutilized space or discover stunning locations curated just for you."
         }
     ];
 
     let currentSlide = 0;
-    const intervalTime = 5000; // Time per slide in milliseconds (5s)
+    const intervalTime = 5000;
     let slideInterval;
 
     function updateSlide(index) {
-        // Remove active class from all slides & dots
+        // Guard against out-of-bound indices
+        if (index < 0 || index >= slides.length) return;
+
         slides.forEach(slide => slide.classList.remove("active"));
         dots.forEach(dot => dot.classList.remove("active"));
 
-        // Activate target slide and dot
         slides[index].classList.add("active");
         dots[index].classList.add("active");
 
-        // Update text content smoothly
         slideBadge.textContent = slideData[index].badge;
         slideTitle.textContent = slideData[index].title;
         slideSubtitle.textContent = slideData[index].subtitle;
@@ -50,20 +54,33 @@ document.addEventListener("DOMContentLoaded", () => {
         updateSlide(nextIndex);
     }
 
-    // Start automatic sliding timer
     function startSlider() {
+        // Clear any existing intervals to prevent overlapping timers
+        clearInterval(slideInterval);
         slideInterval = setInterval(nextSlide, intervalTime);
     }
 
-    // Allow manual click on pagination dots
+    // Interactive dot navigation with smooth timer reset on user action
     dots.forEach((dot, index) => {
         dot.addEventListener("click", () => {
-            clearInterval(slideInterval); // Reset timer on manual click
+            if (currentSlide === index) return;
             updateSlide(index);
-            startSlider();
+            startSlider(); // Restart the auto-slide clock after user interaction
         });
     });
 
-    // Initialize auto-play
+    // Pause auto-sliding on hover for enhanced user experience and readability
+    const heroSliderContainer = document.querySelector(".page-container");
+    if (heroSliderContainer) {
+        heroSliderContainer.addEventListener("mouseenter", () => {
+            clearInterval(slideInterval);
+        });
+
+        heroSliderContainer.addEventListener("mouseleave", () => {
+            startSlider();
+        });
+    }
+
+    // Initialize the slider loop
     startSlider();
 });

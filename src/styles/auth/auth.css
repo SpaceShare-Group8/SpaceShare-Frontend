@@ -1,0 +1,206 @@
+/* Shared styles for SpaceShare auth screens (Sign up -> Role Selection -> Verified). */
+
+:root {
+  --color-primary: #1C2541;
+  --color-text: #1F2421;
+  --color-muted: #6B7280;
+  --color-error: #C0392B;
+  --color-success: #2F6844;
+  --color-border: #D1D0C7;
+  --font-main: 'Segoe UI', system-ui, sans-serif;
+}
+
+* { 
+  box-sizing: border-box; 
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-main);
+  background: #EDEDED;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 16px;
+}
+
+/* Card container for authentication screens */
+.phone {
+  width: 440px;
+  min-height: 720px;
+  background: #ffffff;
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Tablet viewport adjustments */
+@media (max-width: 900px) {
+  body {
+    padding: 40px 16px;
+  }
+
+  .phone {
+    width: 100%;
+    max-width: 420px;
+  }
+}
+
+/* Mobile viewport adjustments */
+@media (max-width: 420px) {
+  body {
+    padding: 16px;
+  }
+
+  .phone {
+    max-width: 100%;
+    min-height: auto;
+    border-radius: 20px;
+  }
+}
+
+/* Status bar */
+.status-bar {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.back-row {
+  padding: 8px 20px;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.screen-content {
+  flex: 1;
+  padding: 24px 28px 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+h1.title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0 0 4px;
+}
+
+h1.title .accent {
+  color: var(--color-primary);
+}
+
+.subtitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0 0 8px;
+}
+
+.helper-text {
+  font-size: 13px;
+  color: var(--color-muted);
+  margin: 0 0 24px;
+  line-height: 1.5;
+}
+
+/* Form fields */
+.field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #F5F5F5;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+}
+
+.field input {
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 14px;
+  font-family: var(--font-main);
+  color: var(--color-text);
+  flex: 1;
+  width: 100%;
+}
+
+.field .icon {
+  font-size: 16px;
+  color: var(--color-muted);
+  flex-shrink: 0;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--color-muted);
+  margin-bottom: 24px;
+}
+
+.checkbox-row a {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+/* Shared primary button */
+.primary-btn {
+  width: 100%;
+  background: var(--color-primary);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: var(--font-main);
+  cursor: pointer;
+  margin-top: auto;
+}
+
+.primary-btn:disabled {
+  background: #9AA0A6;
+  cursor: not-allowed;
+}
+
+.error-text {
+  color: var(--color-error);
+  font-size: 12px;
+  margin: -6px 0 12px;
+  display: none;
+}
+
+.error-text.visible {
+  display: block;
+}
+
+.switch-row {
+  text-align: center;
+  font-size: 13px;
+  color: var(--color-muted);
+  margin-top: 16px;
+}
+
+.switch-row a {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: underline;
+}

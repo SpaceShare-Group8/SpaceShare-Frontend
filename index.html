@@ -11,15 +11,15 @@
     <!-- Background Slider Container -->
     <div class="hero-slider" id="heroSlider">
         <!-- Slide 1 -->
-        <div class="slide active" style="background-color: #333333;">
+        <div class="slide active" style="background-image: url('src/assets/splashscreen1.png');">
             <div class="slide-overlay"></div>
         </div>
         <!-- Slide 2 -->
-        <div class="slide" style="background-image: url('file_00000000b52081f4b6aa5029eccc00e7.png');">
+        <div class="slide" style="background-image: url('src/assets/splashscreen2.jpeg');">
             <div class="slide-overlay"></div>
         </div>
         <!-- Slide 3 -->
-        <div class="slide" style="background-image: url('file_000000003f8c81f48aabe11470ae9229.png');">
+        <div class="slide" style="background-image: url('src/assets/Splashscreen3.png');">
             <div class="slide-overlay"></div>
         </div>
     </div>
@@ -30,7 +30,10 @@
         <header class="header">
             <div class="logo-container">
                 <div class="logo-icon">
-                    <img src="file_000000003f8c81f48aabe11470ae9229.png" alt="SpaceShare Logo" style="width: 20px; height: 20px; object-fit: contain;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 6L11 8.5V18L7 15.5V6Z" fill="#FFFFFF"/>
+                        <path d="M13 8.5L17 6V15.5L13 18V8.5Z" fill="#A8D0FF"/>
+                    </svg>
                 </div>
                 <span class="logo-text">SpaceShare</span>
             </div>
@@ -60,6 +63,6 @@
         </footer>
     </div>
 
-    <script type="module" src="index.js"></script>
+    <script src="index.js"></script>
 </body>
 </html>
