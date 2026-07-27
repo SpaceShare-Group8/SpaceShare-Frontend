@@ -1,86 +1,105 @@
-import { API_BASE_URL } from './api/config.js';
+/* ============================================
+   SpaceShare — Hero Slider
+   Cycles background photo, badge, headline and
+   subtitle together; dots double as a progress bar.
+   ============================================ */
 
-document.addEventListener("DOMContentLoaded", () => {
-    // Optional: Log connection availability using your backend configuration
-    console.log("Connecting SpaceShare backend to:", API_BASE_URL);
+(function () {
+  const SLIDE_DURATION = 6000; // must match --slide-duration in index.css
 
-    const slides = document.querySelectorAll(".slide");
-    const dots = document.querySelectorAll(".dot");
-    const slideBadge = document.getElementById("slideBadge");
-    const slideTitle = document.getElementById("slideTitle");
-    const slideSubtitle = document.getElementById("slideSubtitle");
-
-    const slideData = [
-        {
-            badge: "FIND YOUR SPACE",
-            title: "SpaceShare puts inspiring workspaces at your finger tips",
-            subtitle: "Browse, book and unlock unique spaces tailored to your vibe, anywhere and anytime."
-        },
-        {
-            badge: "CONNECT & COLLABORATE",
-            title: "Spaces that inspires collaboration",
-            subtitle: "Access premium rooms and co-working spaces designed to fuel team productivity."
-        },
-        {
-            badge: "HOST, SHARE & EARN",
-            title: "Host, Share and Earn",
-            subtitle: "List your underutilized space or discover stunning locations curated just for you."
-        }
-    ];
-
-    let currentSlide = 0;
-    const intervalTime = 5000;
-    let slideInterval;
-
-    function updateSlide(index) {
-        // Guard against out-of-bound indices
-        if (index < 0 || index >= slides.length) return;
-
-        slides.forEach(slide => slide.classList.remove("active"));
-        dots.forEach(dot => dot.classList.remove("active"));
-
-        slides[index].classList.add("active");
-        dots[index].classList.add("active");
-
-        slideBadge.textContent = slideData[index].badge;
-        slideTitle.textContent = slideData[index].title;
-        slideSubtitle.textContent = slideData[index].subtitle;
-
-        currentSlide = index;
+  // Copy for each slide, in the same order as the .slide elements in the DOM.
+  const slidesContent = [
+    {
+      badge: 'FIND YOUR SPACE',
+      title: 'SpaceShare puts inspiring workspaces at your fingertips',
+      subtitle: 'Browse, book and unlock unique spaces tailored to your vibe, anywhere and anytime.'
+    },
+    {
+      badge: 'CONNECT & COLLABORATE',
+      title: 'Spaces that inspire collaboration',
+      subtitle: 'Access premium rooms and co-working spaces designed to fuel team productivity.'
+    },
+    {
+      badge: 'CONNECT & COLLABORATE',
+      title: 'Host, Share and Earn',
+      subtitle: 'List your underutilized space or discover stunning locations curated just for you.'
     }
+  ];
 
-    function nextSlide() {
-        let nextIndex = (currentSlide + 1) % slides.length;
-        updateSlide(nextIndex);
-    }
+  const slideEls = document.querySelectorAll('.hero-slider .slide');
+  const dotEls = document.querySelectorAll('.pagination-dots .dot');
+  const badgeEl = document.getElementById('slideBadge');
+  const titleEl = document.getElementById('slideTitle');
+  const subtitleEl = document.getElementById('slideSubtitle');
 
-    function startSlider() {
-        // Clear any existing intervals to prevent overlapping timers
-        clearInterval(slideInterval);
-        slideInterval = setInterval(nextSlide, intervalTime);
-    }
+  let current = 0;
+  let timer = null;
 
-    // Interactive dot navigation with smooth timer reset on user action
-    dots.forEach((dot, index) => {
-        dot.addEventListener("click", () => {
-            if (currentSlide === index) return;
-            updateSlide(index);
-            startSlider(); // Restart the auto-slide clock after user interaction
-        });
+  function renderText(index) {
+    const data = slidesContent[index];
+    if (!data) return;
+    badgeEl.textContent = data.badge;
+    titleEl.textContent = data.title;
+    subtitleEl.textContent = data.subtitle;
+  }
+
+  function restartDotFill(dot) {
+    // Force the dot-fill animation to restart from 0 by briefly
+    // removing and re-adding the "active" class.
+    dot.classList.remove('active');
+    // eslint-disable-next-line no-unused-expressions
+    dot.offsetWidth; // force reflow
+    dot.classList.add('active');
+  }
+
+  function goToSlide(index) {
+    current = (index + slideEls.length) % slideEls.length;
+
+    slideEls.forEach((slide, i) => {
+      slide.classList.toggle('active', i === current);
     });
 
-    // Pause auto-sliding on hover for enhanced user experience and readability
-    const heroSliderContainer = document.querySelector(".page-container");
-    if (heroSliderContainer) {
-        heroSliderContainer.addEventListener("mouseenter", () => {
-            clearInterval(slideInterval);
-        });
+    dotEls.forEach((dot, i) => {
+      const isActive = i === current;
+      dot.classList.toggle('active', isActive);
+      dot.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      if (isActive) restartDotFill(dot);
+    });
 
-        heroSliderContainer.addEventListener("mouseleave", () => {
-            startSlider();
-        });
+    renderText(current);
+  }
+
+  function next() {
+    goToSlide(current + 1);
+  }
+
+  function startAutoplay() {
+    stopAutoplay();
+    timer = setInterval(next, SLIDE_DURATION);
+  }
+
+  function stopAutoplay() {
+    if (timer) clearInterval(timer);
+    timer = null;
+  }
+
+  dotEls.forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+      goToSlide(i);
+      startAutoplay();
+    });
+  });
+
+  // Pause the timer when the tab is hidden, resume when it's visible again.
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      stopAutoplay();
+    } else {
+      startAutoplay();
     }
+  });
 
-    // Initialize the slider loop
-    startSlider();
-});
+  // Init
+  goToSlide(0);
+  startAutoplay();
+})();

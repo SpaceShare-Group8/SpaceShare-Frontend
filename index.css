@@ -225,4 +225,361 @@ html, body {
     .pagination-dots {
         justify-content: center;
     }
+}/* ============================================
+   SpaceShare — Landing Page Styles
+   ============================================ */
+
+:root {
+  /* Brand palette — pulled from the SpaceShare logo mark */
+  --navy-950: #081527;
+  --navy-900: #0B1E3D;
+  --navy-800: #122A4D;
+  --blue-500: #3E63E0;   /* primary CTA */
+  --blue-400: #6E93EC;   /* hover state */
+  --blue-200: #B7CBF5;   /* badge / eyebrow text */
+  --white: #FFFFFF;
+  --white-70: rgba(255, 255, 255, 0.7);
+  --white-50: rgba(255, 255, 255, 0.5);
+  --white-16: rgba(255, 255, 255, 0.16);
+
+  /* Type */
+  --font-display: 'Poppins', 'Segoe UI', sans-serif;
+  --font-body: 'Inter', 'Segoe UI', sans-serif;
+
+  /* Layout */
+  --edge-pad: 48px;
+  --slide-duration: 6s;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--white);
+  background: var(--navy-950);
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  font-family: inherit;
+}
+
+/* ============================================
+   Background Slider
+   ============================================ */
+
+.hero-slider {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transform: scale(1);
+  transition: opacity 1.2s ease;
+}
+
+.slide.active {
+  opacity: 1;
+  animation: kenburns var(--slide-duration) ease-in-out forwards;
+}
+
+@keyframes kenburns {
+  from { transform: scale(1); }
+  to   { transform: scale(1.08); }
+}
+
+/* A single overlay shared by every slide: dark gradient at the base for
+   footer/heading legibility, plus a light overall tint for contrast. */
+.slide-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, rgba(6, 14, 28, 0.92) 0%, rgba(6, 14, 28, 0.55) 40%, rgba(6, 14, 28, 0.25) 65%, rgba(6, 14, 28, 0.35) 100%);
+}
+
+/* ============================================
+   Page Layout
+   ============================================ */
+
+.page-container {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Header */
+
+.header {
+  padding: var(--edge-pad) var(--edge-pad) 0;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--navy-900);
+  border: 1px solid var(--white-16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.logo-text {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+}
+
+/* Hero content */
+
+.hero-content {
+  padding: 0 var(--edge-pad);
+  max-width: 640px;
+  margin-top: auto;
+  margin-bottom: 48px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(183, 203, 245, 0.45);
+  background: rgba(62, 99, 224, 0.18);
+  backdrop-filter: blur(6px);
+  color: var(--blue-200);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  margin-bottom: 20px;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 44px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin-bottom: 16px;
+  text-wrap: balance;
+}
+
+.hero-subtitle {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--white-70);
+  max-width: 480px;
+}
+
+/* Footer: pagination + CTAs */
+
+.hero-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 0 var(--edge-pad) var(--edge-pad);
+}
+
+.pagination-dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot {
+  position: relative;
+  width: 22px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.28);
+  overflow: hidden;
+  transition: width 0.3s ease;
+}
+
+.dot.active {
+  width: 36px;
+}
+
+.dot-fill {
+  position: absolute;
+  inset: 0;
+  width: 0%;
+  background: var(--white);
+  border-radius: inherit;
+}
+
+.dot.active .dot-fill {
+  animation: fillDot var(--slide-duration) linear forwards;
+}
+
+@keyframes fillDot {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
+
+.action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-secondary {
+  color: var(--white);
+  border: 1px solid var(--white-50);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(6px);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: var(--white-70);
+}
+
+.btn-primary {
+  color: var(--white);
+  background: var(--blue-500);
+}
+
+.btn-primary:hover {
+  background: var(--blue-400);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--white);
+  outline-offset: 2px;
+}
+
+.dot:focus-visible {
+  outline: 2px solid var(--white);
+  outline-offset: 3px;
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+
+/* Tablet */
+@media (max-width: 900px) {
+  :root { --edge-pad: 32px; }
+
+  .hero-title { font-size: 34px; }
+  .hero-subtitle { font-size: 15px; }
+  .hero-content { max-width: 100%; margin-bottom: 36px; }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  :root { --edge-pad: 20px; }
+
+  .header { padding-top: 24px; }
+
+  .logo-text { font-size: 18px; }
+
+  .hero-title {
+    font-size: 26px;
+    line-height: 1.25;
+  }
+
+  .hero-subtitle {
+    font-size: 14px;
+  }
+
+  .badge {
+    font-size: 11px;
+    padding: 6px 14px;
+    margin-bottom: 16px;
+  }
+
+  .hero-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .pagination-dots {
+    justify-content: center;
+  }
+
+  .action-buttons {
+    justify-content: stretch;
+  }
+
+  .btn {
+    flex: 1;
+    padding: 13px 18px;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 360px) {
+  .hero-title { font-size: 22px; }
+}
+
+/* Short viewports (landscape phones) */
+@media (max-height: 480px) {
+  .hero-content { margin-bottom: 20px; }
+  .header { padding-top: 20px; }
+  .hero-footer { padding-bottom: 20px; }
+}
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .slide.active { animation: none; }
+  .slide { transition: opacity 0.4s ease; }
+  .dot.active .dot-fill { animation: none; width: 100%; }
 }
