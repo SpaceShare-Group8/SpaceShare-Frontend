@@ -171,7 +171,7 @@ input {
 .main_left_tabs {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 35px;
     background-color: var(--primary_container);
     width: 279px;
     height: 84vh;
@@ -179,52 +179,47 @@ input {
     border-top-right-radius: 16px;
     border: 0.5px thin var(--border_color);
     padding-top: 30px;
-    overflow-y: auto;
+
+
 }
 
-/* font-size was 26px which made these way bigger than everything
-else on the page - dropped it down to normal nav-label size */
 .nav_tab {
     margin-left: 22px;
-    padding: 10px 14px;
+    padding: 15px;
     display: flex;
     flex-direction: row;
-    gap: 14px;
+    gap: 18px;
     width: 232px;
     font-weight: 510;
     font-style: medium;
-    font-size: 15px;
+    font-size: 26px;
     font-family: sans-serif;
     align-items: center;
     color: #9A9898;
 }
 
 .main_left_tabs>.ph {
-    width: 18px;
-    height: 18px;
-    font-size: 18px;
+    width: 33px;
+    height: 28px;
 }
 
 
 #nav_tab_two {
     background-color: #EEF4FF;
     width: 232px;
-    height: 44px;
+    height: 62px;
     border-radius: 15px;
-    gap: 14px;
+    gap: 18px;
 }
 
 
-/* button - was margin: 230px on top which only worked if the sidebar
-was exactly one height. margin-top: auto pushes it to the bottom
-of main_left_tabs (a flex column) no matter how tall the nav list is,
-so it doesn't get shoved off screen */
+/* button */
 .main_left_tabs > button {
     border: 0.5px thin #9A9898;
     border-radius: 20px;
-    padding: 16px;
+    padding: 20px;
     width: 232px;
-    margin: auto 0px 20px 20px;
+    margin: 230px 0px 2px 20px;
     background-color: var(--primary_container);
     outline-color: none;
 }
@@ -279,9 +274,7 @@ so it doesn't get shoved off screen */
 }
 
 
-/* main side middle info - overflow-y:auto is just a safety net in
-case content ever runs a little taller than 84vh, so it scrolls
-inside this box instead of getting clipped/hidden */
+/* main side middle info */
 .booking_main {
     background-color: #ffffff;
     width: 1136px;
@@ -290,8 +283,6 @@ inside this box instead of getting clipped/hidden */
     border-top-right-radius: 16px;
     padding-left: 25px;
     padding-top: 10px;
-    padding-right: 20px;
-    overflow-y: auto;
 }
 
 .left_side_booking_content{
@@ -304,7 +295,6 @@ inside this box instead of getting clipped/hidden */
     padding-top: 15px;
     display: flex;
     flex-direction: row;
-    align-items: center;
     gap: 10px;
     font-size: 32px;
     line-height: 100%;
@@ -314,33 +304,17 @@ inside this box instead of getting clipped/hidden */
     letter-spacing: -0.42%;
 }
 
-/* h1 has its own default size baked in by the browser (2x whatever
-it inherits), so it was rendering way bigger than the 32px above -
-giving it a size directly fixes that */
-.booking_header h1 {
-    font-size: 28px;
-}
-
-.back_btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-}
-
 .ph-caret-left {
     font-size: small;
     border-radius: 3px;
 }
 
-/* the arrow hidden - hide the whole button, not just the icon inside
-it, otherwise the empty button still sits there taking up space */
+/* the arrow hidden */
 @media (min-width:1240px) {
-    .back_btn {
+    .ph-caret-left {
         display: none;
+        background-color: transparent;
+        color: none;
     }
 }
 
@@ -359,13 +333,10 @@ it, otherwise the empty button still sits there taking up space */
     gap: 20px;
 }
 
-/* height was 330px which, added to everything else, pushed the
-page past one screen - trimmed it down so the whole thing fits */
 .content > img {
     width: 629px;
-    height: 210px;
+    height: 330px;
     border-radius: 16px;
-    object-fit: cover;
 }
 
 .content > .work_space{
@@ -403,10 +374,8 @@ letter-spacing: 0%;
 
 
 
-/* padding-top was 75px, way more gap than the other rows here needed
-- same deal as the image, just eating up vertical space for no reason */
 .content_booking_location{
-    padding-top: 14px;
+    padding-top: 75px;
     display: flex;
     flex-direction: row;
     gap: 20px;
@@ -424,7 +393,7 @@ letter-spacing: 0%;
 }
 
 .loc_bottom{
-    padding-top: 10px;
+    padding-top: 30px;
     display: flex;
     gap: 6px;
 }
