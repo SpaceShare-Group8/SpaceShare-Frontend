@@ -1,0 +1,343 @@
+/* ============================================
+   SpaceShare — Login Page Styles
+   Pulls all color/type/spacing tokens and the
+   .hero-slider / .btn / .badge system straight
+   from the landing page so this never drifts
+   out of sync with it.
+   ============================================ */
+
+@import url("../../index.css");
+
+/* index.css sets html/body to overflow:hidden + height:100%, which is
+   correct for the single-viewport landing page but wrong here — this
+   page needs to scroll on short viewports / long forms. */
+html, body {
+  height: auto;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* ============================================
+   Shell: brand panel (left) + form panel (right)
+   ============================================ */
+
+.auth-shell {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+}
+
+/* ---- Brand panel: the same hero slider as the landing page ---- */
+
+.brand-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.brand-panel .hero-slider {
+  position: absolute; /* scoped to this panel, not the viewport */
+}
+
+.brand-panel .page-container {
+  min-height: 100%;
+  padding-bottom: 40px;
+}
+
+.brand-panel .hero-content {
+  margin-bottom: 32px;
+}
+
+.brand-panel .hero-footer {
+  justify-content: flex-start;
+}
+
+.back-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--white-70);
+  font-size: 13px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.back-home:hover {
+  color: var(--white);
+}
+
+/* ---- Form panel ---- */
+
+.form-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--navy-950);
+  padding: 48px var(--edge-pad);
+}
+
+.form-wrap {
+  width: 100%;
+  max-width: 400px;
+}
+
+.form-topbar {
+  display: none; /* only shown on mobile, where the brand panel is hidden */
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+
+.form-header {
+  margin-bottom: 32px;
+}
+
+.form-header h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 28px;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+
+.form-header p {
+  font-size: 14px;
+  color: var(--white-70);
+}
+
+.form-header p a {
+  color: var(--blue-200);
+  font-weight: 600;
+}
+
+.form-header p a:hover {
+  color: var(--white);
+}
+
+/* ---- Fields ---- */
+
+.field {
+  margin-bottom: 18px;
+}
+
+.field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--white-70);
+  margin-bottom: 7px;
+}
+
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="tel"],
+.field input[type="password"] {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--white-16);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 15px;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.field input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.field input:focus {
+  outline: none;
+  border-color: var(--blue-400);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.field input[aria-invalid="true"] {
+  border-color: #E5636B;
+}
+
+.field-error {
+  display: block;
+  min-height: 16px;
+  font-size: 12px;
+  color: #F19097;
+  margin-top: 6px;
+}
+
+.password-input {
+  position: relative;
+}
+
+.password-input input {
+  padding-right: 44px;
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  color: var(--white-50);
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.toggle-password:hover {
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.toggle-password svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ---- Row: remember me / forgot password ---- */
+
+.form-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--white-70);
+  cursor: pointer;
+}
+
+.checkbox input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--blue-500);
+}
+
+.link-muted {
+  font-size: 13px;
+  color: var(--blue-200);
+  font-weight: 500;
+}
+
+.link-muted:hover {
+  color: var(--white);
+}
+
+/* ---- Alert banner (server / network errors) ---- */
+
+.form-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: rgba(229, 99, 107, 0.14);
+  border: 1px solid rgba(229, 99, 107, 0.4);
+  color: #F5B4B8;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.form-alert.success {
+  background: rgba(62, 224, 148, 0.12);
+  border-color: rgba(62, 224, 148, 0.4);
+  color: #9AEFC6;
+}
+
+/* ---- Submit button ---- */
+
+.btn-block {
+  width: 100%;
+}
+
+.btn-block .btn-spinner {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: var(--white);
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.btn-block[data-loading="true"] .btn-label {
+  visibility: hidden;
+}
+
+.btn-block[data-loading="true"] .btn-spinner {
+  position: absolute;
+}
+
+.btn-block {
+  position: relative;
+}
+
+.btn-block:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.form-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0;
+  color: var(--white-50);
+  font-size: 12px;
+}
+
+.form-divider::before,
+.form-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--white-16);
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+
+@media (max-width: 900px) {
+  .auth-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .brand-panel {
+    display: none; /* the form panel carries the whole page below this width */
+  }
+
+  .form-topbar {
+    display: flex;
+  }
+
+  .form-panel {
+    padding: 32px 20px;
+    align-items: flex-start;
+  }
+
+  .form-wrap {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 380px) {
+  .form-header h1 {
+    font-size: 24px;
+  }
+}
