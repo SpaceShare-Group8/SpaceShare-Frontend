@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SpaceShare - Search results</title>
+    <!-- Font Link -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- phosphor Icons Link -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/bold/style.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/thin/style.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/light/style.css"
+    />
+
+    <link rel="stylesheet" href="search-style.css" />
+  </head>
+  <body>
+    <!-- The whole container -->
+    <section class="whole-container">
+      <!-- Left sidebar -->
+      <aside class="sidebar">
+        <nav class="sidebar-nav">
+          <div class="sidebar-logo">
+            <img
+              src="search-assets/blue-logo.svg"
+              alt="SpaceShare-Logo"
+              class="blue-logo"
+            />
+            <h3>SpaceShare</h3>
+          </div>
+
+          <ul class="nav-lists">
+            <li class="nav-links">
+              <a href="#"
+                ><i class="ph ph-house link-icon"></i><span>Home</span></a
+              >
+            </li>
+            <li class="nav-links">
+              <a href="#"
+                ><i class="ph ph-calendar-blank link-icon"></i
+                ><span>Bookings</span></a
+              >
+            </li>
+            <li class="nav-links">
+              <a href="#"
+                ><i class="ph ph-heart link-icon"></i><span>Favourite</span></a
+              >
+            </li>
+            <li class="nav-links">
+              <a href="#"
+                ><i class="ph ph-chat link-icon"></i><span>Messages</span></a
+              >
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <!-- Main Section  -->
+
+      <main class="main-container">
+        <!-- Map Background -->
+        <div class="map-background"></div>
+
+        <div class="main-container-contents">
+          <!-- Header section -->
+          <header class="header-section">
+            <div class="search-input-div">
+              <i class="ph ph-magnifying-glass search-logo"></i>
+              <input
+                type="text"
+                name=""
+                id=""
+                class="search-input"
+                placeholder="Search bookings, places, guests"
+              />
+            </div>
+
+            <button class="user-icon-button">
+              <i class="ph-thin ph-user-circle user-icon"></i>
+              <i class="ph ph-caret-down arrow-icon"></i>
+            </button>
+          </header>
+
+          <!-- Second-input Section -->
+          <section class="second-search">
+            <dl class="dl-container dl-1">
+              <dt>Location</dt>
+              <dd>Lekki, Lagos</dd>
+            </dl>
+
+            <dl class="dl-container dl-2">
+              <dt>Date</dt>
+              <dd>2nd Aug, 2026</dd>
+            </dl>
+
+            <dl class="dl-container dl-3">
+              <dt>Time</dt>
+              <dd>10:00 am</dd>
+            </dl>
+
+            <div class="second-search-logo">
+              <i class="ph ph-magnifying-glass search-logo"></i>
+            </div>
+          </section>
+
+          <!-- Main section -->
+          <section class="main-section">
+            <!-- Filters and filters button section -->
+            <section class="filters-section">
+              <p class="filter-text">Filters</p>
+
+              <div class="filter-btns-container">
+                <button class="filter-btn">
+                  Price
+                  <i class="ph-bold ph-caret-down"></i>
+                </button>
+                <button class="filter-btn">
+                  Amenities
+                  <i class="ph-bold ph-caret-down"></i>
+                </button>
+                <button class="filter-btn">
+                  Type
+                  <i class="ph-bold ph-caret-down"></i>
+                </button>
+                <button class="filter-btn">
+                  Sort
+                  <i class="ph-bold ph-caret-down"></i>
+                </button>
+                <button class="filter-btn-map active">
+                  <i class="ph-bold ph-map-trifold"></i>
+                </button>
+              </div>
+            </section>
+
+            <!-- Workspace Cards -->
+            <section class="workspace-cards-container">
+              <!-- Workspace Card 1 -->
+              <div class="workspace-card">
+                <img
+                  src="search-assets/hub-one-workspace.jpg"
+                  class="workspace-img"
+                  alt="Hub One Workspace"
+                />
+
+                <div class="workspace-description">
+                  <div class="workspace-title">
+                    <h4>Hub One Workspace</h4>
+                    <i class="ph-thin ph-heart heart-icon"></i>
+                  </div>
+
+                  <p class="workspace-subhead">Coworking Space</p>
+
+                  <div class="workspace-details">
+                    <p class="workspace-rating">
+                      <i class="ph-fill ph-star" style="color: #ffc107"></i
+                      ><span>4.8(120)</span>
+                    </p>
+                    <p class="workspace-distance">
+                      <img src="/search-assets/map-marker.svg" alt="" />
+                      <span>2.5km Away</span>
+                    </p>
+                  </div>
+
+                  <div class="workspace-addons">
+                    <button class="workspace-addons-btn">
+                      <i class="ph-bold ph-wifi-high"></i>Wifi
+                    </button>
+                    <button class="workspace-addons-btn">
+                      <i class="ph-bold ph-snowflake"></i> AC
+                    </button>
+                    <button class="workspace-addons-btn">
+                      <i class="ph-fill ph-car-profile"></i>Parking
+                    </button>
+                  </div>
+
+                  <div class="workspace-view-price">
+                    <p class="workspace-price">₦15,000/hr</p>
+                    <button class="workspace-view-btn">
+                      View Space<i class="ph-bold ph-caret-right"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </section>
+        </div>
+      </main>
+    </section>
+    <script src=""></script>
+  </body>
+</html>
