@@ -746,6 +746,37 @@ that was already sitting there instead of making a new one */
 /* ===== desktop - not scrollable, everything has to fit ===== */
 @media (min-width: 1240px) {
     html, body {
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .booking_page {
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    /* main_bar stretches to fill whatever's left under the top bar,
+    and the sidebar + main panel both stretch to match it exactly -
+    before this they were using fixed vh numbers that didn't line up
+    with the real leftover space, which is what left the grey strip
+    at the bottom and on the right */
+    .main_bar {
+        flex: 1;
+        min-height: 0;
+    }
+
+    .main_left_tabs {
+        height: 100%;
+    }
+
+    /* booking_main was a fixed 1136px, so on wider screens there was
+    just grey space past it - flex:1 makes it fill whatever's left
+    after the sidebar instead of a guessed number */
+    .booking_main {
+        width: auto;
+        flex: 1;
+        min-width: 0;
+        height: 100%;
         overflow: hidden;
     }
 
@@ -753,17 +784,71 @@ that was already sitting there instead of making a new one */
         flex-direction: row;
         align-items: flex-start;
         gap: 40px;
+        height: 100%;
     }
 
     .book_content {
         flex: none;
     }
 
+    /* right column - tightened the spacing in here so booking type +
+    calendar + time slots + summary + button all actually fit in the
+    space without needing their own scrollbar. overflow-y:auto is
+    still here as a fallback only, not the main plan */
     .right_book_calendar {
         width: 300px;
         flex: none;
-        max-height: 74vh;
+        height: 100%;
         overflow-y: auto;
         padding-right: 4px;
+        gap: 10px;
+    }
+
+    .right_book_calendar .field_group {
+        gap: 4px;
+    }
+
+    .right_book_calendar .calendar {
+        padding: 8px;
+    }
+
+    .right_book_calendar .cal_top {
+        margin-bottom: 6px;
+    }
+
+    .right_book_calendar .cal_weekdays {
+        margin-bottom: 4px;
+    }
+
+    .right_book_calendar .cal_days {
+        gap: 3px;
+    }
+
+    .right_book_calendar .cal_day {
+        aspect-ratio: auto;
+        height: 22px;
+        font-size: 11px;
+    }
+
+    .right_book_calendar .time_slot {
+        padding: 6px 4px;
+        font-size: 10px;
+    }
+
+    .right_book_calendar .summary_box {
+        gap: 5px;
+    }
+
+    .right_book_calendar .summary_row {
+        font-size: 12px;
+    }
+
+    .right_book_calendar .info_banner {
+        padding: 8px 10px;
+        font-size: 11px;
+    }
+
+    .right_book_calendar .request_btn {
+        height: 44px;
     }
 }
