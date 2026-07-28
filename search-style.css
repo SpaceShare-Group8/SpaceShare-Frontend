@@ -1487,3 +1487,246 @@ The Responsiveness starts
     padding: 10px 0px 10px 3px;
   }
 }
+
+
+
+/* Empty State Section */
+
+/* .workspace-cards-container-empty{
+  display: none;
+}
+
+.workspace-section-empty{
+  display: none;
+} */
+
+.empty-state-section{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  display: none;
+}
+
+.empty-state-section img{
+  margin: 50px 0 37px 0;
+  width: 100%;
+  /* object-fit: cover; */
+  height: 100%;
+  /* margin-left: -39px; */
+}
+
+.empty-state-texts{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0 120px 50px 39px;
+}
+
+.empty-state-texts h4{
+font-weight: 700;
+font-size: 24px;
+padding: 10px 0 10px 10px;
+}
+
+.empty-state-texts p{
+font-style: italic;
+font-weight: 400;
+font-size: 24px;
+padding: 10px 0 10px 10px;
+}
+
+.empty-state-btns{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 120px 10px 39px;
+}
+
+.empty-state-btn{
+  border: 2px solid #2862bc;
+  background-color: transparent;
+  padding: 10px 40px;
+  border-radius: 14px;
+    font-weight: 600;
+    font-size: 19px;
+    color: #111111;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.search-filter-btn{
+  background-color: #2862bc;
+  border: 2px solid transparent;
+  color: #ffffff;
+}
+
+.empty-state-btn:hover{
+  background-color: #2862bc;
+  border: 2px solid transparent;
+  color: #111111;
+}
+
+
+
+
+
+@media (max-width: 1024px) {
+
+  .empty-state-texts{
+  margin: 0 60px 50px 39px;
+}
+
+.empty-state-btns{
+  margin: 0 60px 50px 39px;
+}
+
+  .empty-state-texts h4{
+font-weight: 700;
+font-size: 20px;
+padding: 10px 0 10px 10px;
+}
+
+.empty-state-texts p{
+font-style: italic;
+font-weight: 400;
+font-size: 20px;
+padding: 10px 0 10px 10px;
+}
+
+.empty-state-btn{
+  border: 2px solid #2862bc;
+  background-color: transparent;
+  padding: 10px 28px;
+  border-radius: 14px;
+    font-weight: 600;
+    font-size: 18px;
+    color: #111111;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.search-filter-btn{
+  background-color: #2862bc;
+  border: 2px solid transparent;
+  color: #ffffff;
+}
+
+.empty-state-btn:hover{
+  background-color: #2862bc;
+  border: 2px solid transparent;
+  color: #111111;
+}
+}
+
+
+
+@media (max-width: 768px) {
+  .empty-state-texts{
+  margin: 0 40px 50px 39px;
+}
+
+.empty-state-btns{
+  margin: 0 40px 2px 39px;
+}
+
+.empty-state-texts h4{
+font-weight: 700;
+font-size: 18px;
+padding: 10px 0 10px 10px;
+}
+
+.empty-state-texts p{
+font-style: italic;
+font-weight: 400;
+font-size: 18px;
+padding: 10px 0 10px 10px;
+}
+
+.empty-state-btn{
+  border: 2px solid #2862bc;
+  background-color: transparent;
+  padding: 10px 24px;
+  border-radius: 14px;
+    font-weight: 600;
+    font-size: 16px;
+    color: #111111;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.search-filter-btn{
+  background-color: #2862bc;
+  border: 2px solid transparent;
+  color: #ffffff;
+}
+
+.empty-state-btn:hover{
+  background-color: #2862bc;
+  border: 2px solid transparent;
+  color: #111111;
+}
+}
+
+
+
+@media (max-width: 320px) {
+  .empty-state-texts{
+  margin: 0 10px 50px 8px;
+}
+
+.empty-state-btns{
+  margin: 0 10px 2px 8px;
+}
+
+.empty-state-texts h4{
+font-weight: 700;
+font-size: 14px;
+padding: 10px 0 10px 10px;
+}
+
+.empty-state-texts p{
+font-style: italic;
+font-weight: 400;
+font-size: 12px;
+padding: 10px 0 10px 10px;
+}
+
+.empty-state-btn{
+  border: 2px solid #2862bc;
+  background-color: transparent;
+  padding: 5px 8px;
+  border-radius: 10px;
+    font-weight: 600;
+    font-size: 12px;
+    color: #111111;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.search-filter-btn{
+  background-color: #2862bc;
+  border: 2px solid transparent;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.empty-state-btn:hover{
+  background-color: #2862bc;
+  border: 2px solid transparent;
+  color: #111111;
+}
+}
+
+
+
+/* .empty-state-section img {
+  width: 100%;
+  max-width: 472px;
+  object-fit: cover;
+  height: 100%;
+} */
+
+
+
