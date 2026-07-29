@@ -334,7 +334,10 @@ shrink like everything else */
 .left_side_booking_content {
   display: flex;
   flex-direction: column;
-  flex: 1, 1, 700px;
+  /* was "1, 1, 700px" with commas, which isn't valid flex syntax so
+  the browser was just dropping the whole thing - no commas in the
+  shorthand, needs spaces */
+  flex: 1 1 700px;
   min-width: 0;
   padding-right: 40px;
 }
@@ -898,10 +901,23 @@ desktop rules above this point are untouched ===== */
     justify-content: space-between;
   }
 
+  .loc_top {
+    max-width: 60%;
+  }
+
   .loc_rate {
     width: auto;
     height: auto;
     gap: 16px;
+  }
+
+  /* safety net - book_content had a bunch of desktop px widths (500,
+  629, 435, 261...) and I might not have caught every single one, so
+  this makes sure nothing in here can ever sit narrower than its row
+  and leave a gap on the right */
+  .book_content,
+  .book_content * {
+    max-width: 100%;
   }
 
   /* was pinned to a fixed 320px column next to the left side - on

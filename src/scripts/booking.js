@@ -192,7 +192,7 @@ function ordinal(d) {
 function applyType() {
   const instant = typeSelect.value === "instant";
 
-  typeIcon.className = instant ? "ph-fill ph-lightning" : "ph-fill ph-clock-countdown";
+  typeIcon.className = instant ? "ph-fill ph-lightning" : "ph-fill ph-clock";
 
   typeNoteText.textContent = instant
     ? "You can book and access the space immediately after payment."
