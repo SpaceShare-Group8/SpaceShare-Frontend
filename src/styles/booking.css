@@ -343,7 +343,7 @@ shrink like everything else */
   on booking_main above so the whole panel doesn't stretch out to fill
   huge screens either) keeps it sized to its content instead */
   flex: 0 1 700px;
-  min-width: 0;
+  width: max-content;
   padding-right: 40px;
 }
 
@@ -863,12 +863,19 @@ desktop rules above this point are untouched ===== */
     background-color: #F5F5F5;
   }
 
+  /* the 700px in the desktop rule is a WIDTH hint for the row layout -
+  but booking_main switches to flex-direction:column on mobile, and in
+  a column, the flex shorthand's third number controls height instead.
+  that was forcing this block to be 700px tall no matter how short its
+  actual content was, leaving a big gap before Booking Type. resetting
+  it here so it just sizes to its content like it should */
   .left_side_booking_content {
     width: 100%;
+    flex: 0 1 auto;
   }
 
   .booking_header {
-    width: auto;
+    width: inherit;
     height: auto;
     justify-content: flex-start;
     gap: 80px;
@@ -879,9 +886,10 @@ desktop rules above this point are untouched ===== */
    }
 
   .book_content {
-    width: 100%;
+    width: max-content;
     height: auto;
   }
+  
 
   .content>img {
     width: 100%;
@@ -922,7 +930,7 @@ desktop rules above this point are untouched ===== */
   and leave a gap on the right */
   .book_content,
   .book_content * {
-    max-width: 100%;
+    max-width: 396.67px;
   }
 
   /* was pinned to a fixed 320px column next to the left side - on
