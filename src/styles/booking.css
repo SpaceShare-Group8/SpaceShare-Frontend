@@ -324,6 +324,7 @@ shrink like everything else */
   display: flex;
   flex-direction: row;
   flex: 1;
+  max-width: 1136px;
   min-width: 0;
   /* let the left side shrink instead of pushing */
   gap: 20px;
@@ -334,10 +335,14 @@ shrink like everything else */
 .left_side_booking_content {
   display: flex;
   flex-direction: column;
-  /* was "1, 1, 700px" with commas, which isn't valid flex syntax so
-  the browser was just dropping the whole thing - no commas in the
-  shorthand, needs spaces */
-  flex: 1 1 700px;
+  /* was "1, 1, 700px" with commas, which is invalid so the browser
+  dropped it - making it valid with flex-grow:1 made this side stretch
+  to fill booking_main on very wide screens, but book_content inside
+  it stayed a fixed 500px, which left a big empty gap between the
+  content and the calendar column. flex-grow:0 here (plus max-width
+  on booking_main above so the whole panel doesn't stretch out to fill
+  huge screens either) keeps it sized to its content instead */
+  flex: 0 1 700px;
   min-width: 0;
   padding-right: 40px;
 }
