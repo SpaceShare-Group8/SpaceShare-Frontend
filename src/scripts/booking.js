@@ -67,7 +67,7 @@ function drawCalendar() {
     btn.disabled = past || booked;
 
     if (pickedDate && pickedDate.y === viewYear && pickedDate.m === viewMonth && pickedDate.d === d) {
-      btn.classList.add("selected");
+      btn.classList.add("is_selected");
     }
 
     if (!btn.disabled) {
@@ -109,12 +109,12 @@ function drawSlots() {
   SLOTS.forEach((slot, i) => {
     const btn = document.createElement("button");
     btn.type = "button";
-    btn.className = "time_slot";
+    btn.className = "slot";
     btn.textContent = slot;
     btn.disabled = BAD_SLOTS.includes(slot);
 
     const inRange = rangeStart !== null && i >= rangeStart && i <= (rangeEnd ?? rangeStart);
-    if (inRange) btn.classList.add("selected");
+    if (inRange) btn.classList.add("is_selected");
 
     if (!btn.disabled) {
       btn.onclick = () => pickSlot(i);

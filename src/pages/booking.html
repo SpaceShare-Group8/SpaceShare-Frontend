@@ -15,9 +15,10 @@
       type="text/css"
       href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/thin/style.css"
     />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+  <link
       rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"
     />
     <link rel="stylesheet" href="../styles/booking.css" />
   </head>
@@ -26,7 +27,7 @@
       <!-- desktop view -->
       <!-- first section -->
       <div class="top_bar">
-        <!--top menu -->
+        <!-- top menu -->
         <div class="top_menu">
           <div class="top_menu_left_logo_section">
             <img
@@ -38,204 +39,226 @@
           </div>
 
           <div class="top_menu_middle_search_section">
-            <label for="" class="search_bar">
-              <i class="ph ph-magnifying-glass"></i>
-              <input type="text" placeholder="Search workspace..." />
+            <label for="workspaceSearch" class="search_bar">
+              <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+              <input
+                type="search"
+                id="workspaceSearch"
+                name="workspaceSearch"
+                placeholder="Search workspace..."
+              />
             </label>
           </div>
 
           <div class="top_menu_right_user_section">
-            <i class="ph-thin ph-user-circle"></i>
-            <i class="ph ph-caret-down"></i>
+            <i class="ph-thin ph-user-circle" aria-hidden="true"></i>
+            <i class="ph ph-caret-down" aria-hidden="true"></i>
           </div>
         </div>
       </div>
 
-
-
-
-
-
-      <!-- aside menu -->
-      <div class="main_bar">
-
+    <div class="main_bar">
+        <!-- first main aside menu -->
         <aside class="aside_bar_menu">
-            <div class="aside_left_menu">
-                <nav class="main_left_tabs">
-                    <span class="nav_tab one" id="nav_tab_one">
-                        <i class="ph ph-house"></i>
-                        Home
+          <div class="aside_left_menu">
+            <nav class="main_left_tabs">
+              <span class="nav_tab one" id="nav_tab_one">
+                <i class="ph ph-house" aria-hidden="true"></i>
+                Home
+              </span>
+              <span class="nav_tab two" id="nav_tab_two">
+                <i class="ph ph-calendar-blank" aria-hidden="true"></i>
+                Bookings
+              </span>
+              <span class="nav_tab three" id="nav_tab_three">
+                <i class="ph ph-heart" aria-hidden="true"></i>
+                Favorites
+              </span>
+              <span class="nav_tab four" id="nav_tab_four">
+                <i class="ph ph-chat" aria-hidden="true"></i>
+                Messages
+              </span>
+
+              <button type="button" class="help_desk">
+                <i class="ph ph-headset" aria-hidden="true"></i>
+
+                <span class="help_contact">
+                  <span class="btn_help_me">
+                    <span class="first_c">Need Help?</span>
+                    <span class="second_c">
+                      Contact our support team for assistance.
                     </span>
-                    <span class="nav_tab" id="nav_tab_two">
-                        <i class="ph ph-calendar-blank"></i>
-                        Bookings
-                    </span>
-                    <span class="nav_tab three" id="nav_tab_three">
-                        <i class="ph ph-heart"></i>
-                        Favorites
-                    </span>
-                    <span class="nav_tab four" id="nav_tab_four">
-                        <i class="ph ph-chat"></i>
-                        Messages
-                    </span>
-                    
-                    <button class="help_desk">
-                        <i class="ph ph-headset"></i>
+                    <i class="ph ph-caret-right" aria-hidden="true"></i>
+                  </span>
+                </span>
+              </button>
+            </nav>
+          </div>
+        </aside>
 
-                        <div class="help_contact">
-                            <div class="btn_help_me">
-                                <h5 class="first_c">Need Help?</h5>
-                                
-                                <h5 class="second_c">Contact our support team for assistance.</h5>
+        <main class="booking_main">
 
-                                <i class="ph ph-caret-right"></i>
-                            </div>
-                        </div>
-                    </button>
-          </nav>
-        </div>
-      </aside>
+          <!-- left book content -->
+          <div class="left_side_booking_content">
+            <div class="booking_header">
+              <!-- the arrow shouldn't show in the desktop view -->
+              <button type="button" class="back_btn" aria-label="Go back">
+                <i class="ph ph-caret-left" aria-hidden="true"></i>
+              </button>
 
+              <h1>Booking Details</h1>
+            </div>
 
+            <!-- Booking content goes here -->
+            <div class="book_content">
+              <!-- one part -->
+              <div class="content">
+                <img
+                  src="/src/Images/booking_img_1.jpg"
+                  alt="Interior of Hub One Workspace"
+                  class="booking_img"
+                />
+                <span class="work_space">Co-working Space</span>
+              </div>
 
+              <!-- second part -->
+              <div class="details_extra">
+                <h2 class="booking_title">Hub One Workspace</h2>
+                <p class="booking_desc">
+                  A modern style of meeting room perfect for conference and
+                  exclusive meetings.
+                </p>
+              </div>
 
+              <div class="content_booking_location">
+                <span class="loc_top">
+                  <i class="ph ph-map-pin" aria-hidden="true"></i>
+                  Lekki phase one, Lagos.
+                </span>
+                <p>2.5 km away</p>
+              </div>
 
-      <!-- pay careful attention -->
-
-
-
-<!-- ////////////////////////////////////////////////////
-/////////////////////////////////////////////////////
-      //////////////////////////////////////////////// -->
-    <main class="booking_main">
-
-      <div class="booking_header">
-        <!-- the arrow shouldn't show in the desktop view  -->
-      <button type="button" class="back_btn" aria-label="Go back">
-          <i class="ph ph-caret-left" aria-hidden="true"></i>
-        </button>
-
-        <h1>Booking Details</h1>
-      </div>
-
-      <!-- book_content + right_book_calendar sit side by side on
-      desktop (see media query), stacked on mobile. reused the empty
-      wrapper div that was already here instead of adding a new one -->
-      <div class="left_side_booking_content">
-
-      <!-- Booking content goes here -->
-       <!-- left book content -->
-     <div class="book_content">
-        <!-- one part -->
-        <div class="content">
-            <img
-            src="/src/Images/booking_img_1.jpg"
-            alt="space"
-            class="booking_img"
-          />
-          <span class="work_space">Co-working Space</span>
-
-        </div>
-
-
-           <!-- second part -->
-          <div class="details_extra">
-            <h5 class="booking_title">Hub One Workspace</h5>
-          <p class="booking_desc">
-            A modern style of meeting room perfect for conference and exclusive
-            meetings.
-          </p>
+              <div class="loc_bottom">
+                <i class="ph-fill ph-star" aria-hidden="true"></i>
+                <div class="loc_rate">
+                  <span>4.8 (120 reviews)</span>
+                  <span class="loc_amount">
+                    <i class="ph ph-currency-ngn" aria-hidden="true"></i>
+                    15,000/hour
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
 
+          <!-- right book section (calendar) -->
+          <div class="right_book_calendar">
+            <div class="field_group">
+  <label for="bookingType">Booking Type</label>
 
-          <div class="content_booking_location">
-        <span class="loc_top">
-          <i class="ph ph-map-pin"></i>
-          Lekki phase one, Lagos
-          </span>
-          <p>2.5 km away</p>
+  <div class="select_wrap">
+    <i class="ph ph-lightning"></i>
+    <select id="bookingType" name="bookingType">
+      <option value="request">Request Booking</option>
+      <option value="instant">Instant Booking</option>
+    </select>
+    <i class="ph ph-caret-down caret" aria-hidden="true"></i>
+  </div>
+
+  <p class="info_banner" id="bookingTypeNote">
+    <i class="ph ph-info" aria-hidden="true"></i>
+    <span id="bookingTypeNoteText">
+      Your booking requires host approval before confirmation.
+    </span>
+  </p>
 </div>
-        <div class="loc_bottom">
 
-          <i class="ph ph-star"></i>
-
-          <div class="loc_rate">
-            <p>4.8 (120 reviews)</p>
-            <p> <i class="ph ph-currency-ngn"></i>15,000/hour</p>
-          </div>
-
-        </div>
-
-     </div>
-
-      <!-- right book section (calendar) -->
-      <div class="right_book_calendar">
-
-        <div class="field_group">
-          <label for="bookingType">Booking Type</label>
-          <div class="select_wrap">
-            <i class="ph ph-clock-countdown"></i>
-            <select id="bookingType">
-              <option value="request">Request Booking</option>
-              <option value="instant">Instant Booking</option>
-            </select>
-            <i class="ph ph-caret-down"></i>
-          </div>
-          <p class="info_banner" id="bookingTypeNote">
-            <i class="ph ph-info"></i>
-            <span id="bookingTypeNoteText">Your booking requires host approval before confirmation.</span>
-          </p>
-        </div>
-
-        <div class="field_group">
-          <label>Select Date</label>
-          <div class="calendar">
-            <div class="cal_top">
-              <button type="button" class="cal_nav" id="prevMonth"><i class="ph ph-caret-left"></i></button>
-              <span id="calendarMonth"></span>
-              <button type="button" class="cal_nav" id="nextMonth"><i class="ph ph-caret-right"></i></button>
+            <div class="field_group">
+              <h2 class="field_title">Select Date</h2>
+              <div class="calendar">
+                <div class="cal_top">
+                  <button
+                    type="button"
+                    class="cal_nav"
+                    id="prevMonth"
+                    aria-label="Previous month"
+                  >
+                    <i class="ph ph-caret-left" aria-hidden="true"></i>
+                  </button>
+                  <span id="calendarMonth"></span>
+                  <button
+                    type="button"
+                    class="cal_nav"
+                    id="nextMonth"
+                    aria-label="Next month"
+                  >
+                    <i class="ph ph-caret-right" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="cal_weekdays">
+                  <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span
+                  ><span>Thu</span><span>Fri</span><span>Sat</span>
+                </div>
+                <div class="cal_days" id="calendarGrid"></div>
+              </div>
             </div>
-            <div class="cal_weekdays">
-              <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+
+            <div class="field_group">
+              <h2 class="field_title">Available Time Slots (Hourly)</h2>
+              <div class="time_slots" id="timeSlots"></div>
             </div>
-            <div class="cal_days" id="calendarGrid"></div>
+
+            <div class="field_group">
+              <h2 class="field_title">Booking Summary</h2>
+              <div class="summary_box" aria-live="polite">
+                <div class="summary_row">
+                  <span><i class="ph ph-buildings" aria-hidden="true"></i>Workspace</span>
+                  <span id="summaryWorkspace">Hub One Workspace</span>
+                </div>
+                <div class="summary_row">
+                  <span><i class="ph ph-calendar" aria-hidden="true"></i>Date</span>
+                  <span id="summaryDate">Select a date</span>
+                </div>
+                <div class="summary_row">
+                  <span><i class="ph ph-clock" aria-hidden="true"></i>Time</span>
+                  <span id="summaryTime">Select a time</span>
+                </div>
+                <div class="summary_row">
+                  <span><i class="ph ph-hourglass" aria-hidden="true"></i>Duration</span>
+                  <span id="summaryDuration">-</span>
+                </div>
+                <div class="summary_row">
+                  <span><i class="ph ph-currency-ngn" aria-hidden="true"></i>Rate</span>
+                  <span id="summaryRate">15,000/hour</span>
+                </div>
+                <div class="summary_row summary_total">
+                  <span><i class="ph-fill ph-receipt" aria-hidden="true"></i>Total</span>
+                  <span id="summaryTotal">0</span>
+                </div>
+              </div>
+            </div>
+
+            <p class="info_banner" id="paymentNote">
+              <i class="ph ph-info" aria-hidden="true"></i>
+              <span id="paymentNoteText">
+                The host typically responds within 24 hours.
+              </span>
+            </p>
+
+            <button
+              type="button"
+              class="request_btn"
+              id="requestBookingBtn"
+              disabled
+            >
+              <span id="requestBtnLabel">Request Booking</span>
+              <i class="ph ph-arrow-right" aria-hidden="true"></i>
+            </button>
           </div>
-        </div>
-
-        <div class="field_group">
-          <label>Available Time Slots (Hourly)</label>
-          <div class="time_slots" id="timeSlots"></div>
-        </div>
-
-        <div class="field_group">
-          <label>Booking Summary</label>
-          <div class="summary_box">
-            <div class="summary_row"><span><i class="ph ph-buildings"></i>Workspace</span><span id="summaryWorkspace">Hub One Workspace</span></div>
-            <div class="summary_row"><span><i class="ph ph-calendar"></i>Date</span><span id="summaryDate">Select a date</span></div>
-            <div class="summary_row"><span><i class="ph ph-clock"></i>Time</span><span id="summaryTime">Select a time</span></div>
-            <div class="summary_row"><span><i class="ph ph-hourglass"></i>Duration</span><span id="summaryDuration">-</span></div>
-            <div class="summary_row"><span><i class="ph ph-currency-ngn"></i>Rate</span><span id="summaryRate">15,000/hour</span></div>
-            <div class="summary_row summary_total"><span><i class="ph-fill ph-receipt"></i>Total</span><span id="summaryTotal">0</span></div>
-          </div>
-        </div>
-
-        <p class="info_banner" id="paymentNote">
-          <i class="ph ph-info"></i>
-          <span id="paymentNoteText">The host typically responds within 24 hours.</span>
-        </p>
-
-        <button type="button" class="request_btn" id="requestBookingBtn" disabled>
-          <span id="requestBtnLabel">Request Booking</span>
-          <i class="ph ph-arrow-right"></i>
-        </button>
-
+        </main>
       </div>
-
-      </div>
-
-    </main>
-    </section>
+</section>
 
     <script type="module" src="../scripts/booking.js"></script>
   </body>
-</html>
+  </html>
