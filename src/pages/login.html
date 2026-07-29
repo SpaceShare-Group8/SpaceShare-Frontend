@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+     <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"
+    />
+    <link rel="stylesheet" href="../styles/auth.css">
+</head>
+<body>
+    <div class="login-container">
+
+        <a href="create account.html" class="back-btn"><i class="ph ph-caret-left"></i></a>
+        <h1>Sign In</h1>
+        <p class="subtitle">Hello! Welcome Back, good to see you again</p>
+
+        <form id="loginForm">
+            <label>Enter your email</label>
+            <div class="input-box">
+                <i class="ph ph-envelope-simple"></i>
+                <input type="email" id="email" placeholder="Enter your email">
+            </div>
+
+            <label>Enter your password</label>
+            <div class="input-box">
+                <i class="ph ph-lock-key"></i>
+                <input type="password" id="password" placeholder="Enter your password">
+            </div>
+
+            <!-- hidden error message -->
+             <p id="password-error" class="error">Incorrect password, please try again.</p>
+             <a href="#" class="forgot">Forgot Password?</a>
+
+             <button type="submit" class="login-btn">Login</button>
+        </form>
+
+        <a href="signup.html" class="signup-link">Sign Up</a>
+
+        <div class="divider"><span>Or continue using</span></div>
+
+        <div class="social-icons">
+            <i class="ph-fill ph-apple-logo"></i>
+            <i class="ph ph-google-logo"></i>
+        </div>
+    </div>
+    <script src="../scripts/login.js"></script>
+</body>
+</html>
