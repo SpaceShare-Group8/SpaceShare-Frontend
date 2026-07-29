@@ -21,10 +21,12 @@ const prevBtn = document.getElementById("prevMonth");
 const nextBtn = document.getElementById("nextMonth");
 const slotsEl = document.getElementById("timeSlots");
 const typeSelect = document.getElementById("bookingType");
+const typeIcon = document.getElementById("bookingTypeIcon");
 const typeNoteText = document.getElementById("bookingTypeNoteText");
 const payNoteText = document.getElementById("paymentNoteText");
 const reqBtn = document.getElementById("requestBookingBtn");
 const reqBtnLabel = document.getElementById("requestBtnLabel");
+const requestNote = document.getElementById("requestNote");
 const backBtn = document.querySelector(".back_btn");
 
 const sumDate = document.getElementById("summaryDate");
@@ -185,10 +187,13 @@ function ordinal(d) {
   return d + "th";
 }
 
-// swap the copy depending on booking type - request needs host approval,
-// instant just needs payment
+// swap the copy (and icon + button style) depending on booking type -
+// request needs host approval, instant just needs payment
 function applyType() {
   const instant = typeSelect.value === "instant";
+
+  typeIcon.className = instant ? "ph-fill ph-lightning" : "ph-fill ph-clock-countdown";
+
   typeNoteText.textContent = instant
     ? "You can book and access the space immediately after payment."
     : "Your booking requires host approval before confirmation.";
@@ -196,6 +201,12 @@ function applyType() {
     ? "Complete payment to instantly confirm your booking."
     : "The host typically responds within 24 hours.";
   reqBtnLabel.textContent = instant ? "Proceed to Payment" : "Request Booking";
+
+  // instant gets the solid filled button, request gets the outline -
+  // matches the figma, and the little "you'll be notified" note only
+  // makes sense for the request flow
+  reqBtn.classList.toggle("is_outline", !instant);
+  requestNote.style.display = instant ? "none" : "block";
 }
 
 typeSelect.onchange = applyType;

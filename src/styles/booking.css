@@ -1,281 +1,306 @@
 @import url('https://fonts.cdnfonts.com/css/frank-black');
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 
 :root {
-    --color-text: #000000;
-    --primary_color: #052659;
-    --text_span_color: #111;
-    --btn_color: #2862BC;
-    --btn_color_dark: #1f4c96;
-    --primary_container: #ffffff;
-    --secondary_container: #052659;
-    --radio_btn: #d9d9d9;
-    --radio_selector_tbn: #2862BC;
-    --background_color: #f5f5f5;
-    --page_backdrop: #eef1f6;
+  --color-text: #000000;
+  --primary_color: #052659;
+  --text_span_color: #111;
+  --btn_color: #2862BC;
+  --btn_color_dark: #1f4c96;
+  --primary_container: #ffffff;
+  --secondary_container: #052659;
+  --radio_btn: #d9d9d9;
+  --radio_selector_tbn: #2862BC;
+  --background_color: #f5f5f5;
+  --page_backdrop: #eef1f6;
 
-    /* new, booking-screen specific */
-    --text_muted: #6b7280;
-    --disabled_bg: #f0f1f3;
-    --disabled_text: #a3a8b3;
-    --info_bg: #eaf1ff;
-    --star_color: #f5a623;
-    --border_color: #9a9898;
+  --line: #e3e3e3;
+  --brand: #2f6fed;
+  --brand_soft: #eef4ff;
+  --text: #111111;
+  --muted: #6b6b6b;
+
+  /* new, booking-screen specific */
+  --text_muted: #6b7280;
+  --disabled_bg: #f0f1f3;
+  --disabled_text: #a3a8b3;
+  --info_bg: #eaf1ff;
+  --star_color: #f5a623;
+  --border_color: #9a9898;
 }
 
+
+
+
+
 body {
-    font-family: sans-serif;
-    background-color: var(--background_color);
-    color: var(--color-text);
-    width: 100%;
-    height: auto;
-    border: 0.7px solid var(--border_color);
+  font-family: sans-serif;
+  background-color: var(--background_color);
+  color: var(--color-text);
+  width: 100%;
+  height: auto;
+  border: 0.7px solid var(--border_color);
 
 }
 
 
 .booking_page {
-    min-height: 100%;
-    height: 15%;
-    width: auto;
-    display: flex;
-    flex-direction: column;
-    padding-top: 20px;
+  min-height: 100%;
+  height: 15%;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
 }
 
 
 /* top bar */
 .top_bar>.top_menu {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    justify-content: space-between;
-    align-items: center;
-    padding-left: 15px;
-    padding-right: 15px;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 
 /* top menu left logo section */
 .top_menu_left_logo_section {
-    display: flex;
-    gap: 8px;
-    flex-direction: row;
-    justify-content: center;
-    align-items: flex-start;
-    width: 208px;
-    height: 40px;
-    top: 51px
+  display: flex;
+  gap: 8px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  width: 208px;
+  height: 40px;
+  top: 51px;
+  flex-shrink: 0;
 }
 
 
 .top_menu_left_logo_section .logo {
-    width: 44px;
-    height: 40px;
+  width: 44px;
+  height: 40px;
 }
 
 
 .logo_name {
-    padding-top: 6px;
-    font-family: sans-serif;
-    font-size: 26px;
-    color: var(--btn_color);
-    font-weight: bold;
-    font-weight: 700;
-    width: 156px;
-    height: 33px;
-    line-height: 100%;
+  padding-top: 6px;
+  font-family: sans-serif;
+  font-size: 26px;
+  color: var(--btn_color);
+  font-weight: bold;
+  font-weight: 700;
+  width: 156px;
+  height: 33px;
+  line-height: 100%;
 }
 
 
-/* top menu middle section */
+/* top menu middle section - was a fixed 411px plus a hardcoded
+margin-right:400px to push it into place, which is why it didn't
+adjust when the window got narrower and ended up squeezing/pushing
+the profile section on the right. flex + max-width lets it actually
+shrink like everything else */
 .top_menu_middle_search_section {
-    display: flex;
-    gap: 15px;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    border-radius: 30px;
-    background-color: var(--primary_container);
-    border: 1px solid var(--border_color);
-    width: 411px;
-    height: 50px;
-    padding: 12px 0px 12px 15px;
-    margin-right: 400px;
+  display: flex;
+  gap: 15px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  border-radius: 30px;
+  background-color: var(--primary_container);
+  border: 1px solid var(--border_color);
+  flex: 1 1 auto;
+  max-width: 511px;
+  height: 50px;
+  padding: 12px 0px 12px 15px;
+  margin: 0 24px;
 }
 
 .search_bar {
-    color: #948E8E;
+  color: #948E8E;
 }
 
 
 .search_bar>input {
-    outline: none;
-    border: none;
-    background-color: none;
-    width: 191px;
-    height: 24px;
-    align-self: center;
-    font-family: sans-serif;
-    font-size: 16px;
-    font-weight: 510;
-    font-style: medium;
-    color: #948E8E;
+  outline: none;
+  border: none;
+  background-color: none;
+  width: 191px;
+  height: 24px;
+  align-self: center;
+  font-family: sans-serif;
+  font-size: 16px;
+  font-weight: 510;
+  font-style: medium;
+  color: #948E8E;
 
 }
 
 
 /* work here */
 .ph-magnifying-glass {
-    width: 24px;
-    height: 24px;
-    border: 1px thick #948E8E;
+  width: 24px;
+  height: 24px;
+  border: 1px thick #948E8E;
 }
 
 
 
 /* top menu right user section */
 .top_menu_right_user_section {
-    display: flex;
-    flex-direction: row;
-    gap: 2px;
-    justify-content: flex-end;
-    align-items: center;
-    width: 64.43px;
-    height: 47px;
-    border: 1px;
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+  justify-content: flex-end;
+  align-items: center;
+  width: 64.43px;
+  height: 47px;
+  border: 1px;
+  flex-shrink: 0;
 }
 
 
 .ph-user-circle {
-    font-size: 40px;
-    border: 1px;
+  font-size: 40px;
+  border: 1px;
 }
 
 
 
 /* dividing the main page into 2 parts*/
 .main_bar {
-    padding-top: 20px;
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    width: 100%;
-    height: 85%;
-    align-items: flex-start;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  width: 100%;
+  height: 85%;
+  align-items: flex-start;
 }
 
 
 /* nav bar section */
 /*  check height */
 .main_left_tabs {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    background-color: var(--primary_container);
-    width: 230px;
-    height: auto;
-    border-top-left-radius: 16px;
-    border-top-right-radius: 16px;
-    border: 0.5px thin var(--border_color);
-    padding-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: var(--primary_container);
+  width: 230px;
+  height: 800px;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  border: 0.5px thin var(--border_color);
+  padding-top: 15px;
 
 }
 
 .nav_tab {
-    margin-left: 12px;
-    padding: 15px;
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    width: 232px;
-    font-weight: 510;
-    font-style: medium;
-    font-size: 14px;
-    font-family: sans-serif;
-    align-items: center;
-    color: #9A9898;
-    cursor: pointer;
-    transition: 0.3s ease-in-out;
+  margin-left: 12px;
+  padding: 15px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width: 232px;
+  font-weight: 510;
+  font-style: medium;
+  font-size: 14px;
+  font-family: sans-serif;
+  align-items: center;
+  color: #9A9898;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
 }
 
 
 #nav_tab_two {
-    background-color: #EEF4FF;
-    width: 205px;
-    height: 50px;
-    border-radius: 15px;
-    gap: 18px;
-    color: #2862BC;
+  background-color: #EEF4FF;
+  width: 205px;
+  height: 50px;
+  border-radius: 15px;
+  gap: 18px;
+  color: #2862BC;
 }
 
 .nav_tab:hover {
-    background-color: #EEF4FF;
-    border-radius: 12px;
-    width: 205px;
-    height: 50px;
-    color: #2862BC;
+  background-color: #EEF4FF;
+  border-radius: 12px;
+  width: 205px;
+  height: 50px;
+  color: #2862BC;
 }
 
 
 
 /* button */
 .main_left_tabs>button {
-    border: 0.5px solid;
-    border-color: #9A9898;
-    border-radius: 20px;
-    padding: 20px;
-    width: 200px;
-    margin: 200px 0px 20px 15px;
-    background-color: var(--primary_container);
+  border: 0.5px solid;
+  border-color: #9A9898;
+  border-radius: 20px;
+  padding: 20px;
+  width: 200px;
+  margin: 340px 0px 20px 15px;
+  background-color: var(--primary_container);
 }
 
 .ph-headset {
-    background-color: #9A9898;
-    padding: 5px;
-    border-radius: 5px;
-    font-size: 20px;
+  background-color: #9A9898;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 20px;
 }
 
 
 .help_desk {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    align-items: start;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: lighter;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: start;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: lighter;
 }
 
 
 .btn_help_me {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    gap: 8px;
-    color: #9A9898;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 8px;
+  color: #9A9898;
 }
 
 .btn_help_me>.second_c {
-    width: 130px;
-    height: 34px;
+  width: 130px;
+  height: 34px;
 }
 
 .ph-caret-right {
-    position: relative;
-    align-self: end;
-    color: #2862BC;
-    right: 14px;
-    bottom: 2px;
+  position: relative;
+  align-self: end;
+  color: #2862BC;
+  right: 14px;
+  bottom: 2px;
 }
+
+
 
 /* end of main left side */
 
@@ -286,198 +311,185 @@ body {
 
 /* main side middle info */
 .booking_main {
-    background-color: #ffffff;
-    width: 1136px;
-    height: auto;
-    border-top-left-radius: 16px;
-    border-top-right-radius: 16px;
-    padding-left: 25px;
-    padding-top: 10px;
+  background-color: #ffffff;
+  width: 1136px;
+  height: 800px;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  padding-left: 45px;
+  padding-top: 10px;
 }
 
 .booking_main {
-    display: flex;
-    flex-direction: row;
-    flex: 1;
-    min-width: 0;
-    /* let the left side shrink instead of pushing */
-    gap: 20px;
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  min-width: 0;
+  /* let the left side shrink instead of pushing */
+  gap: 20px;
 }
 
 /* left side */
 
 .left_side_booking_content {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-width: 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1, 1, 700px;
+  min-width: 0;
+  padding-right: 40px;
 }
 
 /* hidden arrow at the desktop view and the header name */
 .booking_header {
-    padding-top: 10px;
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    font-size: 14px;
-    line-height: 100%;
-    width: 500px;
-    height: 38px;
-    font-weight: bold;
-    letter-spacing: -0.42%;
+  padding-top: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 100%;
+  width: 500px;
+  height: 38px;
+  font-weight: bold;
+  letter-spacing: -0.42%;
 }
 
 
 /* visible by default (mobile) */
 .back_btn {
-    display: inline-flex;
-    align-items: start;
+  display: inline-flex;
+  align-items: start;
 }
 
 /* hidden on desktop */
 @media (min-width: 1240px) {
-    .back_btn {
-        display: none;
-    }
+  .back_btn {
+    display: none;
+  }
 }
 
 .book_content {
-    padding-top: 10px;
-    display: flex;
-    flex-direction: column;
-    width: 500px;
-    height: 316.48px;
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  height: 316.48px;
 }
 
 .content {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .content>img {
-    width: 500px;
-    height: 235px;
-    border-radius: 16px;
+  width: 500px;
+  height: 235px;
+  border-radius: 16px;
 }
 
 .content>.work_space {
-    background-color: #2862BC;
-    color: var(--background_color);
-    width: max-content;
-    padding: 3px;
-    font-size: 8px;
-    border-radius: 5px;
-    transition: 0.3 ease-in;
-    cursor: pointer;
+  background-color: #2862BC;
+  color: var(--background_color);
+  width: max-content;
+  padding: 3px;
+  font-size: 8px;
+  border-radius: 5px;
+  transition: 0.3 ease-in;
+  cursor: pointer;
 }
 
 .work_space:hover {
-    background-color: #6b7280;
-    color: #000000;
+  background-color: #6b7280;
+  color: #000000;
 }
 
 .details_extra {
-    padding-top: 8px;
-    letter-spacing: 0%;
-    width: 629px;
-    height: 29px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  padding-top: 8px;
+  letter-spacing: 0%;
+  width: 629px;
+  height: 29px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .details_extra>.booking_title {
-    font-size: 18px;
-    font-weight: 590;
+  font-size: 18px;
+  font-weight: 590;
 }
 
 .details_extra>.booking_desc {
-    font-size: 12px;
-    width: 245px;
-    height: 34px;
-    line-height: 100%;
-    letter-spacing: 0%;
-    color: #111111;
-    text-align: justify;
+  font-size: 12px;
+  width: 245px;
+  height: 34px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #111111;
+  text-align: justify;
 }
 
 
 .content_booking_location {
-    padding-top: 40px;
-    display: flex;
-    flex-direction: row;
-    gap: 175px;
-    width: 435px;
-    height: 17.14px;
-    font-size: 12px;
+  padding-top: 40px;
+  display: flex;
+  flex-direction: row;
+  gap: 175px;
+  width: 435px;
+  height: 17.14px;
+  font-size: 12px;
 }
 
 .loc_top {
-    align-self: flex-start;
+  align-self: flex-start;
 }
 
 .ph-map-pin {
-    color: #2862BC;
-    align-self: start;
-    font-size: 10px;
+  color: #2862BC;
+  align-self: start;
+  font-size: 10px;
 }
 
 .loc_bottom {
-    padding-top: 20px;
-    display: flex;
-    gap: 6px;
+  padding-top: 20px;
+  display: flex;
+  gap: 6px;
 }
 
 .ph-star {
-    color: #FFC107;
-    font-size: 10px;
+  color: #FFC107;
+  font-size: 10px;
 }
 
 .loc_rate {
-    font-size: 12px;
-    display: flex;
-    gap: 35px;
-    width: 261px;
-    height: 19px;
-    justify-content: left;
+  font-size: 12px;
+  display: flex;
+  gap: 35px;
+  width: 261px;
+  height: 19px;
+  justify-content: left;
 
 }
 
 .loc_amount {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .ph-currency-ngn {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 
 
 /* right main section vanilla css */
-
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-}
-:root {
-  --border_color: #9a9898;
-  --line: #e3e3e3;
-  --brand: #2f6fed;
-  --brand_soft: #eef4ff;
-  --text: #111111;
-  --muted: #6b6b6b;
-}
-
 .right_book_calendar {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  flex: 0 0 320px;
+  flex: 0 0 350px;
   max-width: 100%;
   padding-top: 8px;
 }
+
 
 .field_group {
   display: flex;
@@ -485,8 +497,9 @@ body {
   gap: 6px;
 }
 
+
 .field_title,
-.field_group > label {
+.field_group>label {
   margin: 0;
   font-size: 12px;
   font-weight: 600;
@@ -511,6 +524,7 @@ body {
 .select_wrap {
   background-color: #fff;
 }
+
 .info_banner {
   background-color: var(--brand_soft);
   border-color: #cddcff;
@@ -527,11 +541,33 @@ body {
   cursor: pointer;
 }
 
-.select_wrap > i,
-.info_banner > i {
+.select_wrap>i,
+.info_banner>i {
   flex-shrink: 0;
   font-size: 15px;
 }
+
+.ph-lightning {
+  color: #fff;
+  padding: 2px;
+  background-color: #2f6fed;
+  border-radius: 10px;
+}
+
+/* the leading icon in the booking type dropdown swaps glyph
+(clock-countdown for Request, lightning for Instant) via JS - this
+gives it the little blue badge look no matter which glyph is showing,
+so it doesn't just apply to the lightning one */
+.select_wrap > i:first-child {
+  color: #fff;
+  padding: 3px;
+  font-size: 12px;
+  background-color: var(--brand);
+  border-radius: 50%;
+}
+
+
+
 
 /* calendar */
 .calendar {
@@ -568,6 +604,8 @@ body {
   cursor: pointer;
 }
 
+
+/* check here */
 .cal_nav:hover {
   background-color: var(--brand_soft);
   border-color: var(--brand);
@@ -591,11 +629,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  aspect-ratio: 1;
+  aspect-ratio: 1.8;
   padding: 0;
-  background: transparent;
-  border: none;
   border-radius: 4px;
+  border: 1px solid grey;
   font: inherit;
   font-size: 11px;
   cursor: pointer;
@@ -604,17 +641,22 @@ body {
 .cal_day:hover:not(:disabled) {
   background-color: var(--brand_soft);
 }
+
 .cal_day.is_today {
   box-shadow: inset 0 0 0 1px var(--brand);
+  color: #fff;
 }
+
 .cal_day.is_selected {
   background-color: var(--brand);
   color: #fff;
 }
+
 .cal_day:disabled {
   color: #c4c4c4;
   cursor: not-allowed;
 }
+
 .cal_day.is_empty {
   visibility: hidden;
 }
@@ -639,11 +681,13 @@ body {
 .slot:hover:not(:disabled) {
   border-color: var(--brand);
 }
+
 .slot.is_selected {
   background-color: var(--brand);
   border-color: var(--brand);
   color: #fff;
 }
+
 .slot:disabled {
   background-color: #f5f5f5;
   color: #c4c4c4;
@@ -655,6 +699,10 @@ body {
   font-size: 11px;
   color: var(--muted);
 }
+
+
+
+
 
 /* summary */
 .summary_box {
@@ -674,22 +722,23 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+
 }
 
-.summary_row > span:first-child {
+.summary_row>span:first-child {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: var(--muted);
+  color: var(--color-text);
 }
 
-.summary_row > span:last-child {
+.summary_row>span:last-child {
   text-align: right;
   font-weight: 500;
 }
 
 .summary_row i {
-  flex-shrink: 0;
+  flex-shrink: 1;
   font-size: 13px;
 }
 
@@ -699,8 +748,8 @@ body {
   font-size: 12px;
 }
 
-.summary_total > span:first-child,
-.summary_total > span:last-child {
+.summary_total>span:first-child,
+.summary_total>span:last-child {
   color: var(--text);
   font-weight: 600;
 }
@@ -727,10 +776,38 @@ body {
 .request_btn:hover:not(:disabled) {
   background-color: #2559c9;
 }
+
 .request_btn:disabled {
   background-color: #c9d4e8;
   color: #6f7c93;
   cursor: not-allowed;
+}
+
+/* Request Booking uses the outline style (needs host approval, not
+an immediate action) while Instant Booking keeps the solid fill above
+- toggled in JS by adding/removing is_outline on the button */
+.request_btn.is_outline {
+  background-color: #fff;
+  color: var(--brand);
+  border: 1.5px solid var(--brand);
+}
+
+.request_btn.is_outline:hover:not(:disabled) {
+  background-color: var(--brand_soft);
+}
+
+.request_btn.is_outline:disabled {
+  background-color: #fff;
+  color: #c9d4e8;
+  border-color: #c9d4e8;
+}
+
+/* small note under the button - only shown for Request Booking,
+matches the figma */
+.request_note {
+  text-align: center;
+  font-size: 10.5px;
+  color: var(--muted);
 }
 
 /* ===== mobile - stacks everything, drops the sidebar + search bar,
@@ -745,13 +822,18 @@ desktop rules above this point are untouched ===== */
     padding-top: 0;
   }
 
+  /* .top_bar{
+    position: fixed;
+    right: 10px;
+  } */
+
   .top_menu_left_logo_section,
   .top_menu_middle_search_section,
   .aside_bar_menu {
     display: none;
   }
 
-  .top_bar > .top_menu {
+  .top_bar>.top_menu {
     justify-content: flex-end;
     padding: 12px 16px;
   }
@@ -762,12 +844,15 @@ desktop rules above this point are untouched ===== */
     width: 100%;
   }
 
+  
+
   .booking_main {
     flex-direction: column;
     width: 100%;
     height: auto;
     padding: 16px;
     gap: 28px;
+    background-color: #F5F5F5;
   }
 
   .left_side_booking_content {
@@ -777,14 +862,20 @@ desktop rules above this point are untouched ===== */
   .booking_header {
     width: auto;
     height: auto;
+    justify-content: flex-start;
+    gap: 80px;
   }
+
+   .booking_header > h1{
+    justify-content: center;
+   }
 
   .book_content {
     width: 100%;
     height: auto;
   }
 
-  .content > img {
+  .content>img {
     width: 100%;
     height: auto;
     aspect-ratio: 16 / 9;
@@ -795,7 +886,7 @@ desktop rules above this point are untouched ===== */
     height: auto;
   }
 
-  .details_extra > .booking_desc {
+  .details_extra>.booking_desc {
     width: 100%;
     height: auto;
   }
