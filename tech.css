@@ -1,0 +1,344 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Mobile Frame Wrapper */
+.mobile-container {
+    width: 100%;
+    max-width: 414px;
+    height: 100vh;
+    max-height: 896px;
+    background-color: #ffffff;
+    display: flex;
+    flexDirection: column;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+/* App Header */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: #ffffff;
+    border-bottom: 1px solid #eee;
+    z-index: 10;
+}
+
+.app-title {
+    font-weight: 600;
+    font-size: 16px;
+    color: #1a1a1a;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: #333;
+}
+
+.header-actions {
+    display: flex;
+    gap: 15px;
+}
+
+/* Main Content Area */
+.content-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 70px; /* Leave space for bottom nav */
+}
+
+/* Image Carousel */
+.carousel-container {
+    position: relative;
+    width: 100%;
+    height: 240px;
+    background-color: #e1e4e8;
+}
+
+.carousel-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-counter {
+    position: absolute;
+    bottom: 12px;
+    right: 15px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    padding: 3px 8px;
+    font-size: 12px;
+    border-radius: 4px;
+}
+
+.carousel-dots {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 5px;
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+}
+
+.dot.active {
+    background: #ffffff;
+}
+
+/* Listing Details Section */
+.listing-info-section {
+    padding: 20px;
+}
+
+.badge-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.verified-badge {
+    background-color: #eef2ff;
+    color: #3b5bdb;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 8px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.verify-link {
+    font-size: 12px;
+    color: #3b5bdb;
+    text-decoration: none;
+}
+
+.title-price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.title-price-row h1 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111;
+}
+
+.space-type {
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+}
+
+.rating-box {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.rating-box i {
+    color: #f59e0b;
+}
+
+.review-count {
+    color: #888;
+    font-weight: 400;
+    font-size: 12px;
+}
+
+.price-display {
+    margin-bottom: 15px;
+}
+
+.price-display .currency, .price-display .amount {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111;
+}
+
+.price-display .duration {
+    font-size: 13px;
+    color: #666;
+}
+
+.cta-button {
+    width: 100%;
+    background-color: #2b4c7e;
+    color: #fff;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.cta-button:hover {
+    background-color: #1f375c;
+}
+
+.divider {
+    border: none;
+    height: 6px;
+    background-color: #f7f8fa;
+}
+
+/* Sections (Amenities, Location, About) */
+.section-block {
+    padding: 20px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.section-header h3, .section-block > h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111;
+}
+
+.view-all {
+    font-size: 13px;
+    color: #2b4c7e;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+/* Amenities Grid */
+.amenities-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    text-align: center;
+}
+
+.amenity-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.amenity-item i {
+    font-size: 18px;
+    color: #444;
+    background: #f4f5f7;
+    padding: 12px;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.amenity-item span {
+    font-size: 11px;
+    color: #555;
+    line-height: 1.2;
+}
+
+/* Location Map Preview */
+.map-container {
+    width: 100%;
+    height: 120px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #e5e9f0;
+    margin-bottom: 10px;
+}
+
+.map-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #2b4c7e;
+}
+
+.location-address {
+    font-size: 13px;
+    color: #333;
+    line-height: 1.4;
+}
+
+.distance-text {
+    color: #888;
+    font-size: 12px;
+}
+
+.about-text {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.5;
+}
+
+/* Bottom Navigation Bar */
+.bottom-nav {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: #ffffff;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #999;
+    font-size: 10px;
+    gap: 3px;
+}
+
+.nav-item i {
+    font-size: 18px;
+}
+
+.nav-item.active {
+    color: #2b4c7e;
+}

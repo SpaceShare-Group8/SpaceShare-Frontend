@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpaceShare - Listing Details</title>
+    <link rel="stylesheet" href="tech.css">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="mobile-container">
+        <!-- Top Navigation Header -->
+        <header class="app-header">
+            <button class="icon-btn"><i class="fa-solid fa-chevron-left"></i></button>
+            <span class="app-title">SpaceShare</span>
+            <div class="header-actions">
+                <button class="icon-btn"><i class="fa-regular fa-heart"></i></button>
+                <button class="icon-btn"><i class="fa-solid fa-arrow-up-from-bracket"></i></button>
+            </div>
+        </header>
+
+        <!-- Main Scrollable Content -->
+        <main class="content-scroll">
+            <!-- Image Carousel Section -->
+            <div class="carousel-container">
+                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80" alt="Workspace Interior" class="carousel-img" id="carouselImage">
+                <div class="image-counter">1/12</div>
+                <div class="carousel-dots">
+                    <span class="dot active"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+            </div>
+
+            <!-- Listing Overview Section -->
+            <div class="listing-info-section">
+                <div class="badge-row">
+                    <span class="verified-badge">
+                        <i class="fa-solid fa-shield-check"></i> Community-verified
+                    </span>
+                    <a href="#" class="verify-link">What does this mean?</a>
+                </div>
+
+                <div class="title-price-row">
+                    <div>
+                        <h1>Hub One Workspace</h1>
+                        <p class="space-type">COWORKING SPACE</p>
+                    </div>
+                    <div class="rating-box">
+                        <i class="fa-solid fa-star"></i>
+                        <span>4.8</span>
+                        <span class="review-count">(120)</span>
+                    </div>
+                </div>
+
+                <div class="price-display">
+                    <span class="currency">₦</span><span class="amount">15,000</span><span class="duration">/ hour</span>
+                </div>
+
+                <button class="cta-button" id="checkAvailabilityBtn">Check Availability</button>
+            </div>
+
+            <hr class="divider">
+
+            <!-- Amenities Section -->
+            <div class="section-block">
+                <div class="section-header">
+                    <h3>Amenities</h3>
+                    <a href="#" class="view-all">View All <i class="fa-solid fa-chevron-right"></i></a>
+                </div>
+                <div class="amenities-grid">
+                    <div class="amenity-item">
+                        <i class="fa-solid fa-wifi"></i>
+                        <span>Fast internet</span>
+                    </div>
+                    <div class="amenity-item">
+                        <i class="fa-solid fa-clock"></i>
+                        <span>24/7 Access</span>
+                    </div>
+                    <div class="amenity-item">
+                        <i class="fa-solid fa-snowflake"></i>
+                        <span>Air Conditioned</span>
+                    </div>
+                    <div class="amenity-item">
+                        <i class="fa-solid fa-tv"></i>
+                        <span>Projector & TV</span>
+                    </div>
+                    <div class="amenity-item">
+                        <i class="fa-solid fa-mug-hot"></i>
+                        <span>Refreshments Available</span>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <!-- Location Section -->
+            <div class="section-block">
+                <div class="section-header">
+                    <h3>Location</h3>
+                    <a href="#" class="view-all">View map</a>
+                </div>
+                <div class="map-container">
+                    <!-- Placeholder map representation -->
+                    <div class="map-placeholder">
+                        <i class="fa-solid fa-map-location-dot"></i>
+                    </div>
+                </div>
+                <p class="location-address">
+                    <i class="fa-solid fa-location-dot"></i> Lekki phase one, Lagos. <br>
+                    <span class="distance-text">2.5km from your location</span>
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- About the Space Section -->
+            <div class="section-block">
+                <h3>About the space</h3>
+                <p class="about-text">
+                    A modern style of meeting room perfect for conference and exclusive meetings.
+                </p>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation Bar -->
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+            </a>
+            <a href="#" class="nav-item active">
+                <i class="fa-solid fa-calendar-days"></i>
+                <span>Bookings</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa-regular fa-heart"></i>
+                <span>Favorites</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa-regular fa-message"></i>
+                <span>Messages</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa-regular fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </nav>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

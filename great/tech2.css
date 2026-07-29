@@ -1,0 +1,364 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.mobile-container {
+    width: 100%;
+    max-width: 414px;
+    height: 100vh;
+    max-height: 896px;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: #ffffff;
+    border-bottom: 1px solid #eee;
+    z-index: 10;
+}
+
+.app-title {
+    font-weight: 600;
+    font-size: 16px;
+    color: #1a1a1a;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: #333;
+}
+
+.header-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.content-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 30px;
+}
+
+/* Wireframe Image Box with Diagonal Cross Lines */
+.wireframe-carousel {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    background-color: #f1f3f5;
+    border-bottom: 1px solid #e5e7eb;
+    overflow: hidden;
+}
+
+.cross-line-1, .cross-line-2 {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to top right, transparent calc(50% - 0.5px), #d1d5db calc(50% - 0.5px), #d1d5db calc(50% + 0.5px), transparent calc(50% + 0.5px));
+}
+
+.cross-line-2 {
+    background: linear-gradient(to bottom right, transparent calc(50% - 0.5px), #d1d5db calc(50% - 0.5px), #d1d5db calc(50% + 0.5px), transparent calc(50% + 0.5px));
+}
+
+.image-counter {
+    position: absolute;
+    bottom: 12px;
+    right: 15px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    padding: 3px 8px;
+    font-size: 12px;
+    border-radius: 4px;
+    z-index: 2;
+}
+
+.carousel-dots {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 5px;
+    z-index: 2;
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+}
+
+.dot.active {
+    background: #333;
+}
+
+.listing-info-section {
+    padding: 20px;
+}
+
+.lorem-badge {
+    font-size: 10px;
+    font-weight: 700;
+    color: #71717a;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+
+.title-price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.title-price-row h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111;
+}
+
+.location-text {
+    font-size: 12px;
+    color: #666;
+    margin-top: 3px;
+}
+
+.rating-box {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.rating-box i {
+    color: #f59e0b;
+}
+
+.review-count {
+    color: #888;
+    font-weight: 400;
+    font-size: 11px;
+}
+
+/* Three Stats Metric Cards */
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.stat-card {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    padding: 10px 8px;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    font-size: 10px;
+    color: #6c757d;
+}
+
+.stat-val {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: #212529;
+    margin: 2px 0;
+}
+
+.stat-sub {
+    display: block;
+    font-size: 9px;
+    color: #adb5bd;
+}
+
+/* Pricing Card Layout */
+.pricing-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    padding: 12px 15px;
+    border-radius: 8px;
+}
+
+.from-label {
+    font-size: 10px;
+    color: #6b7280;
+    display: block;
+}
+
+.price-val {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111;
+}
+
+.duration {
+    font-size: 11px;
+    font-weight: 400;
+    color: #6b7280;
+}
+
+.black-cta-btn {
+    background-color: #111;
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.divider {
+    border: none;
+    height: 6px;
+    background-color: #f7f8fa;
+}
+
+.section-block {
+    padding: 20px;
+}
+
+.section-block h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #111;
+    margin-bottom: 10px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.section-header h3 {
+    margin-bottom: 0;
+}
+
+.view-all {
+    font-size: 12px;
+    color: #3b82f6;
+    text-decoration: none;
+}
+
+.lorem-desc {
+    font-size: 12px;
+    color: #555;
+    line-height: 1.4;
+}
+
+/* Horizontal Scroll or Grid for Wireframe Amenities */
+.amenities-grid-wireframe {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    text-align: center;
+}
+
+.amenity-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.amenity-item i {
+    font-size: 14px;
+    color: #333;
+    background: #f1f3f5;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.amenity-item span {
+    font-size: 10px;
+    color: #555;
+    line-height: 1.1;
+}
+
+/* Map placeholder */
+.map-placeholder-box {
+    width: 100%;
+    height: 100px;
+    background: #e9ecef;
+    border-radius: 6px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.pin-marker {
+    background: #111;
+    color: #fff;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.address-snippet {
+    font-size: 12px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.mini-tags-row {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+}
+
+.mini-tag {
+    background: #f1f3f5;
+    border: 1px solid #e2e8f0;
+    padding: 6px 10px;
+    font-size: 10px;
+    color: #4b5563;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.bottom-sticky-card {
+    margin: 0 20px 20px 20px;
+}
