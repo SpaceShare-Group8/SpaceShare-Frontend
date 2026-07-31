@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dispute Queue · SpaceShare Admin</title>
+
+    <!--
+      Same phosphor icon font used on the other screens (booking.html,
+      host-booking-requests.html). "regular" = outline icons (ph ph-x),
+      "fill" = solid icons (ph-fill ph-x). If an icon below doesn't
+      match your figma exactly, phosphor has a live icon search at
+      https://phosphoricons.com - just swap the class name, everything
+      else (size/color) is controlled from the CSS file so it'll just
+      work with the new icon.
+    -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"
+    />
+    <link rel="stylesheet" href="../styles/admin-dispute-queue.css" />
+  </head>
+  <body>
+    <div class="page">
+      <!-- top bar - same pattern as the other admin/host screens, just
+      no search bar here since it wasn't in the figma for this one -->
+      <header class="top_bar">
+        <div class="top_menu">
+          <div class="logo_section">
+            <!-- ICON/LOGO: reusing the same logo file as the other
+            pages. if admin has a different logo mark, swap the src -->
+            <img src="/src/Images/Spaceshare_logo.png" alt="SpaceShare" class="logo" />
+            <span class="logo_name">SpaceShare</span>
+          </div>
+
+          <label class="search_bar" for="disputeSearch">
+            <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+            <input type="search" id="disputeSearch" placeholder="Search workspace..." />
+          </label>
+
+          <div class="user_section">
+            <!-- ICON: swap ph-user-circle for a real avatar image once
+            admin accounts have profile pictures -->
+            <i class="ph-fill ph-user-circle" aria-hidden="true"></i>
+            <i class="ph ph-caret-down" aria-hidden="true"></i>
+          </div>
+        </div>
+      </header>
+
+      <div class="main_bar">
+        <!-- admin sidebar (desktop). on mobile this is hidden - there
+        was no mobile sidebar/bottom-nav shown in your dispute queue
+        screenshots, so I left it desktop-only for now. tell me if the
+        mobile version needs its own nav and I'll add a bottom tab bar
+        like the host-booking-requests screen has -->
+        <aside class="sidebar">
+          <nav class="sidebar_nav">
+            <a class="nav_item" href="#"><i class="ph ph-squares-four"></i>Dashboard</a>
+            <a class="nav_item" href="#"><i class="ph ph-users"></i>Hosts</a>
+            <a class="nav_item" href="#"><i class="ph ph-list-bullets"></i>Listings</a>
+            <!-- badge count (5) is hardcoded to match the mock data
+            below - see updateModerationBadge() in the JS file, it
+            keeps this in sync with however many disputes are still
+            open, so you don't need to touch this number by hand -->
+            <a class="nav_item is_active" href="#">
+              <i class="ph ph-shield-warning"></i>Moderation Queue
+              <span class="nav_badge" id="moderationBadge">5</span>
+            </a>
+            <a class="nav_item" href="#"><i class="ph ph-flag"></i>Reports</a>
+
+            <span class="nav_group_label">ACCOUNT</span>
+            <a class="nav_item" href="#"><i class="ph ph-user"></i>Profile</a>
+            <a class="nav_item" href="#"><i class="ph ph-gear"></i>Settings</a>
+            <a class="nav_item" href="#"><i class="ph ph-sign-out"></i>Logout</a>
+          </nav>
+        </aside>
+
+        <main class="content">
+          <!-- ===================================================
+          QUEUE VIEW - the list/table of all open disputes.
+          This and the detail view below both live on this one page
+          and get shown/hidden by JS (see showDetail()/showQueue() in
+          admin-dispute-queue.js) instead of being separate pages -
+          simpler than wiring up real routing for a screen that
+          doesn't have a backend yet anyway.
+          =================================================== -->
+          <section id="queueView" class="view">
+            <div class="page_header">
+              <div>
+                <h1>Dispute Queue</h1>
+                <p>Review open dispute and examine booking evidence before taking action.</p>
+              </div>
+              <!-- text here ("5 Open Disputes") is filled in by JS too,
+              same reasoning as the sidebar badge above -->
+              <span class="open_count_pill" id="openCountPill"></span>
+            </div>
+
+            <!-- desktop column headers - hidden on mobile since the
+            mobile layout uses stacked cards instead of a table, see
+            the max-width:1239px block in the CSS -->
+            <div class="queue_head">
+              <span>Dispute ID</span>
+              <span>Booking Details</span>
+              <span>Listing & Host</span>
+              <span>Dispute Summary</span>
+              <span>Reliability History</span>
+              <span>Action</span>
+            </div>
+
+            <!-- rows get built by JS from MOCK_DISPUTES - renderQueue()
+            in the JS file. add/remove/edit disputes there, not here -->
+            <div class="queue_rows" id="queueRows"></div>
+
+            <p class="queue_footnote" id="queueFootnote"></p>
+          </section>
+
+          <!-- ===================================================
+          DETAIL VIEW - single opened dispute. hidden by default,
+          JS shows this and hides queueView when "View Details" is
+          clicked on a row.
+          =================================================== -->
+          <section id="detailView" class="view" hidden>
+            <a href="#" class="back_link" id="backToQueue">
+              <i class="ph ph-arrow-left" aria-hidden="true"></i>Back to Dispute Queue
+            </a>
+
+            <div class="page_header">
+              <div>
+                <h1>Dispute Details</h1>
+                <p class="dispute_id_line">
+                  <span id="detailDisputeId"></span>
+                  <span class="raised_by_badge" id="detailRaisedBy"></span>
+                </p>
+                <p>Review the dispute details, reliability history and appropriate action.</p>
+              </div>
+              <div class="opened_status">
+                <span class="status_badge opened">Opened</span>
+                <p class="opened_sub">Dispute submitted on <span id="detailSubmittedDate"></span></p>
+              </div>
+            </div>
+
+            <!-- top row of 3 info cards - Booking / Guest / Listing&Host -->
+            <div class="info_card_row">
+              <div class="info_card">
+                <p class="info_card_title"><i class="ph ph-receipt" aria-hidden="true"></i>Booking Details</p>
+                <div class="info_row"><span>Booking ID</span><span id="detailBookingId" class="link_text"></span></div>
+                <div class="info_row"><span>Date</span><span id="detailDate"></span></div>
+                <div class="info_row"><span>Time</span><span id="detailTime"></span></div>
+                <div class="info_row"><span>Duration</span><span id="detailDuration"></span></div>
+                <div class="info_row"><span>Total</span><span id="detailTotal"></span></div>
+              </div>
+
+              <div class="info_card">
+                <!-- ICON: ph-user works as a generic "guest info" icon,
+                swap for whatever your figma uses if it's different -->
+                <p class="info_card_title"><i class="ph ph-user" aria-hidden="true"></i>Guest Information</p>
+                <div class="info_row"><span>Name</span><span id="detailGuestName"></span></div>
+                <div class="info_row"><span>Email</span><span id="detailGuestEmail"></span></div>
+                <div class="info_row"><span>Phone</span><span id="detailGuestPhone"></span></div>
+              </div>
+
+              <div class="info_card">
+                <p class="info_card_title"><i class="ph ph-buildings" aria-hidden="true"></i>Listing & Host Information</p>
+                <div class="info_row"><span>Workspace</span><span id="detailWorkspace"></span></div>
+                <div class="info_row"><span>Location</span><span id="detailLocation"></span></div>
+                <div class="info_row"><span>Host</span><span id="detailHost"></span></div>
+                <div class="info_row"><span>Host Email</span><span id="detailHostEmail"></span></div>
+                <div class="info_row"><span>Host Phone</span><span id="detailHostPhone"></span></div>
+              </div>
+            </div>
+
+            <!-- bottom row of 2 cards - Dispute Summary / Reliability -->
+            <div class="info_card_row">
+              <div class="info_card wide">
+                <p class="info_card_title">Dispute summary</p>
+                <p class="field_label">Reason for Dispute</p>
+                <p class="field_value" id="detailReason"></p>
+                <p class="field_label">Guest Report</p>
+                <p class="quote_box" id="detailGuestReport"></p>
+                <p class="field_label">Supporting evidence (if any)</p>
+                <p class="field_value muted" id="detailEvidence"></p>
+              </div>
+
+              <div class="info_card wide">
+                <p class="info_card_title">Reliability History (Evidence)</p>
+                <div class="info_row"><span>Reliability Score</span><span id="detailScore" class="score_pill"></span></div>
+                <div class="info_row"><span>Completed Bookings</span><span id="detailCompleted"></span></div>
+                <div class="info_row"><span>Previous Disputes</span><span id="detailPrevDisputes"></span></div>
+                <div class="info_row"><span>Previous Cancellations</span><span id="detailPrevCancellations"></span></div>
+                <p class="field_value muted small">Use this history as evidence to assist in your decision</p>
+              </div>
+            </div>
+
+            <div class="take_action_card">
+              <div>
+                <p class="info_card_title">Take Action</p>
+                <p class="field_value muted">Choose an action based on your review on this dispute</p>
+              </div>
+              <div class="action_buttons">
+                <!-- no strict rule here on which is "primary" - figma
+                shows Refund filled/blue and Penalty outlined, matched
+                that below. flip it if your version reads differently -->
+                <button type="button" class="refund_btn" id="refundBtn">Refund</button>
+                <button type="button" class="penalty_btn" id="penaltyBtn">Penalty</button>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+
+      <footer class="page_footer">
+        <p>&copy; 2026 SpaceShare Admin. All rights reserved.</p>
+      </footer>
+    </div>
+
+    <script type="module" src="../scripts/admin-dispute-queue.js"></script>
+  </body>
+</html>
