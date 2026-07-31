@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Booking Requests · SpaceShare</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"
+    />
+    <link rel="stylesheet" href="../styles/host-booking-requests.css" />
+  </head>
+  <body>
+    <div class="page">
+      <!-- top bar (desktop only) -->
+      <header class="top_bar">
+        <div class="top_menu">
+          <div class="logo_section">
+            <img src="/src/Images/Spaceshare_logo.png" alt="SpaceShare" class="logo" />
+            <span class="logo_name">SpaceShare</span>
+          </div>
+
+          <label class="search_bar" for="workspaceSearch">
+            <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+            <input type="search" id="workspaceSearch" placeholder="Search workspace..." />
+          </label>
+
+          <div class="user_section">
+            <i class="ph-fill ph-user-circle" aria-hidden="true"></i>
+            <i class="ph ph-caret-down" aria-hidden="true"></i>
+          </div>
+        </div>
+      </header>
+
+      <div class="main_bar">
+        <!-- host dashboard sidebar (desktop) -->
+        <aside class="sidebar">
+          <nav class="sidebar_nav">
+            <span class="nav_group_label">DASHBOARD</span>
+            <a class="nav_item" href="#"><i class="ph ph-squares-four"></i>Overview</a>
+            <a class="nav_item" href="#"><i class="ph ph-buildings"></i>My Space</a>
+            <a class="nav_item" href="#"><i class="ph ph-plus-circle"></i>Add new workspace</a>
+            <a class="nav_item is_active" href="#"><i class="ph ph-calendar-check"></i>Bookings</a>
+            <a class="nav_item" href="#"><i class="ph ph-calendar-blank"></i>Calendar</a>
+            <a class="nav_item" href="#"><i class="ph ph-chat"></i>Messages</a>
+            <a class="nav_item" href="#"><i class="ph ph-star"></i>Reviews</a>
+
+            <span class="nav_group_label">ACCOUNT</span>
+            <a class="nav_item" href="#"><i class="ph ph-user"></i>Profile</a>
+            <a class="nav_item" href="#"><i class="ph ph-money"></i>Payouts</a>
+            <a class="nav_item" href="#"><i class="ph ph-gear"></i>Settings</a>
+            <a class="nav_item" href="#"><i class="ph ph-question"></i>Help & Support</a>
+            <a class="nav_item" href="#"><i class="ph ph-sign-out"></i>Logout</a>
+          </nav>
+        </aside>
+
+        <main class="content">
+          <div class="page_header">
+            <h1>Booking Requests</h1>
+            <p>Review incoming booking requests before they expire.</p>
+          </div>
+
+          <div class="requests_list" id="requestsList"></div>
+        </main>
+      </div>
+
+      <!-- bottom tab bar (mobile only) -->
+      <nav class="bottom_nav">
+        <a href="#" class="bottom_nav_item"><i class="ph ph-squares-four"></i>Dashboard</a>
+        <a href="#" class="bottom_nav_item"><i class="ph ph-buildings"></i>Spaces</a>
+        <a href="#" class="bottom_nav_item"><i class="ph ph-chat"></i>Messages</a>
+        <a href="#" class="bottom_nav_item is_active"><i class="ph ph-calendar-check"></i>Bookings</a>
+        <a href="#" class="bottom_nav_item"><i class="ph ph-user"></i>Profile</a>
+      </nav>
+    </div>
+
+    <script type="module" src="../scripts/host-booking-requests.js"></script>
+  </body>
+</html>
