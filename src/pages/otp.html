@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"
+    />
+    <link rel="stylesheet" href="../styles/auth.css">
+</head>
+<body>
+    <div class="login-container">
+        <a href="forgot password.html" class="back-btn"><i class="ph ph-caret-left"></i></a>
+        <div class="header">
+            <h1>Enter OTP</h1>
+            <p class="subtitle">Enter the code we just sent to your email address</p>
+        </div>
+
+        <form id="otpForm">
+            <div class="otp-container">
+                <input type="text" maxlength="1" class="otp-input">
+                <input type="text" maxlength="1" class="otp-input">
+                <input type="text" maxlength="1" class="otp-input">
+                <input type="text" maxlength="1" class="otp-input">
+                <input type="text" maxlength="1" class="otp-input">
+            </div>
+            <button type="submit" class="login-btn">Verify</button>
+        </form>
+
+        <p class="timer">
+            Resend code in <span id="countdown">45</span>s
+        </p>
+
+        <p class="resend">
+            Didn't receive the code?
+            <a href="#" id="resendLink">Resend</a>
+        </p>
+    </div>
+
+    <script src="../scripts/otp.js"></script>
+    
+</body>
+</html>
