@@ -83,7 +83,7 @@ file takes over navigation) ===== */
   justify-content: space-between;
   gap: 20px;
   padding: 14px 24px;
-  border-bottom: 1px solid var(--line);
+  
 }
 
 .logo_section {
@@ -111,10 +111,13 @@ anyway so there's no mobile-width version to worry about */
   display: flex;
   align-items: center;
   gap: 10px;
-  border: 1px solid var(--line);
+  border: 2px solid var(--line);
   border-radius: 24px;
   padding: 10px 16px;
   color: var(--muted);
+  width:514px;
+  height: 64px;
+  margin-right: 150px;
 }
 
 .search_bar > input {
@@ -714,8 +717,26 @@ again at desktop, see the min-width:1240px block ===== */
     border-radius: 10px;
   }
 
+  /* flex column so #queueView/#detailView below can flex:1 and fill
+  whatever height .content ends up at - .main_bar's default row-flex
+  stretch already makes .content match .sidebar's height, this just
+  passes that height down to the queue_container box so its visible
+  border/background reaches the same bottom edge as the sidebar's,
+  instead of stopping short at its own content height */
   .content {
     padding: 28px 32px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* only targets whichever section isn't hidden - a plain ".view"
+  rule would override the browser's default "[hidden] { display:none }"
+  and make both queueView and detailView show at once */
+  .view:not([hidden]) {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
   }
 
   .page_header h1 {
@@ -724,12 +745,15 @@ again at desktop, see the min-width:1240px block ===== */
 
   /* the single table-card box - queue_head, queue_rows and the
   footnote all sit inside this now instead of the footnote floating
-  below on its own */
+  below on its own. flex:1 makes this stretch down to fill the rest of
+  #queueView's height, so its border/background lines up with the
+  sidebar's height instead of shrink-wrapping just the 5 rows */
   .queue_container {
     background-color: var(--white);
     border: 1px solid var(--line);
     border-radius: 12px;
     padding: 8px 16px 16px;
+    flex: 1;
   }
 
   /* queue table look - column widths here need to add up sensibly

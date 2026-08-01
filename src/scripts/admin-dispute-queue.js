@@ -18,8 +18,9 @@ let disputes = [
     total: "₦45,000",
     workspace: "Hub One Workspace",
     location: "Lekki, Lagos",
-    // ICON/IMAGE: reusing the one workspace photo we have. once each
-    // listing has its own image on the backend, swap this per-dispute
+    // one workspace photo per dispute, matching the 001-005 files in
+    // src/Images - swap for a real per-listing image once the backend
+    // returns one
     workspaceImg: "/src/Images/booking_img_1.jpg",
     host: "Daniel Okafor",
     hostEmail: "DanielO@gmail.com",
@@ -46,7 +47,7 @@ let disputes = [
     total: "₦30,000",
     workspace: "WorkNest Hub",
     location: "Lekki, Lagos",
-    workspaceImg: "/src/Images/booking_img_1.jpg",
+    workspaceImg: "/src/Images/002.png",
     host: "Kemi O.",
     hostEmail: "kemi.o@gmail.com",
     hostPhone: "+234 803 555 0182",
@@ -72,7 +73,7 @@ let disputes = [
     total: "₦50,000",
     workspace: "Creative Space",
     location: "Lekki, Lagos",
-    workspaceImg: "/src/Images/booking_img_1.jpg",
+    workspaceImg: "/src/Images/003.png",
     host: "Michael Jose",
     hostEmail: "michael.jose@gmail.com",
     hostPhone: "+234 809 112 7743",
@@ -98,7 +99,7 @@ let disputes = [
     total: "₦35,000",
     workspace: "Innovation Hub",
     location: "Lekki, Lagos",
-    workspaceImg: "/src/Images/booking_img_1.jpg",
+    workspaceImg: "/src/Images/004.png",
     host: "Blessing Cyndy",
     hostEmail: "blessing.cyndy@gmail.com",
     hostPhone: "+234 815 340 9021",
@@ -124,7 +125,7 @@ let disputes = [
     total: "₦15,000",
     workspace: "Hub One Workspace",
     location: "Lekki, Lagos",
-    workspaceImg: "/src/Images/booking_img_1.jpg",
+    workspaceImg: "/src/Images/005.png",
     host: "Daniel Okafor",
     hostEmail: "DanielO@gmail.com",
     hostPhone: "+234 902 860 3195",
