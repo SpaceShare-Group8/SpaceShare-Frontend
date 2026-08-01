@@ -1,0 +1,1264 @@
+/* ================================================================
+   SPACESHARE — SIGNUP PAGE STYLES
+   Pixel-perfect match to Figma design
+   Full responsive: Desktop → Tablet → Mobile
+   ================================================================ */
+
+/* ================================================================
+   DESIGN TOKENS
+   ================================================================ */
+
+:root {
+    /* ----- Brand Colors ----- */
+    --primary-blue: #2862BC;
+    --primary-blue-dark: #1D4ED8;
+    --primary-blue-light: #6E93EC;
+    --primary-blue-200: #B7CBF5;
+    --primary-blue-bg: rgba(40, 98, 188, 0.06);
+    
+    /* ----- Neutrals ----- */
+    --white: #FFFFFF;
+    --white-90: rgba(255, 255, 255, 0.9);
+    --white-70: rgba(255, 255, 255, 0.7);
+    --white-50: rgba(255, 255, 255, 0.5);
+    --white-30: rgba(255, 255, 255, 0.3);
+    --white-10: rgba(255, 255, 255, 0.1);
+    
+    --black: #0B1120;
+    --black-90: #1A2332;
+    --black-70: #334155;
+    --black-50: #64748B;
+    --black-30: #94A3B8;
+    --black-10: #E2E8F0;
+    --black-5: #F1F5F9;
+    
+    --success: #10B981;
+    --error: #EF4444;
+    --warning: #F59E0B;
+    
+    /* ----- Typography ----- */
+    --font-display: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    
+    /* ----- Spacing ----- */
+    --panel-pad: 48px;
+    --form-gap: 20px;
+    --input-height: 52px;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-full: 9999px;
+    
+    /* ----- Shadows ----- */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.12);
+    --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.15);
+    --shadow-focus: 0 0 0 4px rgba(40, 98, 188, 0.15);
+    
+    /* ----- Transitions ----- */
+    --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ================================================================
+   RESET & BASE
+   ================================================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100vh;
+    font-family: var(--font-body);
+    color: var(--black);
+    background: var(--black-5);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+    font-family: inherit;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: inherit;
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-blue);
+    font-weight: 500;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--primary-blue-dark);
+}
+
+input {
+    font-family: inherit;
+    outline: none;
+    border: none;
+}
+
+/* ================================================================
+   SIGNUP CONTAINER
+   ================================================================ */
+
+.signup-container {
+    display: flex;
+    min-height: 100vh;
+    min-height: 100dvh;
+    background: var(--black-5);
+}
+
+/* ================================================================
+   LEFT PANEL — BRAND / HERO
+   ================================================================ */
+
+.brand-panel {
+    flex: 0 0 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(145deg, #0B1E3D 0%, #081527 50%, #060D1F 100%);
+    padding: 48px;
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+}
+
+/* Subtle background pattern */
+.brand-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+        radial-gradient(circle at 20% 80%, rgba(40, 98, 188, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 80% 20%, rgba(40, 98, 188, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+/* Decorative orb */
+.brand-panel::after {
+    content: '';
+    position: absolute;
+    top: -200px;
+    right: -200px;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(40, 98, 188, 0.10) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.brand-content {
+    position: relative;
+    z-index: 1;
+    max-width: 480px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+/* ----- Brand Logo ----- */
+.brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.brand-logo .logo-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.brand-logo .logo-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.brand-logo .logo-text {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--white);
+    letter-spacing: -0.02em;
+}
+
+/* ----- Brand Hero ----- */
+.brand-hero {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.brand-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 16px;
+    border-radius: var(--radius-full);
+    background: rgba(40, 98, 188, 0.20);
+    border: 1px solid rgba(40, 98, 188, 0.30);
+    color: var(--primary-blue-200);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    width: fit-content;
+}
+
+.brand-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 38px;
+    line-height: 1.15;
+    color: var(--white);
+    letter-spacing: -0.02em;
+}
+
+.brand-subtitle {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--white-70);
+    max-width: 420px;
+}
+
+/* ----- Brand Features ----- */
+.brand-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0;
+    margin-top: 8px;
+}
+
+.brand-features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--white-80);
+}
+
+.brand-features .feature-icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-blue-light);
+    font-size: 18px;
+    margin-top: 1px;
+}
+
+.brand-features .feature-icon i {
+    font-size: 18px;
+}
+
+/* ----- Brand Footer ----- */
+.brand-footer {
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.brand-footer p {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 14px;
+    color: var(--white-50);
+}
+
+.brand-footer a {
+    color: var(--white);
+    font-weight: 600;
+}
+
+.brand-footer a:hover {
+    color: var(--primary-blue-200);
+}
+
+/* ================================================================
+   RIGHT PANEL — FORM
+   ================================================================ */
+
+.form-panel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 32px;
+    background: var(--white);
+    min-height: 100vh;
+}
+
+.form-wrapper {
+    max-width: 440px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+/* ----- Mobile Logo (hidden on desktop) ----- */
+.mobile-logo {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding-bottom: 8px;
+}
+
+.mobile-logo .logo-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    background: var(--primary-blue-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.mobile-logo .logo-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.mobile-logo .logo-text {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--black);
+    letter-spacing: -0.02em;
+}
+
+/* ----- Form Header ----- */
+.form-header {
+    text-align: center;
+}
+
+.form-header h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 1.2;
+    color: var(--black);
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+}
+
+.form-header p {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 14px;
+    color: var(--black-50);
+    line-height: 1.5;
+}
+
+/* ================================================================
+   FORM ELEMENTS
+   ================================================================ */
+
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* ----- Form Group ----- */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.form-group label {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 13px;
+    color: var(--black-70);
+    letter-spacing: 0.01em;
+}
+
+.form-group label .optional {
+    font-weight: 400;
+    color: var(--black-50);
+    font-size: 12px;
+}
+
+/* ----- Input Wrapper ----- */
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: var(--input-height);
+    background: var(--black-5);
+    border: 1.5px solid transparent;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-normal);
+}
+
+.input-wrapper:focus-within {
+    background: var(--white);
+    border-color: var(--primary-blue);
+    box-shadow: var(--shadow-focus);
+}
+
+.input-wrapper.has-error {
+    border-color: var(--error);
+    background: rgba(239, 68, 68, 0.04);
+}
+
+.input-wrapper.has-error:focus-within {
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.12);
+}
+
+.input-wrapper .input-icon {
+    flex-shrink: 0;
+    width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--black-50);
+    font-size: 18px;
+    transition: color var(--transition-fast);
+}
+
+.input-wrapper:focus-within .input-icon {
+    color: var(--primary-blue);
+}
+
+.input-wrapper input {
+    flex: 1;
+    height: 100%;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--black);
+    padding: 0 12px 0 0;
+    min-width: 0;
+}
+
+.input-wrapper input::placeholder {
+    color: var(--black-30);
+    font-weight: 400;
+}
+
+.input-wrapper input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px var(--black-5) inset;
+    -webkit-text-fill-color: var(--black);
+}
+
+.input-wrapper:focus-within input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px var(--white) inset;
+}
+
+/* ----- Toggle Password ----- */
+.toggle-password {
+    flex-shrink: 0;
+    width: 44px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--black-50);
+    font-size: 18px;
+    transition: color var(--transition-fast);
+}
+
+.toggle-password:hover {
+    color: var(--black-70);
+}
+
+.toggle-password:active {
+    transform: scale(0.92);
+}
+
+/* ----- Password Hint ----- */
+.password-hint {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 4px;
+    font-size: 12px;
+    color: var(--black-50);
+}
+
+.password-hint .hint-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--black-10);
+    transition: background var(--transition-normal);
+    flex-shrink: 0;
+    margin-top: 3px;
+}
+
+.password-hint .hint-dot.is-valid {
+    background: var(--success);
+}
+
+.password-hint span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+}
+
+/* ----- Field Error ----- */
+.field-error {
+    font-size: 12px;
+    color: var(--error);
+    min-height: 18px;
+    display: none;
+}
+
+.field-error:not(:empty) {
+    display: block;
+}
+
+/* ----- Terms Checkbox ----- */
+.terms-group {
+    margin-top: 2px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--black-70);
+    line-height: 1.5;
+}
+
+.checkbox-label input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+.custom-checkbox {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 2px solid var(--black-10);
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    margin-top: 1px;
+}
+
+.custom-checkbox i {
+    font-size: 14px;
+    color: var(--white);
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all var(--transition-fast);
+}
+
+.checkbox-label input[type="checkbox"]:checked + .custom-checkbox {
+    background: var(--primary-blue);
+    border-color: var(--primary-blue);
+}
+
+.checkbox-label input[type="checkbox"]:checked + .custom-checkbox i {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.checkbox-label input[type="checkbox"]:focus-visible + .custom-checkbox {
+    box-shadow: var(--shadow-focus);
+}
+
+.terms-text a {
+    font-weight: 500;
+}
+
+/* ----- Form Alert ----- */
+.form-alert {
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 500;
+    display: none;
+}
+
+.form-alert:not([hidden]) {
+    display: block;
+}
+
+.form-alert.alert-error {
+    background: rgba(239, 68, 68, 0.08);
+    color: var(--error);
+    border: 1px solid rgba(239, 68, 68, 0.15);
+}
+
+.form-alert.alert-success {
+    background: rgba(16, 185, 129, 0.08);
+    color: var(--success);
+    border: 1px solid rgba(16, 185, 129, 0.15);
+}
+
+/* ================================================================
+   BUTTONS
+   ================================================================ */
+
+/* ----- Primary Button ----- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 24px;
+    height: var(--input-height);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 15px;
+    transition: all var(--transition-normal);
+    gap: 8px;
+    min-height: var(--input-height);
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn-primary {
+    background: var(--primary-blue);
+    color: var(--white);
+    border: none;
+    box-shadow: 0 4px 16px rgba(40, 98, 188, 0.30);
+}
+
+.btn-primary:hover {
+    background: var(--primary-blue-dark);
+    box-shadow: 0 6px 24px rgba(40, 98, 188, 0.40);
+    transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-primary .btn-spinner {
+    display: inline-flex;
+}
+
+.btn-primary .btn-spinner i {
+    font-size: 18px;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ----- Divider ----- */
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: var(--black-30);
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--black-10);
+}
+
+/* ----- Social Buttons ----- */
+.social-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn-social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: var(--input-height);
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--black-10);
+    background: var(--white);
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--black-70);
+    transition: all var(--transition-normal);
+}
+
+.btn-social:hover {
+    background: var(--black-5);
+    border-color: var(--black-30);
+    transform: translateY(-1px);
+}
+
+.btn-social:active {
+    transform: scale(0.98);
+}
+
+.btn-social svg {
+    flex-shrink: 0;
+}
+
+/* ----- Mobile Sign In ----- */
+.mobile-signin {
+    display: none;
+    text-align: center;
+    padding-top: 4px;
+    font-size: 14px;
+    color: var(--black-50);
+}
+
+.mobile-signin a {
+    font-weight: 600;
+}
+
+/* ================================================================
+   RESPONSIVE BREAKPOINTS
+   ================================================================ */
+
+/* ----- Tablet (1024px - 900px) ----- */
+@media (max-width: 1024px) {
+    :root {
+        --panel-pad: 36px;
+    }
+
+    .brand-panel {
+        padding: 36px;
+        flex: 0 0 48%;
+    }
+
+    .brand-title {
+        font-size: 32px;
+    }
+
+    .brand-content {
+        max-width: 400px;
+        gap: 32px;
+    }
+
+    .form-panel {
+        padding: 36px 24px;
+    }
+
+    .form-wrapper {
+        max-width: 380px;
+    }
+
+    .form-header h2 {
+        font-size: 24px;
+    }
+}
+
+/* ----- Tablet Portrait (900px - 768px) ----- */
+@media (max-width: 900px) {
+    .signup-container {
+        flex-direction: column;
+    }
+
+    .brand-panel {
+        flex: none;
+        min-height: auto;
+        padding: 32px 24px 28px;
+        justify-content: flex-start;
+    }
+
+    .brand-content {
+        max-width: 100%;
+        gap: 24px;
+    }
+
+    .brand-title {
+        font-size: 28px;
+    }
+
+    .brand-subtitle {
+        font-size: 15px;
+        max-width: 100%;
+    }
+
+    .brand-features li {
+        font-size: 13px;
+    }
+
+    .brand-footer {
+        display: none;
+    }
+
+    .form-panel {
+        min-height: auto;
+        padding: 32px 24px 40px;
+        flex: 1;
+    }
+
+    .form-wrapper {
+        max-width: 100%;
+        gap: 24px;
+    }
+
+    .mobile-logo {
+        display: flex;
+    }
+
+    .form-header h2 {
+        font-size: 22px;
+    }
+
+    .mobile-signin {
+        display: block;
+    }
+
+    /* Hide desktop sign in link */
+    .brand-footer {
+        display: none;
+    }
+}
+
+/* ----- Mobile (768px - 480px) ----- */
+@media (max-width: 768px) {
+    :root {
+        --input-height: 48px;
+        --form-gap: 16px;
+    }
+
+    .brand-panel {
+        padding: 24px 20px 20px;
+    }
+
+    .brand-logo .logo-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .brand-logo .logo-text {
+        font-size: 20px;
+    }
+
+    .brand-title {
+        font-size: 24px;
+        line-height: 1.2;
+    }
+
+    .brand-subtitle {
+        font-size: 14px;
+    }
+
+    .brand-badge {
+        font-size: 10px;
+        padding: 4px 14px;
+    }
+
+    .brand-features {
+        gap: 8px;
+    }
+
+    .brand-features li {
+        font-size: 12px;
+        gap: 10px;
+    }
+
+    .brand-features .feature-icon {
+        width: 18px;
+        height: 18px;
+        font-size: 15px;
+    }
+
+    .form-panel {
+        padding: 24px 16px 32px;
+    }
+
+    .form-wrapper {
+        gap: 20px;
+    }
+
+    .form-header h2 {
+        font-size: 20px;
+    }
+
+    .form-header p {
+        font-size: 13px;
+    }
+
+    .form-group label {
+        font-size: 12px;
+    }
+
+    .input-wrapper {
+        height: var(--input-height);
+        border-radius: 6px;
+    }
+
+    .input-wrapper .input-icon {
+        width: 36px;
+        font-size: 16px;
+    }
+
+    .input-wrapper input {
+        font-size: 13px;
+        padding: 0 8px 0 0;
+    }
+
+    .toggle-password {
+        width: 36px;
+        font-size: 16px;
+    }
+
+    .password-hint {
+        font-size: 11px;
+        gap: 8px;
+    }
+
+    .password-hint span {
+        font-size: 10px;
+    }
+
+    .btn {
+        font-size: 14px;
+        height: var(--input-height);
+        min-height: var(--input-height);
+        padding: 0 20px;
+    }
+
+    .btn-social {
+        height: var(--input-height);
+        font-size: 13px;
+    }
+
+    .divider {
+        font-size: 11px;
+    }
+
+    .checkbox-label {
+        font-size: 12px;
+    }
+
+    .custom-checkbox {
+        width: 18px;
+        height: 18px;
+    }
+
+    .custom-checkbox i {
+        font-size: 12px;
+    }
+
+    .mobile-signin {
+        font-size: 13px;
+    }
+}
+
+/* ----- Small Mobile (480px - 360px) ----- */
+@media (max-width: 480px) {
+    :root {
+        --input-height: 44px;
+    }
+
+    .brand-panel {
+        padding: 20px 16px 16px;
+    }
+
+    .brand-title {
+        font-size: 20px;
+    }
+
+    .brand-subtitle {
+        font-size: 13px;
+    }
+
+    .brand-features li {
+        font-size: 11px;
+    }
+
+    .form-panel {
+        padding: 20px 12px 28px;
+    }
+
+    .form-header h2 {
+        font-size: 18px;
+    }
+
+    .form-header p {
+        font-size: 12px;
+    }
+
+    .input-wrapper input {
+        font-size: 12px;
+    }
+
+    .btn {
+        font-size: 13px;
+        height: var(--input-height);
+        min-height: var(--input-height);
+        padding: 0 16px;
+    }
+
+    .btn-social {
+        height: var(--input-height);
+        font-size: 12px;
+        gap: 8px;
+    }
+
+    .btn-social svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .mobile-logo .logo-icon {
+        width: 30px;
+        height: 30px;
+    }
+
+    .mobile-logo .logo-text {
+        font-size: 18px;
+    }
+
+    .social-buttons {
+        gap: 8px;
+    }
+}
+
+/* ----- Extra Small (360px and below) ----- */
+@media (max-width: 360px) {
+    .brand-title {
+        font-size: 18px;
+    }
+
+    .form-header h2 {
+        font-size: 16px;
+    }
+
+    .input-wrapper input {
+        font-size: 11px;
+    }
+
+    .btn {
+        font-size: 12px;
+        padding: 0 14px;
+    }
+}
+
+/* ----- Landscape Phones (max-height: 480px) ----- */
+@media (max-height: 480px) and (orientation: landscape) {
+    .signup-container {
+        flex-direction: row;
+    }
+
+    .brand-panel {
+        flex: 0 0 45%;
+        min-height: 100vh;
+        padding: 24px;
+        justify-content: center;
+    }
+
+    .brand-title {
+        font-size: 22px;
+    }
+
+    .brand-subtitle {
+        font-size: 13px;
+    }
+
+    .brand-features {
+        gap: 6px;
+    }
+
+    .brand-features li {
+        font-size: 12px;
+    }
+
+    .brand-content {
+        gap: 16px;
+    }
+
+    .brand-footer {
+        display: block;
+        padding-top: 12px;
+    }
+
+    .form-panel {
+        padding: 24px 20px;
+        min-height: 100vh;
+    }
+
+    .form-wrapper {
+        gap: 16px;
+    }
+
+    .form-header h2 {
+        font-size: 20px;
+    }
+
+    :root {
+        --input-height: 40px;
+    }
+
+    .mobile-logo {
+        display: none;
+    }
+
+    .mobile-signin {
+        display: none;
+    }
+
+    .signup-form {
+        gap: 12px;
+    }
+
+    .form-group {
+        gap: 2px;
+    }
+}
+
+/* ================================================================
+   ACCESSIBILITY — REDUCED MOTION
+   ================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .btn:hover {
+        transform: none !important;
+    }
+
+    .btn-social:hover {
+        transform: none !important;
+    }
+
+    .btn-primary .btn-spinner i {
+        animation: none;
+    }
+}
+
+/* ================================================================
+   ACCESSIBILITY — FOCUS VISIBLE
+   ================================================================ */
+
+:focus-visible {
+    outline: 2px solid var(--primary-blue);
+    outline-offset: 2px;
+}
+
+input:focus-visible {
+    outline: none;
+}
+
+/* ================================================================
+   SELECTION
+   ================================================================ */
+
+::selection {
+    background: var(--primary-blue);
+    color: var(--white);
+}
+
+/* ================================================================
+   SCROLLBAR
+   ================================================================ */
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--black-5);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--black-10);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--black-30);
+}
+
+/* ================================================================
+   PRINT STYLES
+   ================================================================ */
+
+@media print {
+    .signup-container {
+        display: block;
+        background: var(--white);
+    }
+
+    .brand-panel {
+        display: none;
+    }
+
+    .form-panel {
+        padding: 40px;
+        min-height: auto;
+    }
+
+    .form-wrapper {
+        max-width: 100%;
+    }
+
+    .btn,
+    .btn-social {
+        border: 1px solid var(--black-10);
+        background: transparent !important;
+        color: var(--black) !important;
+        box-shadow: none !important;
+    }
+
+    .input-wrapper {
+        border: 1px solid var(--black-10);
+        background: transparent !important;
+    }
+
+    .input-wrapper:focus-within {
+        box-shadow: none !important;
+    }
+}

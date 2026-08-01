@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SpaceShare — Verify Your Email</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js" defer></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../styles/verify-email.css" />
+</head>
+<body>
+
+    <!-- ============================================================ -->
+    <!-- VERIFY EMAIL PAGE CONTAINER                                  -->
+    <!-- ============================================================ -->
+    <div class="verify-container">
+
+        <!-- ========================================================== -->
+        <!-- LEFT PANEL — Brand / Hero                                    -->
+        <!-- ========================================================== -->
+        <div class="brand-panel">
+            <div class="brand-content">
+                <!-- Logo -->
+                <div class="brand-logo">
+                    <div class="logo-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7 6L11 8.5V18L7 15.5V6Z" fill="#FFFFFF"/>
+                            <path d="M13 8.5L17 6V15.5L13 18V8.5Z" fill="#8FB4EC"/>
+                        </svg>
+                    </div>
+                    <span class="logo-text">SpaceShare</span>
+                </div>
+
+                <!-- Hero Text -->
+                <div class="brand-hero">
+                    <span class="brand-badge">SPACE-AS-A-SERVICE</span>
+                    <h1 class="brand-title">Verify your<br />email address</h1>
+                    <p class="brand-subtitle">We take security seriously. A quick verification keeps your account safe and your bookings protected.</p>
+
+                    <!-- Info List -->
+                    <ul class="brand-info">
+                        <li>
+                            <span class="info-icon"><i class="ph ph-clock"></i></span>
+                            <span>Codes expire after 10 minutes</span>
+                        </li>
+                        <li>
+                            <span class="info-icon"><i class="ph ph-envelope"></i></span>
+                            <span>Check your spam folder if needed</span>
+                        </li>
+                        <li>
+                            <span class="info-icon"><i class="ph ph-headset"></i></span>
+                            <span>Contact support if you have trouble</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Footer -->
+                <div class="brand-footer">
+                    <p>Already verified? <a href="login.html">Sign in</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- RIGHT PANEL — Verification Form                            -->
+        <!-- ========================================================== -->
+        <div class="form-panel">
+            <div class="form-wrapper">
+
+                <!-- Mobile Logo (visible only on mobile) -->
+                <div class="mobile-logo">
+                    <div class="logo-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7 6L11 8.5V18L7 15.5V6Z" fill="#2862BC"/>
+                            <path d="M13 8.5L17 6V15.5L13 18V8.5Z" fill="#8FB4EC"/>
+                        </svg>
+                    </div>
+                    <span class="logo-text">SpaceShare</span>
+                </div>
+
+                <!-- Form Header -->
+                <div class="form-header">
+                    <div class="header-icon">
+                        <i class="ph-fill ph-envelope-simple"></i>
+                    </div>
+                    <h2>Enter verification code</h2>
+                    <p>Enter the code we just sent to your email address</p>
+                </div>
+
+                <!-- ====================================================== -->
+                <!-- VERIFICATION FORM                                     -->
+                <!-- ====================================================== -->
+                <form id="verifyForm" class="verify-form" novalidate>
+
+                    <!-- Code Input (6 digits) -->
+                    <div class="form-group">
+                        <label for="codeInput">Verification Code</label>
+                        <div class="code-input-container">
+                            <input 
+                                type="text" 
+                                id="codeInput" 
+                                name="code" 
+                                placeholder="Enter 6-digit code" 
+                                maxlength="6"
+                                inputmode="numeric"
+                                pattern="[0-9]{6}"
+                                autocomplete="one-time-code"
+                                required
+                            />
+                            <button 
+                                type="button" 
+                                class="paste-btn" 
+                                id="pasteBtn" 
+                                aria-label="Paste code"
+                                title="Paste from clipboard"
+                            >
+                                <i class="ph ph-clipboard"></i>
+                            </button>
+                        </div>
+                        <span class="field-error" id="codeError"></span>
+                    </div>
+
+                    <!-- Alert Message -->
+                    <div class="form-alert" id="formAlert" role="alert" hidden></div>
+
+                    <!-- Verify Button -->
+                    <button type="submit" class="btn btn-primary btn-block" id="verifyBtn">
+                        <span class="btn-label">Verify</span>
+                        <span class="btn-spinner" hidden>
+                            <i class="ph ph-spinner ph-spin"></i>
+                        </span>
+                    </button>
+
+                    <!-- Resend Section -->
+                    <div class="resend-section">
+                        <p class="resend-text" id="resendText">
+                            Didn't receive a code? 
+                            <button type="button" class="resend-link" id="resendBtn">Resend</button>
+                        </p>
+                        <p class="resend-timer" id="resendTimer" hidden>
+                            Resend available in <span id="timerCount">60</span>s
+                        </p>
+                    </div>
+
+                    <!-- Divider -->
+                    <div class="divider">
+                        <span>or</span>
+                    </div>
+
+                    <!-- Back to Login -->
+                    <div class="back-to-login">
+                        <a href="login.html" class="back-link">
+                            <i class="ph ph-arrow-left"></i>
+                            Back to Sign In
+                        </a>
+                    </div>
+
+                    <!-- Mobile Footer Links -->
+                    <div class="mobile-footer">
+                        <p>Already verified? <a href="login.html">Sign in</a></p>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- JAVASCRIPT                                                    -->
+    <!-- ============================================================ -->
+    <script type="module" src="../scripts/verify-email.js"></script>
+
+</body>
+</html>

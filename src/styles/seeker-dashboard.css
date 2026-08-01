@@ -1,0 +1,1387 @@
+/* ============================================================
+   SPACESHARE — SEEKER DASHBOARD
+   Based on Figma Design Specifications
+   ============================================================ */
+
+/* ---------- RESET & BASE ---------- */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Figma Design Colors */
+    --bg-main: #F5F5F5;
+    --bg-white: #FFFFFF;
+    --primary-blue: #2862BC;
+    --text-dark: #111111;
+    --text-gray: #8E8E93;
+    --text-light-gray: #948E8E;
+    --border-light: #DDD9D9;
+    --orange: #F27404;
+    --red: #FF383C;
+    --star-yellow: #FFC107;
+    --shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    
+    /* Font Family */
+    --font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    
+    /* Border Radius */
+    --radius-large: 50px;
+    --radius-medium: 30px;
+    --radius-small: 12px;
+    --radius-xs: 10px;
+    --radius-full: 100px;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-family);
+    background: var(--bg-main);
+    color: var(--text-dark);
+    line-height: 1.5;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---------- SCROLLBAR ---------- */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-main);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--border-light);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-light-gray);
+}
+
+/* ============================================================
+   MAIN CONTAINER — Matches Figma: width 1440px
+   ============================================================ */
+.dashboard-container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0;
+    min-height: 100vh;
+    background: var(--bg-main);
+    position: relative;
+}
+
+/* ============================================================
+   HEADER / TOP BAR — Matches Figma
+   ============================================================ */
+.dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 50px 33px 0 33px;
+    height: 90px;
+    position: relative;
+    background: var(--bg-main);
+}
+
+/* Left: Logo */
+.header-left {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.logo-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.logo-icon {
+    width: 44px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.logo-text {
+    font-family: var(--font-family);
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 33px;
+    color: var(--primary-blue);
+    letter-spacing: 0;
+}
+
+/* Center: Search Bar — Matches Figma: width 511px, height 64px */
+.header-center {
+    flex: 0 1 auto;
+    margin: 0 auto;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    width: 511px;
+    height: 64px;
+    background: var(--bg-white);
+    border: 1px solid var(--text-light-gray);
+    border-radius: var(--radius-medium);
+    padding: 12px 0 12px 15px;
+    gap: 15px;
+    transition: border-color 0.3s ease;
+}
+
+.search-bar:focus-within {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(40, 98, 188, 0.15);
+}
+
+.search-icon {
+    color: var(--text-light-gray);
+    font-size: 24px;
+    flex-shrink: 0;
+    opacity: 0.5;
+}
+
+.search-input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family: var(--font-family);
+    font-weight: 510;
+    font-size: 20px;
+    line-height: 24px;
+    color: var(--text-dark);
+    width: 100%;
+}
+
+.search-input::placeholder {
+    color: var(--text-light-gray);
+    font-weight: 510;
+    font-size: 20px;
+    line-height: 24px;
+    text-align: center;
+}
+
+/* Right: Notifications + Avatar */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-shrink: 0;
+}
+
+.icon-btn {
+    position: relative;
+    width: 46px;
+    height: 44px;
+    border-radius: var(--radius-full);
+    border: 0.5px solid var(--primary-blue);
+    background: var(--bg-main);
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-size: 24px;
+}
+
+.icon-btn:hover {
+    background: var(--primary-blue);
+    color: var(--bg-white);
+    border-color: var(--primary-blue);
+}
+
+.icon-btn:active {
+    transform: scale(0.95);
+}
+
+.notification-dot {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 10px;
+    height: 10px;
+    background: var(--red);
+    border-radius: 50%;
+    border: 2px solid var(--bg-main);
+}
+
+.user-avatar {
+    width: 47px;
+    height: 47px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid var(--text-light-gray);
+    background: var(--bg-white);
+    cursor: pointer;
+    transition: border-color 0.25s ease;
+    flex-shrink: 0;
+}
+
+.user-avatar:hover {
+    border-color: var(--primary-blue);
+}
+
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* ============================================================
+   GREETING SECTION — Matches Figma
+   ============================================================ */
+.greeting-section {
+    padding: 35px 33px 0 33px;
+    position: relative;
+}
+
+.greeting-text {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.greeting-text h1 {
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.greeting-text .highlight {
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 29px;
+    color: var(--text-dark);
+}
+
+.greeting-sub {
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: var(--text-gray);
+    margin-top: 2px;
+}
+
+/* ============================================================
+   INSTANT MATCH CARD — Matches Figma: Rectangle 4847
+   ============================================================ */
+.instant-match-card {
+    background: var(--orange);
+    border-radius: var(--radius-large);
+    padding: 30px 40px 30px 40px;
+    margin-top: 30px;
+    position: relative;
+    min-height: 282px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.instant-match-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.instant-match-text h3 {
+    font-family: var(--font-family);
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 38px;
+    color: var(--bg-white);
+}
+
+.instant-match-text p {
+    font-family: var(--font-family);
+    font-weight: 510;
+    font-size: 24px;
+    line-height: 29px;
+    color: var(--bg-white);
+    max-width: 606px;
+    margin-top: 4px;
+}
+
+.instant-match-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 363px;
+    height: 44px;
+    background: var(--bg-white);
+    border: none;
+    border-radius: var(--radius-xs);
+    box-shadow: var(--shadow);
+    font-family: var(--font-family);
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 29px;
+    color: var(--red);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    margin-top: 20px;
+    padding: 3px;
+}
+
+.instant-match-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.instant-match-btn:active {
+    transform: scale(0.97);
+}
+
+.instant-match-btn i {
+    font-size: 24px;
+    color: var(--red);
+}
+
+.instant-match-btn .ph-power {
+    color: #FF8D28;
+}
+
+/* ============================================================
+   FILTER BAR — Matches Figma
+   ============================================================ */
+.filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 33px 0 33px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.filter-bar::-webkit-scrollbar {
+    display: none;
+}
+
+.filter-chip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+    width: 120px;
+    height: 60px;
+    background: var(--bg-white);
+    border: 1px solid var(--primary-blue);
+    border-radius: 6px;
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: 0.0006em;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+    gap: 8px;
+}
+
+.filter-chip i {
+    font-size: 20px;
+}
+
+.filter-chip:hover {
+    background: var(--primary-blue);
+    color: var(--bg-white);
+}
+
+.filter-chip.active {
+    background: var(--primary-blue);
+    color: var(--bg-white);
+    border-color: var(--primary-blue);
+}
+
+.filter-chip.active i {
+    color: var(--bg-white);
+}
+
+/* ============================================================
+   FAVOURITES & BOOKINGS CARDS — Matches Figma
+   ============================================================ */
+.favourites-section {
+    padding: 20px 33px 0 33px;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.section-header h2 {
+    font-family: var(--font-family);
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 29px;
+    letter-spacing: 0.0006em;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.section-header h2 i {
+    font-size: 24px;
+}
+
+.favourites-icon {
+    color: var(--red);
+}
+
+.favourites-count {
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    letter-spacing: 0.0006em;
+    color: var(--text-dark);
+}
+
+/* Favourites Grid — 2 columns matching Figma */
+.favourites-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 4px;
+}
+
+/* ============================================================
+   SPACE CARD — Matches Figma exactly
+   ============================================================ */
+.space-card {
+    background: var(--bg-white);
+    border: 1px solid var(--primary-blue);
+    border-radius: var(--radius-small);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    height: 172px;
+    display: flex;
+    flex-direction: column;
+}
+
+.space-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* Card Image Section */
+.space-card-image {
+    position: relative;
+    height: 130px;
+    background: var(--bg-main);
+    overflow: hidden;
+    flex-shrink: 0;
+    padding: 5px 15px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.space-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 0.4s ease;
+}
+
+.space-card:hover .space-card-image img {
+    transform: scale(1.03);
+}
+
+/* Power Badge — Matches Figma: orange background */
+.space-card-badge {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    background: var(--orange);
+    border-radius: var(--radius-xs);
+    font-family: var(--font-family);
+    font-weight: 700;
+    font-size: 10px;
+    line-height: 12px;
+    color: var(--bg-white);
+    position: relative;
+    z-index: 2;
+}
+
+.space-card-badge i {
+    font-size: 10px;
+    color: var(--bg-white);
+}
+
+/* Fav Button on Image */
+.space-card-fav {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-full);
+    border: none;
+    background: var(--bg-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+    z-index: 2;
+    flex-shrink: 0;
+    padding: 3px;
+}
+
+.space-card-fav:hover {
+    transform: scale(1.1);
+}
+
+.space-card-fav.is-fav {
+    color: var(--red);
+}
+
+.space-card-fav.is-fav i {
+    font-family: 'Phosphor-Fill', sans-serif;
+}
+
+.space-card-fav i {
+    font-size: 17px;
+}
+
+/* Card Body — Matches Figma */
+.space-card-body {
+    padding: 0px 5px;
+    background: var(--bg-white);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.space-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5px;
+}
+
+.space-card-title {
+    font-family: var(--font-family);
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 22px;
+    letter-spacing: -0.0043em;
+    color: var(--text-dark);
+}
+
+.space-card-price {
+    font-family: var(--font-family);
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 29px;
+    color: var(--primary-blue);
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.space-card-price .naira-icon {
+    font-size: 24px;
+    color: var(--primary-blue);
+}
+
+.space-card-location {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 5px;
+    margin-top: 4px;
+}
+
+.space-card-location i {
+    font-size: 20px;
+    color: var(--text-gray);
+}
+
+.space-card-location span {
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    color: var(--text-gray);
+}
+
+.space-card-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5px;
+    margin-top: 2px;
+}
+
+.space-card-rating {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.space-card-rating i {
+    font-size: 20px;
+    color: var(--star-yellow);
+}
+
+.space-card-rating span {
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    color: var(--text-gray);
+}
+
+.space-card-wifi {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.space-card-wifi i {
+    font-size: 20px;
+    color: var(--text-gray);
+}
+
+.space-card-wifi span {
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    color: var(--text-gray);
+}
+
+/* Type badge on image */
+.space-card-type {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 10px;
+    background: var(--bg-white);
+    border-radius: var(--radius-xs);
+    font-family: var(--font-family);
+    font-weight: 700;
+    font-size: 10px;
+    line-height: 12px;
+    color: var(--text-dark);
+    position: relative;
+    z-index: 2;
+}
+
+/* ============================================================
+   NEARBY SPACES SECTION
+   ============================================================ */
+.nearby-section {
+    padding: 20px 33px 0 33px;
+}
+
+.nearby-section .section-header {
+    margin-bottom: 24px;
+}
+
+.view-all-btn {
+    font-family: var(--font-family);
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 29px;
+    color: var(--primary-blue);
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.view-all-btn:hover {
+    color: var(--primary-blue);
+    opacity: 0.8;
+}
+
+.view-all-btn i {
+    font-size: 18px;
+    transition: transform 0.3s ease;
+}
+
+.view-all-btn:hover i {
+    transform: translateX(4px);
+}
+
+/* Nearby Spaces Grid — 2 columns */
+.nearby-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.nearby-grid .space-card {
+    height: 280px;
+}
+
+.nearby-grid .space-card-image {
+    height: 130px;
+}
+
+.nearby-grid .space-card-body {
+    padding: 8px 5px;
+}
+
+.nearby-grid .space-card-top {
+    padding: 0 5px;
+}
+
+.nearby-grid .space-card-bottom {
+    padding: 0 5px;
+    margin-top: 6px;
+}
+
+/* ============================================================
+   BOTTOM NAVIGATION (Mobile)
+   ============================================================ */
+.bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-white);
+    border-top: 1px solid var(--border-light);
+    padding: 8px 0 env(safe-area-inset-bottom, 8px);
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+    z-index: 100;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    text-decoration: none;
+    color: var(--text-gray);
+    font-family: var(--font-family);
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.25s ease;
+    padding: 4px 12px;
+    border-radius: 8px;
+    min-width: 48px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.nav-item i {
+    font-size: 24px;
+}
+
+.nav-item:hover {
+    color: var(--text-dark);
+}
+
+.nav-item.active {
+    color: var(--primary-blue);
+}
+
+.nav-item.active i {
+    font-family: 'Phosphor-Fill', sans-serif;
+}
+
+/* ============================================================
+   LOADING & EMPTY STATES
+   ============================================================ */
+.loading-placeholder {
+    font-family: var(--font-family);
+    font-size: 18px;
+    color: var(--text-gray);
+    padding: 40px 0;
+    text-align: center;
+    grid-column: 1 / -1;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-gray);
+    grid-column: 1 / -1;
+}
+
+.empty-state i {
+    font-size: 48px;
+    display: block;
+    margin-bottom: 12px;
+    color: var(--border-light);
+}
+
+.empty-state p {
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.empty-state p:last-child {
+    font-size: 14px;
+    color: var(--text-light-gray);
+    margin-top: 4px;
+}
+
+/* ============================================================
+   TOAST NOTIFICATION
+   ============================================================ */
+.toast-notification {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%) translateY(12px);
+    background: var(--text-dark);
+    color: var(--bg-white);
+    padding: 12px 28px;
+    border-radius: var(--radius-small);
+    font-family: var(--font-family);
+    font-size: 16px;
+    font-weight: 500;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+    z-index: 999;
+    max-width: 90%;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+}
+
+.toast-notification.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ============================================================
+   RESPONSIVE BREAKPOINTS
+   ============================================================ */
+
+/* ---------- 1024px and below ---------- */
+@media (max-width: 1024px) {
+    .dashboard-container {
+        padding: 0 20px;
+    }
+
+    .dashboard-header {
+        padding: 30px 0 0 0;
+        flex-wrap: wrap;
+        gap: 16px;
+        height: auto;
+    }
+
+    .header-center {
+        flex: 1 1 100%;
+        order: 3;
+    }
+
+    .search-bar {
+        width: 100%;
+        max-width: 511px;
+    }
+
+    .greeting-section {
+        padding: 20px 0 0 0;
+    }
+
+    .filter-bar {
+        padding: 16px 0 0 0;
+        gap: 12px;
+    }
+
+    .filter-chip {
+        width: 100px;
+        height: 50px;
+        font-size: 16px;
+    }
+
+    .favourites-section {
+        padding: 16px 0 0 0;
+    }
+
+    .nearby-section {
+        padding: 16px 0 0 0;
+    }
+
+    .favourites-grid,
+    .nearby-grid {
+        gap: 16px;
+    }
+
+    .instant-match-card {
+        padding: 24px 28px;
+        min-height: auto;
+    }
+
+    .instant-match-text h3 {
+        font-size: 28px;
+        line-height: 34px;
+    }
+
+    .instant-match-text p {
+        font-size: 20px;
+        line-height: 26px;
+    }
+
+    .instant-match-btn {
+        width: 100%;
+        max-width: 363px;
+        height: 44px;
+        font-size: 20px;
+    }
+}
+
+/* ---------- 768px and below (Tablet/Mobile) ---------- */
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 0 16px 80px 16px;
+    }
+
+    .dashboard-header {
+        padding: 20px 0 0 0;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .logo-text {
+        font-size: 22px;
+        line-height: 26px;
+    }
+
+    .logo-icon {
+        width: 36px;
+        height: 32px;
+    }
+
+    .header-right {
+        gap: 10px;
+    }
+
+    .icon-btn {
+        width: 40px;
+        height: 38px;
+        font-size: 20px;
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+    }
+
+    .search-bar {
+        height: 54px;
+        padding: 10px 0 10px 14px;
+        gap: 10px;
+    }
+
+    .search-icon {
+        font-size: 20px;
+    }
+
+    .search-input {
+        font-size: 16px;
+        line-height: 20px;
+    }
+
+    .search-input::placeholder {
+        font-size: 16px;
+        line-height: 20px;
+    }
+
+    .greeting-text h1 {
+        font-size: 20px;
+        line-height: 24px;
+    }
+
+    .greeting-text .highlight {
+        font-size: 20px;
+        line-height: 24px;
+    }
+
+    .greeting-sub {
+        font-size: 14px;
+    }
+
+    .instant-match-card {
+        padding: 20px;
+        border-radius: 30px;
+        margin-top: 20px;
+    }
+
+    .instant-match-text h3 {
+        font-size: 24px;
+        line-height: 30px;
+    }
+
+    .instant-match-text p {
+        font-size: 18px;
+        line-height: 24px;
+        max-width: 100%;
+    }
+
+    .instant-match-btn {
+        width: 100%;
+        max-width: 100%;
+        height: 44px;
+        font-size: 18px;
+        margin-top: 16px;
+    }
+
+    .filter-bar {
+        gap: 8px;
+        padding: 12px 0 0 0;
+    }
+
+    .filter-chip {
+        width: 80px;
+        height: 42px;
+        font-size: 14px;
+        padding: 2px 6px;
+        gap: 4px;
+    }
+
+    .filter-chip i {
+        font-size: 16px;
+    }
+
+    .section-header h2 {
+        font-size: 20px;
+        line-height: 24px;
+    }
+
+    .section-header h2 i {
+        font-size: 20px;
+    }
+
+    .favourites-count {
+        font-size: 18px;
+        line-height: 22px;
+    }
+
+    .favourites-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .space-card {
+        height: 160px;
+    }
+
+    .space-card-image {
+        height: 110px;
+        padding: 5px 12px;
+    }
+
+    .space-card-title {
+        font-size: 18px;
+        line-height: 20px;
+    }
+
+    .space-card-price {
+        font-size: 18px;
+        line-height: 22px;
+    }
+
+    .space-card-price .naira-icon {
+        font-size: 18px;
+    }
+
+    .space-card-location span {
+        font-size: 18px;
+        line-height: 22px;
+    }
+
+    .space-card-rating span {
+        font-size: 18px;
+        line-height: 22px;
+    }
+
+    .space-card-wifi span {
+        font-size: 18px;
+        line-height: 22px;
+    }
+
+    .nearby-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .nearby-grid .space-card {
+        height: 260px;
+    }
+
+    .nearby-grid .space-card-image {
+        height: 120px;
+    }
+
+    .view-all-btn {
+        font-size: 18px;
+        line-height: 22px;
+    }
+
+    /* Bottom Navigation - Show on Mobile */
+    .bottom-nav {
+        display: flex;
+    }
+}
+
+/* ---------- 480px and below (Small Phones) ---------- */
+@media (max-width: 480px) {
+    .dashboard-container {
+        padding: 0 12px 70px 12px;
+    }
+
+    .dashboard-header {
+        padding: 14px 0 0 0;
+        gap: 10px;
+    }
+
+    .logo-text {
+        font-size: 18px;
+        line-height: 22px;
+    }
+
+    .logo-icon {
+        width: 30px;
+        height: 28px;
+    }
+
+    .header-right {
+        gap: 8px;
+    }
+
+    .icon-btn {
+        width: 36px;
+        height: 34px;
+        font-size: 18px;
+    }
+
+    .user-avatar {
+        width: 36px;
+        height: 36px;
+    }
+
+    .search-bar {
+        height: 46px;
+        padding: 8px 0 8px 12px;
+        gap: 8px;
+    }
+
+    .search-icon {
+        font-size: 18px;
+    }
+
+    .search-input {
+        font-size: 14px;
+        line-height: 18px;
+    }
+
+    .search-input::placeholder {
+        font-size: 14px;
+        line-height: 18px;
+    }
+
+    .greeting-text h1 {
+        font-size: 18px;
+        line-height: 22px;
+    }
+
+    .greeting-text .highlight {
+        font-size: 18px;
+        line-height: 22px;
+    }
+
+    .greeting-sub {
+        font-size: 13px;
+    }
+
+    .instant-match-card {
+        padding: 16px;
+        border-radius: 24px;
+    }
+
+    .instant-match-text h3 {
+        font-size: 20px;
+        line-height: 26px;
+    }
+
+    .instant-match-text p {
+        font-size: 15px;
+        line-height: 20px;
+    }
+
+    .instant-match-btn {
+        height: 40px;
+        font-size: 16px;
+        gap: 4px;
+    }
+
+    .instant-match-btn i {
+        font-size: 18px;
+    }
+
+    .filter-bar {
+        gap: 6px;
+        padding: 10px 0 0 0;
+    }
+
+    .filter-chip {
+        width: 65px;
+        height: 36px;
+        font-size: 12px;
+        padding: 2px 4px;
+        gap: 3px;
+        border-radius: 4px;
+    }
+
+    .filter-chip i {
+        font-size: 14px;
+    }
+
+    .section-header h2 {
+        font-size: 17px;
+        line-height: 20px;
+        gap: 8px;
+    }
+
+    .section-header h2 i {
+        font-size: 17px;
+    }
+
+    .favourites-count {
+        font-size: 15px;
+        line-height: 18px;
+    }
+
+    .space-card {
+        height: 140px;
+    }
+
+    .space-card-image {
+        height: 90px;
+        padding: 4px 10px;
+    }
+
+    .space-card-title {
+        font-size: 16px;
+        line-height: 18px;
+    }
+
+    .space-card-price {
+        font-size: 16px;
+        line-height: 20px;
+    }
+
+    .space-card-price .naira-icon {
+        font-size: 16px;
+    }
+
+    .space-card-location span {
+        font-size: 15px;
+        line-height: 18px;
+    }
+
+    .space-card-rating span {
+        font-size: 15px;
+        line-height: 18px;
+    }
+
+    .space-card-wifi span {
+        font-size: 15px;
+        line-height: 18px;
+    }
+
+    .space-card-fav {
+        width: 24px;
+        height: 24px;
+    }
+
+    .space-card-fav i {
+        font-size: 14px;
+    }
+
+    .space-card-badge {
+        font-size: 8px;
+        padding: 2px 6px;
+    }
+
+    .space-card-type {
+        font-size: 8px;
+        padding: 2px 8px;
+    }
+
+    .nearby-grid .space-card {
+        height: 220px;
+    }
+
+    .nearby-grid .space-card-image {
+        height: 100px;
+    }
+
+    .view-all-btn {
+        font-size: 15px;
+        line-height: 18px;
+    }
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+.fade-in {
+    animation: fadeIn 0.4s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.ph-spin {
+    animation: spin 1s linear infinite;
+}

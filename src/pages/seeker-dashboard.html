@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SpaceShare — Seeker Dashboard</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js" defer></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../styles/seeker-dashboard.css" />
+</head>
+<body>
+    <!-- ============================================================ -->
+    <!-- MAIN CONTAINER                                               -->
+    <!-- ============================================================ -->
+    <div class="dashboard-container">
+
+        <!-- ========================================================== -->
+        <!-- HEADER / TOP BAR                                            -->
+        <!-- ========================================================== -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <div class="logo-wrapper">
+                    <img src="../assets/BLUE LOGO.png" alt="SpaceShare" class="logo-icon" />
+                    <span class="logo-text">SpaceShare</span>
+                </div>
+            </div>
+
+            <div class="header-center">
+                <div class="search-bar">
+                    <i class="ph ph-magnifying-glass search-icon"></i>
+                    <input 
+                        type="text" 
+                        placeholder="Search bookings, spaces, guests" 
+                        class="search-input" 
+                        id="searchInput"
+                        aria-label="Search workspaces"
+                    />
+                </div>
+            </div>
+
+            <div class="header-right">
+                <button class="icon-btn notifications-btn" id="notificationsBtn" aria-label="Notifications">
+                    <i class="ph ph-bell"></i>
+                    <span class="notification-dot" id="notificationDot"></span>
+                </button>
+                <div class="user-avatar" id="userAvatar" role="button" tabindex="0" aria-label="User profile">
+                    <img 
+                        src="https://ui-avatars.com/api/?name=Zara+Danjuma&background=2563EB&color=fff&size=40&font-size=0.5" 
+                        alt="Zara Danjuma" 
+                        id="avatarImg"
+                    />
+                </div>
+            </div>
+        </header>
+
+        <!-- ========================================================== -->
+        <!-- GREETING & INSTANT MATCH CARD                               -->
+        <!-- ========================================================== -->
+        <section class="greeting-section">
+            <div class="greeting-text">
+                <h1>Good Morning <span class="highlight" id="userNameDisplay">Zara Danjuma</span></h1>
+                <p class="greeting-sub">Find your perfect workspace in seconds</p>
+            </div>
+
+            <div class="instant-match-card">
+                <div class="instant-match-content">
+                    <div class="instant-match-icon-wrapper">
+                        <i class="ph-fill ph-lightning instant-icon"></i>
+                    </div>
+                    <div class="instant-match-text">
+                        <h3>Need Power Immediately?</h3>
+                        <p>Locate verified workspaces near you with active backup generators right now.</p>
+                    </div>
+                </div>
+                <button class="btn-primary instant-match-btn" id="instantMatchBtn">
+                    <i class="ph ph-power"></i>
+                    Find Me Power Now
+                </button>
+            </div>
+        </section>
+
+        <!-- ========================================================== -->
+        <!-- FILTER BAR                                                  -->
+        <!-- ========================================================== -->
+        <nav class="filter-bar" aria-label="Search filters">
+            <button class="filter-chip active" data-filter="type">
+                <i class="ph ph-buildings"></i> Type
+            </button>
+            <button class="filter-chip" data-filter="price">
+                <i class="ph ph-currency-ngn"></i> Price
+            </button>
+            <button class="filter-chip" data-filter="power">
+                <i class="ph ph-plug"></i> Power
+            </button>
+            <button class="filter-chip" data-filter="capacity">
+                <i class="ph ph-users"></i> Capacity
+            </button>
+            <button class="filter-chip" data-filter="amenities">
+                <i class="ph ph-wifi-high"></i> Amenities
+            </button>
+            <button class="filter-chip" data-filter="workspace">
+                <i class="ph ph-layout"></i> Workspace
+            </button>
+            <button class="filter-chip" data-filter="availability">
+                <i class="ph ph-calendar-blank"></i> Availability
+            </button>
+        </nav>
+
+        <!-- ========================================================== -->
+        <!-- FAVOURITES SECTION                                          -->
+        <!-- ========================================================== -->
+        <section class="favourites-section">
+            <div class="section-header">
+                <h2>
+                    <i class="ph-fill ph-heart favourites-icon"></i>
+                    Favourites
+                </h2>
+                <span class="favourites-count" id="favouritesCount">0 saved listings</span>
+            </div>
+            <div class="favourites-scroll" id="favouritesScroll">
+                <!-- Cards injected by JS -->
+                <div class="loading-placeholder">Loading favourites...</div>
+            </div>
+        </section>
+
+        <!-- ========================================================== -->
+        <!-- NEARBY SPACES SECTION                                       -->
+        <!-- ========================================================== -->
+        <section class="nearby-section">
+            <div class="section-header">
+                <h2>
+                    <i class="ph-fill ph-map-pin nearby-icon"></i>
+                    Nearby Spaces
+                </h2>
+                <button class="view-all-btn" id="viewAllBtn">
+                    View All <i class="ph ph-arrow-right"></i>
+                </button>
+            </div>
+
+            <div class="spaces-grid" id="spacesGrid">
+                <!-- Cards injected by JS -->
+                <div class="loading-placeholder">Loading spaces...</div>
+            </div>
+        </section>
+
+        <!-- ========================================================== -->
+        <!-- BOTTOM NAVIGATION (Mobile)                                  -->
+        <!-- ========================================================== -->
+        <nav class="bottom-nav" aria-label="Main navigation">
+            <a href="#" class="nav-item active" data-nav="home">
+                <i class="ph-fill ph-house"></i>
+                <span>Home</span>
+            </a>
+            <a href="#" class="nav-item" data-nav="search">
+                <i class="ph ph-magnifying-glass"></i>
+                <span>Search</span>
+            </a>
+            <a href="#" class="nav-item" data-nav="favourites">
+                <i class="ph ph-heart"></i>
+                <span>Favourites</span>
+            </a>
+            <a href="#" class="nav-item" data-nav="bookings">
+                <i class="ph ph-calendar-blank"></i>
+                <span>Bookings</span>
+            </a>
+            <a href="#" class="nav-item" data-nav="profile">
+                <i class="ph ph-user"></i>
+                <span>Profile</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- JAVASCRIPT                                                    -->
+    <!-- ============================================================ -->
+    <script type="module" src="../scripts/seeker-dashboard.js"></script>
+</body>
+</html>

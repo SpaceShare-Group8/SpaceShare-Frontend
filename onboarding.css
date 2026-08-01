@@ -1,0 +1,846 @@
+/* ================================================================
+   SPACESHARE — ONBOARDING STYLES
+   Pixel-perfect match to Product Designers' screens
+   Figma: FILE-1-Core-Seeker-Flow
+   ================================================================ */
+
+/* ================================================================
+   DESIGN TOKENS (from Figma)
+   ================================================================ */
+
+:root {
+    /* ----- Brand Colors (from SpaceShare design system) ----- */
+    --primary-blue: #2862BC;
+    --primary-blue-dark: #1D4ED8;
+    --primary-blue-light: #6E93EC;
+    --primary-blue-200: #B7CBF5;
+    --primary-blue-bg: rgba(40, 98, 188, 0.18);
+    
+    /* ----- Neutrals ----- */
+    --white: #FFFFFF;
+    --white-90: rgba(255, 255, 255, 0.9);
+    --white-70: rgba(255, 255, 255, 0.7);
+    --white-50: rgba(255, 255, 255, 0.5);
+    --white-30: rgba(255, 255, 255, 0.3);
+    --white-16: rgba(255, 255, 255, 0.16);
+    --white-10: rgba(255, 255, 255, 0.1);
+    
+    --navy-950: #081527;
+    --navy-900: #0B1E3D;
+    --navy-800: #122A4D;
+    
+    /* ----- Typography (from Figma) ----- */
+    --font-display: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    
+    /* ----- Spacing (from Figma) ----- */
+    --edge-pad: 48px;
+    --slide-duration: 6000ms;
+    
+    /* ----- Border Radius ----- */
+    --radius-full: 9999px;
+    --radius-lg: 16px;
+    --radius-md: 10px;
+    --radius-sm: 8px;
+    
+    /* ----- Shadows ----- */
+    --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.2);
+    --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.1);
+}
+
+/* ================================================================
+   RESET & BASE
+   ================================================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: var(--font-body);
+    color: var(--white);
+    background: var(--navy-950);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+    font-family: inherit;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: inherit;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    font-family: inherit;
+}
+
+/* ================================================================
+   BACKGROUND SLIDER
+   ================================================================ */
+
+.hero-slider {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    background: var(--navy-950);
+}
+
+/* ----- Each slide container ----- */
+.slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    will-change: opacity;
+}
+
+.slide.active {
+    opacity: 1;
+    z-index: 1;
+}
+
+/* ----- Image inside each slide (Ken Burns zoom) ----- */
+.slide-image {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: var(--navy-950);
+    transform: scale(1);
+    transition: transform 8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
+}
+
+/* When slide is active, image slowly zooms in */
+.slide.active .slide-image {
+    transform: scale(1.12);
+}
+
+/* Alternative: keyframe animation for smoother loop */
+.slide.active .slide-image {
+    animation: kenburns var(--slide-duration) cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes kenburns {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.12);
+    }
+}
+
+/* ----- Gradient Overlay (for text readability) ----- */
+.slide-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: linear-gradient(
+        to top,
+        rgba(6, 14, 28, 0.92) 0%,
+        rgba(6, 14, 28, 0.55) 30%,
+        rgba(6, 14, 28, 0.20) 50%,
+        rgba(6, 14, 28, 0.35) 70%,
+        rgba(6, 14, 28, 0.60) 100%
+    );
+    pointer-events: none;
+}
+
+/* ================================================================
+   PAGE LAYOUT
+   ================================================================ */
+
+.page-container {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 0;
+}
+
+/* ================================================================
+   HEADER
+   ================================================================ */
+
+.header {
+    padding: var(--edge-pad) var(--edge-pad) 0;
+    flex-shrink: 0;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.10);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--white-16);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.logo-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.logo-text {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* ================================================================
+   HERO CONTENT
+   ================================================================ */
+
+.hero-content {
+    padding: 0 var(--edge-pad);
+    max-width: 640px;
+    margin-top: auto;
+    margin-bottom: 48px;
+    flex-shrink: 0;
+}
+
+/* ----- Badge / Eyebrow ----- */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 18px;
+    border-radius: var(--radius-full);
+    border: 1px solid rgba(183, 203, 245, 0.35);
+    background: var(--primary-blue-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: var(--primary-blue-200);
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    transition: opacity 0.4s ease;
+}
+
+/* ----- Main Title ----- */
+.hero-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 44px;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: 16px;
+    text-wrap: balance;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+    transition: opacity 0.4s ease;
+}
+
+/* ----- Subtitle ----- */
+.hero-subtitle {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--white-70);
+    max-width: 480px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transition: opacity 0.4s ease;
+}
+
+/* ================================================================
+   FOOTER
+   ================================================================ */
+
+.hero-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 0 var(--edge-pad) var(--edge-pad);
+    flex-shrink: 0;
+    flex-wrap: wrap;
+}
+
+/* ================================================================
+   PAGINATION DOTS
+   ================================================================ */
+
+.pagination-dots {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dot {
+    position: relative;
+    width: 24px;
+    height: 4px;
+    border-radius: var(--radius-full);
+    background: var(--white-30);
+    overflow: hidden;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    border: none;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.dot:hover {
+    background: var(--white-50);
+}
+
+.dot.active {
+    width: 40px;
+    background: var(--white-30);
+}
+
+.dot-fill {
+    position: absolute;
+    inset: 0;
+    width: 0%;
+    height: 100%;
+    background: var(--white);
+    border-radius: inherit;
+    transition: width 0.1s linear;
+}
+
+.dot.active .dot-fill {
+    animation: fillDot var(--slide-duration) linear forwards;
+}
+
+@keyframes fillDot {
+    from {
+        width: 0%;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+/* Focus state for accessibility */
+.dot:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 4px;
+}
+
+/* ================================================================
+   ACTION BUTTONS
+   ================================================================ */
+
+.action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 13px 28px;
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 1.2;
+    white-space: nowrap;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: center;
+    min-height: 48px;
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
+.btn:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 2px;
+}
+
+/* ----- Secondary (Sign In) ----- */
+.btn-secondary {
+    color: var(--white);
+    border: 1px solid var(--white-50);
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: var(--white-70);
+    transform: translateY(-1px);
+}
+
+/* ----- Primary (Get Started) ----- */
+.btn-primary {
+    color: var(--white);
+    background: var(--primary-blue);
+    border: 1px solid var(--primary-blue);
+    box-shadow: 0 4px 16px rgba(40, 98, 188, 0.35);
+}
+
+.btn-primary:hover {
+    background: var(--primary-blue-dark);
+    border-color: var(--primary-blue-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 24px rgba(40, 98, 188, 0.45);
+}
+
+/* ----- Final CTA (Last slide) ----- */
+.btn-primary.final-cta {
+    background: #10B981;
+    border-color: #10B981;
+    box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+    animation: pulse-cta 2.5s ease-in-out infinite;
+}
+
+.btn-primary.final-cta:hover {
+    background: #059669;
+    border-color: #059669;
+    box-shadow: 0 6px 28px rgba(16, 185, 129, 0.5);
+}
+
+@keyframes pulse-cta {
+    0%,
+    100% {
+        transform: scale(1);
+        box-shadow: 0 4px 20px rgba(16, 185, 129, 0.35);
+    }
+    50% {
+        transform: scale(1.02);
+        box-shadow: 0 6px 32px rgba(16, 185, 129, 0.5);
+    }
+}
+
+/* ================================================================
+   RESPONSIVE BREAKPOINTS
+   ================================================================ */
+
+/* ----- Tablet (1024px - 900px) ----- */
+@media (max-width: 1024px) {
+    :root {
+        --edge-pad: 40px;
+    }
+
+    .hero-title {
+        font-size: 38px;
+        line-height: 1.15;
+    }
+
+    .hero-subtitle {
+        font-size: 16px;
+    }
+
+    .hero-content {
+        max-width: 560px;
+        margin-bottom: 40px;
+    }
+}
+
+/* ----- Tablet Portrait (900px - 768px) ----- */
+@media (max-width: 900px) {
+    :root {
+        --edge-pad: 32px;
+    }
+
+    .hero-title {
+        font-size: 32px;
+        line-height: 1.2;
+    }
+
+    .hero-subtitle {
+        font-size: 15px;
+    }
+
+    .hero-content {
+        max-width: 100%;
+        margin-bottom: 36px;
+    }
+
+    .logo-text {
+        font-size: 20px;
+    }
+
+    .logo-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .btn {
+        padding: 11px 22px;
+        font-size: 14px;
+        min-height: 44px;
+    }
+}
+
+/* ----- Mobile (768px - 480px) ----- */
+@media (max-width: 768px) {
+    :root {
+        --edge-pad: 24px;
+    }
+
+    .header {
+        padding-top: 24px;
+    }
+
+    .logo-text {
+        font-size: 18px;
+    }
+
+    .logo-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+    }
+
+    .logo-icon svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .hero-title {
+        font-size: 28px;
+        line-height: 1.25;
+        margin-bottom: 12px;
+    }
+
+    .hero-subtitle {
+        font-size: 14px;
+        line-height: 1.55;
+        max-width: 100%;
+    }
+
+    .badge {
+        font-size: 10px;
+        padding: 6px 14px;
+        margin-bottom: 16px;
+        letter-spacing: 0.1em;
+    }
+
+    .hero-content {
+        margin-bottom: 30px;
+    }
+
+    /* Footer stacks vertically on mobile */
+    .hero-footer {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+        padding-bottom: 24px;
+    }
+
+    .pagination-dots {
+        justify-content: center;
+        gap: 6px;
+    }
+
+    .dot {
+        width: 20px;
+        height: 3px;
+    }
+
+    .dot.active {
+        width: 32px;
+    }
+
+    .action-buttons {
+        justify-content: stretch;
+        gap: 10px;
+    }
+
+    .btn {
+        flex: 1;
+        padding: 12px 20px;
+        font-size: 14px;
+        min-height: 44px;
+    }
+
+    .btn-primary.final-cta {
+        animation: pulse-cta-mobile 2.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse-cta-mobile {
+        0%,
+        100% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.01);
+        }
+    }
+}
+
+/* ----- Small Mobile (480px - 360px) ----- */
+@media (max-width: 480px) {
+    :root {
+        --edge-pad: 16px;
+    }
+
+    .header {
+        padding-top: 16px;
+    }
+
+    .logo-text {
+        font-size: 16px;
+    }
+
+    .logo-icon {
+        width: 24px;
+        height: 24px;
+    }
+
+    .logo-icon svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .hero-title {
+        font-size: 22px;
+        line-height: 1.3;
+    }
+
+    .hero-subtitle {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .badge {
+        font-size: 9px;
+        padding: 4px 12px;
+        margin-bottom: 12px;
+    }
+
+    .hero-content {
+        margin-bottom: 24px;
+    }
+
+    .btn {
+        padding: 10px 16px;
+        font-size: 13px;
+        min-height: 40px;
+        border-radius: var(--radius-sm);
+    }
+
+    .dot {
+        width: 16px;
+        height: 3px;
+    }
+
+    .dot.active {
+        width: 28px;
+    }
+}
+
+/* ----- Extra Small (360px and below) ----- */
+@media (max-width: 360px) {
+    .hero-title {
+        font-size: 19px;
+    }
+
+    .hero-subtitle {
+        font-size: 12px;
+    }
+
+    .btn {
+        font-size: 12px;
+        padding: 8px 14px;
+        min-height: 36px;
+    }
+}
+
+/* ----- Landscape Phones (max-height: 480px) ----- */
+@media (max-height: 480px) and (orientation: landscape) {
+    :root {
+        --edge-pad: 20px;
+    }
+
+    .header {
+        padding-top: 12px;
+    }
+
+    .logo-icon {
+        width: 24px;
+        height: 24px;
+    }
+
+    .logo-text {
+        font-size: 16px;
+    }
+
+    .hero-content {
+        margin-bottom: 16px;
+    }
+
+    .hero-title {
+        font-size: 20px;
+        line-height: 1.3;
+        margin-bottom: 8px;
+    }
+
+    .hero-subtitle {
+        font-size: 12px;
+        max-width: 70%;
+    }
+
+    .badge {
+        font-size: 9px;
+        padding: 4px 12px;
+        margin-bottom: 10px;
+    }
+
+    .hero-footer {
+        padding-bottom: 16px;
+        gap: 12px;
+    }
+
+    .btn {
+        padding: 8px 16px;
+        font-size: 12px;
+        min-height: 34px;
+    }
+
+    .action-buttons {
+        flex-direction: row;
+    }
+}
+
+/* ================================================================
+   ACCESSIBILITY — REDUCED MOTION
+   ================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    .slide.active .slide-image {
+        animation: none;
+        transform: scale(1);
+    }
+
+    .slide {
+        transition: opacity 0.6s ease;
+    }
+
+    .dot.active .dot-fill {
+        animation: none;
+        width: 100%;
+    }
+
+    .btn-primary.final-cta {
+        animation: none;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ================================================================
+   PRINT STYLES
+   ================================================================ */
+
+@media print {
+    .hero-slider {
+        display: none;
+    }
+
+    .page-container {
+        background: var(--navy-950);
+        padding: 20px;
+    }
+
+    .hero-title {
+        color: var(--white) !important;
+    }
+
+    .btn {
+        border: 1px solid var(--white-30) !important;
+        background: transparent !important;
+    }
+}
+
+/* ================================================================
+   UTILITY — FADE IN ANIMATION FOR TEXT
+   ================================================================ */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ================================================================
+   CUSTOM CURSOR / INTERACTION (optional enhancement)
+   ================================================================ */
+
+.dot {
+    cursor: pointer;
+}
+
+.btn {
+    cursor: pointer;
+    user-select: none;
+}
+
+/* ================================================================
+   SELECTION STYLING
+   ================================================================ */
+
+::selection {
+    background: var(--primary-blue);
+    color: var(--white);
+}
+
+/* ================================================================
+   SCROLLBAR (hidden but accessible)
+   ================================================================ */
+
+::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+* {
+    scrollbar-width: none;
+}

@@ -1,0 +1,350 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    background: #f5f8fe;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.role-card {
+    max-width: 420px;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 40px;
+    padding: 32px 28px 36px;
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.06);
+}
+
+/* Header - "I! SpaceShare · SPACE-AS-A-SERVICE" */
+.header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a2a3f;
+}
+
+.icon-mark {
+    font-size: 20px;
+    font-weight: 700;
+    color: #2a7de1;
+    background: #eef4fe;
+    padding: 2px 8px;
+    border-radius: 10px;
+    line-height: 1.4;
+}
+
+.brand-name {
+    font-weight: 700;
+    font-size: 15px;
+    background: linear-gradient(145deg, #1a2a3f, #2d4059);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.divider {
+    color: #7d8ca3;
+    font-weight: 300;
+    -webkit-text-fill-color: #7d8ca3;
+}
+
+.tagline {
+    font-weight: 400;
+    color: #4b5f7a;
+    font-size: 11px;
+    letter-spacing: 0.4px;
+    -webkit-text-fill-color: #4b5f7a;
+}
+
+/* Title */
+.title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0f1a2b;
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+}
+
+.subtitle {
+    font-size: 15px;
+    color: #4f5e71;
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+/* Feature list */
+.feature-list {
+    list-style: none;
+    margin: 12px 0 20px;
+    padding: 0;
+}
+
+.feature-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 14px;
+    color: #1c2b3e;
+    line-height: 1.5;
+    margin-bottom: 8px;
+}
+
+.icon-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    background: #eef4fe;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.icon-circle i {
+    font-size: 11px;
+    color: #2a7de1;
+}
+
+/* Question */
+.question {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    margin: 4px 0 12px;
+}
+
+.question-text {
+    font-weight: 600;
+    font-size: 18px;
+    color: #112133;
+}
+
+.highlight {
+    font-weight: 400;
+    font-size: 18px;
+    color: #2a7de1;
+}
+
+/* Footnote */
+.footnote {
+    font-size: 12px;
+    color: #6f7e94;
+    line-height: 1.6;
+    background: #f4f7fd;
+    padding: 10px 14px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.footnote i {
+    color: #2a7de1;
+    font-size: 13px;
+}
+
+/* Options */
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.option-card {
+    background: #f8faff;
+    border-radius: 24px;
+    padding: 18px 20px 18px 16px;
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: all 0.2s ease;
+}
+
+.option-card:hover {
+    background: #ffffff;
+    border-color: #cbd9ed;
+}
+
+.option-card.selected {
+    border-color: #2a7de1;
+    background: #f2f8ff;
+    box-shadow: 0 4px 16px rgba(42, 125, 225, 0.08);
+}
+
+.option-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 20px;
+}
+
+.find-icon {
+    background: #dce8fd;
+    color: #1f5fc7;
+}
+
+.list-icon {
+    background: #dde9fa;
+    color: #1f5fc7;
+}
+
+.option-content {
+    flex: 1;
+}
+
+.option-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #0b1a2c;
+    margin-bottom: 2px;
+}
+
+.option-desc {
+    font-size: 13px;
+    color: #52617a;
+    line-height: 1.4;
+}
+
+/* Pagination dots */
+.dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 18px;
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+    background: #d0d8e4;
+    border-radius: 50%;
+    transition: 0.2s;
+}
+
+.dot.active {
+    background: #2a7de1;
+    width: 20px;
+    border-radius: 4px;
+}
+
+/* ============================================================
+   RESPONSIVE - matches desktop + mobile exactly
+   ============================================================ */
+
+/* Desktop (default - 420px card) */
+
+/* Tablet / small laptop */
+@media (max-width: 768px) {
+    .role-card {
+        max-width: 380px;
+        padding: 28px 24px 32px;
+    }
+    .title {
+        font-size: 26px;
+    }
+    .subtitle {
+        font-size: 14px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .role-card {
+        max-width: 100%;
+        padding: 24px 18px 28px;
+        border-radius: 32px;
+        margin: 10px;
+    }
+    .title {
+        font-size: 24px;
+    }
+    .subtitle {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+    .feature-list li {
+        font-size: 13px;
+    }
+    .question-text,
+    .highlight {
+        font-size: 16px;
+    }
+    .option-card {
+        padding: 14px 16px;
+        border-radius: 20px;
+    }
+    .option-title {
+        font-size: 15px;
+    }
+    .option-desc {
+        font-size: 12px;
+    }
+    .option-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        border-radius: 14px;
+    }
+    .footnote {
+        font-size: 11px;
+        padding: 8px 12px;
+        border-radius: 24px;
+    }
+    .dots {
+        margin-top: 14px;
+    }
+    .dot.active {
+        width: 16px;
+    }
+}
+
+/* Extra small phones */
+@media (max-width: 360px) {
+    .role-card {
+        padding: 20px 14px 24px;
+        border-radius: 28px;
+    }
+    .title {
+        font-size: 22px;
+    }
+    .subtitle {
+        font-size: 13px;
+    }
+    .question-text,
+    .highlight {
+        font-size: 15px;
+    }
+    .option-card {
+        padding: 12px 14px;
+        gap: 10px;
+    }
+    .option-title {
+        font-size: 14px;
+    }
+    .option-desc {
+        font-size: 11px;
+    }
+    .option-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+    }
+}
