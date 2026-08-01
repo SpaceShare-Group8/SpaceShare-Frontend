@@ -45,6 +45,16 @@
           </label>
 
           <div class="user_section">
+            <!-- ICON: figma calls this "carbon:notification-new" (an
+            Iconify/Carbon icon, different set from the phosphor icons
+            everywhere else). Used phosphor's bell here to stay
+            consistent with the rest of the app instead of pulling in
+            a second icon font for one icon - swap to the real Carbon
+            one via Iconify if you want it pixel-exact -->
+            <button type="button" class="notif_btn" aria-label="Notifications">
+              <i class="ph ph-bell" aria-hidden="true"></i>
+              <span class="notif_dot"></span>
+            </button>
             <!-- ICON: swap ph-user-circle for a real avatar image once
             admin accounts have profile pictures -->
             <i class="ph-fill ph-user-circle" aria-hidden="true"></i>
@@ -54,20 +64,18 @@
       </header>
 
       <div class="main_bar">
-        <!-- admin sidebar (desktop). on mobile this is hidden - there
-        was no mobile sidebar/bottom-nav shown in your dispute queue
-        screenshots, so I left it desktop-only for now. tell me if the
-        mobile version needs its own nav and I'll add a bottom tab bar
-        like the host-booking-requests screen has -->
+        <!-- admin sidebar (desktop only) - mobile gets the bottom_nav
+        near the end of this file instead, same swap host-booking-
+        requests.html does -->
         <aside class="sidebar">
           <nav class="sidebar_nav">
             <a class="nav_item" href="#"><i class="ph ph-squares-four"></i>Dashboard</a>
             <a class="nav_item" href="#"><i class="ph ph-users"></i>Hosts</a>
             <a class="nav_item" href="#"><i class="ph ph-list-bullets"></i>Listings</a>
-            <!-- badge count (5) is hardcoded to match the mock data
-            below - see updateModerationBadge() in the JS file, it
-            keeps this in sync with however many disputes are still
-            open, so you don't need to touch this number by hand -->
+            <!-- badge count (5) is just a placeholder here - renderQueue()
+            in the JS file overwrites it with disputes.length every
+            time the list changes, so you don't need to touch this
+            number by hand -->
             <a class="nav_item is_active" href="#">
               <i class="ph ph-shield-warning"></i>Moderation Queue
               <span class="nav_badge" id="moderationBadge">5</span>
@@ -79,6 +87,16 @@
             <a class="nav_item" href="#"><i class="ph ph-gear"></i>Settings</a>
             <a class="nav_item" href="#"><i class="ph ph-sign-out"></i>Logout</a>
           </nav>
+
+          <!-- moved in here (was a full-width footer below main_bar)
+          - figma has this sitting at the bottom of the sidebar itself,
+          213x56. margin-top:auto on .page_footer pushes it to the
+          bottom of the sidebar regardless of how many nav items are
+          above it, same trick used for the "Need Help" card on the
+          host-booking-requests screen -->
+          <footer class="page_footer">
+            <p>&copy; 2026 SpaceShare Admin. All rights reserved.</p>
+          </footer>
         </aside>
 
         <main class="content">
@@ -101,23 +119,31 @@
               <span class="open_count_pill" id="openCountPill"></span>
             </div>
 
-            <!-- desktop column headers - hidden on mobile since the
-            mobile layout uses stacked cards instead of a table, see
-            the max-width:1239px block in the CSS -->
-            <div class="queue_head">
-              <span>Dispute ID</span>
-              <span>Booking Details</span>
-              <span>Listing & Host</span>
-              <span>Dispute Summary</span>
-              <span>Reliability History</span>
-              <span>Action</span>
+            <!-- everything below (column headers, rows, and the
+            "Showing 1-5 of 5" footnote) sits inside one shared
+            container on desktop, like a single table card - the
+            queue_container/queue_row split is what does that, see
+            the min-width:1240px block in the CSS -->
+            <div class="queue_container">
+              <!-- desktop column headers - hidden on mobile since the
+              mobile layout uses stacked cards instead of a table, see
+              the min-width:1240px block in the CSS -->
+              <div class="queue_head">
+                <span>Dispute ID</span>
+                <span>Booking Details</span>
+                <span>Listing & Host</span>
+                <span>Dispute Summary</span>
+                <span>Reliability History</span>
+                <span>Action</span>
+              </div>
+
+              <!-- rows get built by JS from MOCK_DISPUTES -
+              renderQueue() in the JS file. add/remove/edit disputes
+              there, not here -->
+              <div class="queue_rows" id="queueRows"></div>
+
+              <p class="queue_footnote" id="queueFootnote"></p>
             </div>
-
-            <!-- rows get built by JS from MOCK_DISPUTES - renderQueue()
-            in the JS file. add/remove/edit disputes there, not here -->
-            <div class="queue_rows" id="queueRows"></div>
-
-            <p class="queue_footnote" id="queueFootnote"></p>
           </section>
 
           <!-- ===================================================
@@ -214,9 +240,21 @@
         </main>
       </div>
 
-      <footer class="page_footer">
-        <p>&copy; 2026 SpaceShare Admin. All rights reserved.</p>
-      </footer>
+      <!-- mobile bottom tab bar - hidden on desktop (see CSS), takes
+      over from the sidebar the same way host-booking-requests.html
+      does. same top-level items as the desktop sidebar's dashboard
+      group (not the ACCOUNT group - Profile/Settings/Logout stay
+      sidebar-only for now, same as the host screen only surfacing
+      Profile and not Settings/Logout on its bottom bar) -->
+      <nav class="bottom_nav">
+        <a href="#" class="bottom_nav_item"><i class="ph ph-squares-four"></i>Dashboard</a>
+        <a href="#" class="bottom_nav_item"><i class="ph ph-users"></i>Hosts</a>
+        <a href="#" class="bottom_nav_item"><i class="ph ph-list-bullets"></i>Listings</a>
+        <a href="#" class="bottom_nav_item is_active">
+          <i class="ph ph-shield-warning"></i>Moderation
+        </a>
+        <a href="#" class="bottom_nav_item"><i class="ph ph-flag"></i>Reports</a>
+      </nav>
     </div>
 
     <script type="module" src="../scripts/admin-dispute-queue.js"></script>

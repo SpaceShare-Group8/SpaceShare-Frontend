@@ -69,14 +69,20 @@ a {
   min-height: 100vh;
 }
 
-/* ===== top bar ===== */
+/* ===== top bar - hidden on mobile, same as the other screens (the
+page_header "Dispute Queue" / "Dispute Details" title acts as the
+mobile header instead, and the bottom_nav down near the end of this
+file takes over navigation) ===== */
+.top_bar {
+  display: none;
+}
+
 .top_menu {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 20px;
   padding: 14px 24px;
-  background-color: var(--white);
   border-bottom: 1px solid var(--line);
 }
 
@@ -98,9 +104,10 @@ a {
   color: var(--brand);
 }
 
+/* exact figma size (514x64) gets applied at desktop, see the
+min-width:1240px block - the top bar (and this) is hidden below that
+anyway so there's no mobile-width version to worry about */
 .search_bar {
-  flex: 1 1 auto;
-  max-width: 480px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -121,7 +128,7 @@ a {
 .user_section {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 14px;
   font-size: 26px;
   flex-shrink: 0;
 }
@@ -129,6 +136,37 @@ a {
 .user_section .ph-caret-down {
   font-size: 14px;
   color: var(--muted);
+}
+
+/* notification bell - see the ICON comment in the HTML for why this
+is phosphor's ph-bell instead of the exact carbon:notification-new
+icon from the figma */
+.notif_btn {
+  position: relative;
+  display: inline-flex;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 22px;
+  color: var(--muted);
+  padding: 0;
+}
+
+.notif_btn:hover {
+  color: var(--text);
+}
+
+/* the "new" dot - remove this span in the HTML once there's a real
+unread-count to show instead */
+.notif_dot {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #e0433c;
+  border: 1.5px solid var(--white);
 }
 
 /* ===== layout ===== */
@@ -141,12 +179,18 @@ a {
 whether this screen needs its own mobile nav */
 .sidebar {
   display: none;
+  margin-top: 30px;
+  border-top-right-radius: 12px
 }
 
+/* bottom padding is extra tall on purpose - room for the fixed
+bottom_nav on mobile so it doesn't cover the last queue row/card.
+desktop resets this padding entirely below, so it's not an issue
+there */
 .content {
   flex: 1;
   min-width: 0;
-  padding: 20px 16px 40px;
+  padding: 20px 16px 90px;
 }
 
 .page_header {
@@ -180,6 +224,15 @@ whether this screen needs its own mobile nav */
 }
 
 /* ===== queue view ===== */
+
+/* wraps queue_head + queue_rows + queue_footnote. on mobile this is
+just a transparent pass-through (queue_rows below stay individual
+cards) - at desktop it becomes the single bordered table-card box that
+the footnote sits inside too, see the min-width:1240px block */
+.queue_container {
+  display: flex;
+  flex-direction: column;
+}
 
 /* column headers - only shown on desktop, see the min-width:1240px
 block near the bottom for where this becomes visible */
@@ -236,8 +289,8 @@ JS for how these get built */
 }
 
 .raised_by_badge.by_host {
-  background-color: #faeeda;
-  color: #854f0b;
+  background-color: #8c3ac6;
+  color: #ffffff;
 }
 
 .booking_cell .booking_id_link {
@@ -523,28 +576,87 @@ JS for how these get built */
   background-color: var(--bg);
 }
 
+/* lives inside .sidebar now (moved there in the HTML) - sized to the
+figma's 213x56, and only actually visible at desktop since the
+sidebar itself is mobile-hidden */
 .page_footer {
-  text-align: center;
+  width: 213px;
+  height: 56px;
+  display: flex;
+  align-items: center;
   font-size: 11px;
   color: var(--muted);
-  padding: 16px;
+}
+
+/* ===== mobile bottom tab bar - takes over navigation from the
+sidebar on mobile, same pattern as host-booking-requests.html. hidden
+again at desktop, see the min-width:1240px block ===== */
+.bottom_nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  background-color: var(--white);
+  border-top: 1px solid var(--line);
+  padding: 8px 0 10px;
+  z-index: 10;
+}
+
+.bottom_nav_item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  font-size: 10px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.bottom_nav_item i {
+  font-size: 20px;
+}
+
+.bottom_nav_item.is_active {
+  color: var(--brand);
 }
 
 /* ===== desktop ===== */
 @media (min-width: 1240px) {
+  .top_bar {
+    display: block;
+  }
+
+  .search_bar {
+    width: 514px;
+    height: 64px;
+    max-width: 100%;
+  }
+
+  .bottom_nav {
+    display: none;
+  }
+
   .main_bar {
     max-width: 1400px;
     margin: 0 auto;
     width: 100%;
   }
 
+  /* flex column (instead of just display:block) so .page_footer at
+  the bottom of the sidebar can use margin-top:auto to stick to the
+  bottom no matter how many nav items are above it */
   .sidebar {
-    display: block;
+    display: flex;
+    flex-direction: column;
     width: 220px;
     flex-shrink: 0;
     background-color: var(--white);
     border-right: 1px solid var(--line);
     padding: 20px 12px;
+    gap: 10px;
+    height: auto;
   }
 
   .sidebar_nav {
@@ -554,6 +666,7 @@ JS for how these get built */
   }
 
   .nav_group_label {
+    margin-top: 40px;
     font-size: 11px;
     font-weight: 600;
     color: var(--muted);
@@ -609,6 +722,16 @@ JS for how these get built */
     font-size: 24px;
   }
 
+  /* the single table-card box - queue_head, queue_rows and the
+  footnote all sit inside this now instead of the footnote floating
+  below on its own */
+  .queue_container {
+    background-color: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 8px 16px 16px;
+  }
+
   /* queue table look - column widths here need to add up sensibly
   with .queue_row below, they're kept in sync on purpose. if you add
   or remove a column, update both */
@@ -616,17 +739,43 @@ JS for how these get built */
     display: grid;
     grid-template-columns: 1fr 1.3fr 1.4fr 1.4fr 1.3fr 1fr;
     gap: 12px;
-    padding: 0 16px 10px;
+    padding: 0 0 10px;
     font-size: 11px;
     font-weight: 600;
     color: var(--muted);
   }
 
+  /* rows lose their own card look (background/border/radius) at
+  desktop since they're now inside queue_container's single box -
+  border-bottom instead makes them read as table rows */
   .queue_row {
     display: grid;
     grid-template-columns: 1fr 1.3fr 1.4fr 1.4fr 1.3fr 1fr;
     gap: 12px;
     align-items: center;
+    background: none;
+    border: none;
+    border-radius: 0;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .queue_rows > .queue_row:last-child {
+    border-bottom: none;
+  }
+
+  /* vertical divider lines between the columns - applied to both the
+  header row and every data row so they line up */
+  .queue_head > span,
+  .queue_row > * {
+    border-right: 1px solid var(--line);
+    padding-right: 12px;
+  }
+
+  .queue_head > span:last-child,
+  .queue_row > *:last-child {
+    border-right: none;
+    padding-right: 0;
   }
 
   .row_field_label {
@@ -641,8 +790,9 @@ JS for how these get built */
     flex-direction: row;
   }
 
+  /* pushes the footer to the bottom of the sidebar (a flex column,
+  see .sidebar above) no matter how tall the nav list above it is */
   .page_footer {
-    text-align: left;
-    padding: 16px 32px;
+    margin-top: auto;
   }
 }
