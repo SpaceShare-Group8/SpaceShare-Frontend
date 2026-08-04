@@ -1,88 +1,332 @@
-*{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
-body{
-    font-family: 'Inter', sans-serif;
+body {
+  font-family: "Inter", sans-serif;
 }
 
+/* Seeker FAQ Section */
 
-.seeker-faqs-main{
-    min-height: 100vh;
+.faqs-main {
+  min-height: 100vh;
   background-color: #f5f5f5;
   padding-bottom: 10px;
   position: relative;
 }
 
-.seeker-faqs-header{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 80px 20px 80px;
-    border-bottom: 1px solid #DDD9D9;
+.faqs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 80px 20px 80px;
+  border-bottom: 1px solid #ddd9d9;
 }
 
-.seeker-faqs-header > .header-back-btn{
-    border: none;
-    background-color: transparent;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 510;
-    font-size: 22px;
-    color: #948E8E;
-    cursor: pointer;
+.faqs-header > .header-back-btn {
+  border: none;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 510;
+  font-size: 22px;
+  color: #948e8e;
+  cursor: pointer;
 }
 
-.seeker-faqs-header .help-center-text{
-    font-weight: 590;
-    font-size: 36px;
-    color: #111111;
+.faqs-header .help-center-text {
+  font-weight: 590;
+  font-size: 36px;
+  color: #111111;
 }
 
-.seeker-faqs-header .header-option-btn{
-    border: none;
-    background-color: transparent;
-    font-size: 22px;
-    font-weight: 510;
-    color: #948E8E;
+.faqs-header .header-option-btn {
+  border: none;
+  background-color: transparent;
+  font-size: 22px;
+  font-weight: 510;
+  color: #948e8e;
 }
 
-.after-header-section{
-    padding: 40px 0 40px 80px;
+.after-header-section {
+  padding: 40px 0 40px 80px;
+  border-bottom: 1px solid #ddd9d9;
+}
+
+.after-header-section > h4 {
+  font-weight: 1000;
+  font-size: 36px;
+}
+
+.faq-main-section {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 80px 50px 100px;
+}
+
+.faq-main-section .keyword-search-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px 0 12px 15px;
+  background-color: #ffffff;
+  border: 1px solid #948e8e;
+  border-radius: 30px;
+  margin-bottom: 69px;
+}
+
+.keyword-search-container i {
+  font-size: 24px;
+  color: #948e8e;
+}
+
+.keyword-search-container .keyword-search-input {
+  border: none;
+  background-color: transparent;
+  font-size: 20px;
+  font-weight: 510;
+  /* text-align: center; */
+  color: #948e8e;
+  flex: 1;
+}
+
+.keyword-search-container .keyword-search-input:focus {
+  border: none;
+  outline: none;
+}
+
+.faq-btns-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 10px;
+  gap: 150px;
+  background-color: #ddd9d9;
+  border-radius: 12px;
+  /* margin-bottom: 69px; */
+  margin: 0 38px 69px 58px;
+}
+
+.faq-btns-container .faqs-btn {
+  border: none;
+  padding: 6px 10px;
+  background-color: transparent;
+  border-radius: 14px;
+  font-weight: 590;
+  font-size: 24px;
+  color: #111111;
+  cursor: pointer;
+}
+
+.faq-btns-container .faqs-btn.active {
+  background-color: #2862bc;
+  color: #f5f5f5;
+}
+
+.faq-box-container{
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.faq-box-container .faq-box {
+  background-color: transparent;
+  border: 1px solid #2862bc;
+  border-radius: 12px;
+  width: 100%;
+  min-height: 214px;
+}
+
+.host-faq-box-container {
+  display: none;
+}
+
+.general-faq-box-container {
+  display: none;
+}
+
+.ticket-support-container {
+  display: flex;
+  flex-direction: column;
+  padding: 50px 0 20px 30px;
+  border: 1px solid #2862bc;
+  background-color: #ffffff;
+  border-radius: 12px;
+  margin-top: 30px;
+  color: #111111;
+}
+
+.ticket-support-container h4 {
+  font-size: 36px;
+  font-weight: 1000;
+}
+
+.ticket-support-container p {
+  font-size: 36px;
+  font-weight: 400;
+  padding-right: 202px;
+}
+
+.ticket-support-container .ticket-support-form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 34px;
+  margin-right: 109px;
+}
+
+.ticket-support-form .subject-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 35px;
+}
+
+.subject-input-container label {
+  font-weight: 700;
+  font-size: 32px;
+}
+
+.subject-input-container .subject-search-container {
+  display: flex;
+  align-items: center;
+  padding: 12px 0px 12px 15px;
+  gap: 15px;
+  background-color: transparent;
+  border: 1px solid #948e8e;
+  border-radius: 30px;
+}
+
+.subject-input-container .subject-search-container i {
+  font-size: 24px;
+  color: #948e8e;
+}
+
+.subject-search-container .subject-search-input {
+  border: none;
+  background-color: transparent;
+  font-size: 20px;
+  font-weight: 510;
+  flex: 1;
+}
+
+.subject-search-container .subject-search-input:focus {
+  outline: none;
+}
+
+.subject-search-container .subject-search-input::placeholder {
+  color: #948e8e;
+}
+
+.ticket-support-container .message-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 50px;
+}
+
+.message-container label {
+  font-weight: 700;
+  font-size: 32px;
+}
+
+.message-container .message-textarea {
+  border: 1px solid #948e8e;
+  border-radius: 12px;
+  background-color: transparent;
+  width: 100%;
+  min-height: 214px;
+}
+
+.ticket-support-form .ticket-submit-btn {
+  /* align-self: center; */
+  background-color: #2862bc;
+  border: none;
+  border-radius: 14px;
+  color: #f5f5f5;
+  font-weight: 590;
+  font-size: 24px;
+  padding: 12px 14px;
+  margin: 0 -37px 0 40px;
+}
+
+.ticket-support-form .ticket-submit-btn:hover:hover {
+  background-color: #f5f5f5;
+  border: 1px solid #2862bc;
+  color: #111111;
 }
 
 
 
+/* Responsiveness */
+@media (max-width: 1024px) {
+    .faqs-header {
+  padding: 20px 50px 20px 50px;
+}
 
+.faqs-header .help-center-text {
+  font-weight: 590;
+  font-size: 30px;
+  color: #111111;
+}
 
+.after-header-section {
+  padding: 20px 0 20px 50px;
+}
 
+.after-header-section > h4 {
+  font-weight: 1000;
+  font-size: 30px;
+}
 
+.faq-main-section {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 40px 50px 50px;
+}
 
+.faq-main-section .keyword-search-container {
+  gap: 10px;
+  padding: 12px 0 12px 15px;
+  margin-bottom: 59px;
+}
 
+.keyword-search-container i {
+  font-size: 22px;
+}
 
+.keyword-search-container .keyword-search-input {
+  font-size: 18px;
+  font-weight: 510;
+}
 
+.faq-btns-container {
+  padding: 10px 15px;
+     margin: 0 18px 69px 28px;
+}
 
+.faq-btns-container .faqs-btn {
+ padding: 10px 15px;
+  font-weight: 590;
+  font-size: 20px;
+}
 
+.ticket-support-container {
+  padding: 50px 0 20px 30px;
+  border-radius: 12px;
+  margin-top: 30px;
+}
 
-/* How can we help? */
+.ticket-support-container h4 {
+  font-size: 30px;
+  font-weight: 1000;
+}
 
-width: 317px;
-height: 43px;
-
-font-family: 'SF Pro';
-font-style: normal;
-font-weight: 1000;
-font-size: 36px;
-line-height: 43px;
-/* identical to box height */
-
-color: #111111;
-
-
-/* Inside auto layout */
-flex: none;
-order: 0;
-flex-grow: 0;
+.ticket-support-container p {
+  font-size: 30px;
+  font-weight: 400;
+  padding-right: 150px;
+}
+}

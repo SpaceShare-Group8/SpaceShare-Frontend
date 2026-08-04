@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seeker Check-in</title>
+    <!-- Font Link -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- phosphor Icons Link -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/bold/style.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/thin/style.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/light/style.css"
+    />
+
+    <link rel="stylesheet" href="../styles/seeker-check-in.css" />
+  </head>
+  <body>
+    <section class="container">
+      <header class="check-in-header">
+        <button class="check-in-back-btn">
+          <i class="ph ph-caret-left"></i>
+          <span>Back</span>
+        </button>
+
+        <h4 class="check-in-text">Check-In</h4>
+
+        <button class="check-in-option-btn">
+          <i class="ph-fill ph-dots-three-outline-vertical"></i>
+        </button>
+      </header>
+
+      <main class="main-container">
+        <div class="left-container">
+          <div class="blue-banner">
+            <div class="booking-confirmation-container">
+              <img src="../search-assets/check.svg" alt="" />
+
+              <div class="check-text">
+                <p class="check-text-1">BOOKING CONFIRMED</p>
+                <p class="check-text-2">You're all set</p>
+              </div>
+            </div>
+
+            <p class="code-instruction">
+              Show the access code to the host on arrival or scan the QR code at
+              the entrance.
+            </p>
+
+            <div class="expiry-time-box">
+              <span class="ellipse-dot"></span>
+              <span class="expiry-time-text">Expires in 16:41</span>
+            </div>
+          </div>
+
+          <div class="code-btn-box">
+            <div class="code-type-btns">
+              <button class="code-btn QR-btn active">QR CODE</button>
+              <button class="code-btn access-btn">Access Code</button>
+            </div>
+
+            <div class="code-box QR-code-container">
+              <div class="QR-box"></div>
+              <p>Hold this up to the scanner at the entrance.</p>
+              <p>Works offline.</p>
+            </div>
+
+            <div class="code-box access-code-container">
+              <p class="your-access-code">YOUR ACCESS CODE</p>
+              <p class="access-code">567893</p>
+              <button class="copy-code-btn">
+                <i class="ph-fill ph-copy"></i><span>Copy Code</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="right-container">
+          <div class="workspace-name-img">
+            <img
+              src="../search-assets/hub-one-workspace.jpg"
+              alt="Hub One Workspace"
+            />
+
+            <div class="workspace-info">
+              <h5 class="workspace-name">Hub One Workspace</h5>
+              <p class="workspace-type">Coworking Space</p>
+              <p class="workspace-location">
+                <i class="ph-fill ph-map-pin"></i>
+                <span>Lekki Phase 1, Lagos.</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="booking-details-dropdown">
+            <span>Booking Details</span>
+            <i class="ph-fill ph-caret-down"></i>
+          </div>
+
+          <div class="amenities-container">
+            <p>Amenities</p>
+            <div class="amenities-boxes">
+              <div class="amenity-box">
+                <i class="ph-bold ph-snowflake"></i>
+                <span>AC</span>
+              </div>
+
+              <div class="amenity-box">
+                <i class="ph-bold ph-wifi-medium"></i>
+                <span>Wifi</span>
+              </div>
+
+              <div class="amenity-box">
+                <i class="ph-fill ph-car-profile"></i>
+                <span>Parking</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="need-help-link">
+            <a href="#">NEED HELP?</a>
+          </div>
+
+          <div class="contact-support-container">
+            <button class="contact-support-btn contatc-btn">
+              <i class="ph-fill ph-user"></i> <span>Contact Host</span>
+            </button>
+            <button class="contact-support-btn support-btn">
+              <i class="ph-fill ph-headset"></i> <span>Get Support</span>
+            </button>
+          </div>
+
+          <div class="cancel-booking-link">
+            <a href="#">Cancel Booking</a>
+          </div>
+        </div>
+      </main>
+    </section>
+
+    <script src="../scripts/seeker-check-in.js"></script>
+  </body>
+</html>

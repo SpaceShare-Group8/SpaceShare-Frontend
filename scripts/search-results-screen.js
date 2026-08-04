@@ -11,10 +11,11 @@ heart.forEach((icon) => {
         } else {
         icon.classList.remove('ph-fill');
         icon.classList.add('ph-thin');
-
+        icon.style.color = '#2862bc';
         }
     })
 })
+
 
 
 
