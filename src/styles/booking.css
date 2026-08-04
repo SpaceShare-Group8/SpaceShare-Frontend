@@ -67,7 +67,7 @@ body {
 
 
 /* top bar */
-.top_bar>.top_menu {
+.top_bar >.top_menu {
   display: flex;
   flex-direction: row;
   gap: 20px;
@@ -327,7 +327,7 @@ shrink like everything else */
   max-width: 1136px;
   min-width: 0;
   /* let the left side shrink instead of pushing */
-  gap: 20px;
+  gap: 5px;
 }
 
 /* left side */
@@ -391,7 +391,7 @@ shrink like everything else */
 
 .content>img {
   width: 500px;
-  height: 235px;
+  height: 335px;
   border-radius: 16px;
 }
 
@@ -496,6 +496,7 @@ shrink like everything else */
   flex: 0 0 350px;
   max-width: 100%;
   padding-top: 8px;
+  padding-right: 50px;
 }
 
 
