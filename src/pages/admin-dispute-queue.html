@@ -53,7 +53,10 @@
             one via Iconify if you want it pixel-exact -->
             <button type="button" class="notif_btn" aria-label="Notifications">
               <i class="ph ph-bell" aria-hidden="true"></i>
-              <span class="notif_dot"></span>
+              <!-- number here (not just a dot) matches the figma - filled
+              in by JS from disputes.length, same as the sidebar's
+              moderationBadge, so it can't drift out of sync -->
+              <span class="notif_count" id="notifCount"></span>
             </button>
             <!-- ICON: swap ph-user-circle for a real avatar image once
             admin accounts have profile pictures -->
@@ -112,11 +115,18 @@
             <div class="page_header">
               <div>
                 <h1>Dispute Queue</h1>
-                <p>Review open dispute and examine booking evidence before taking action.</p>
               </div>
+                <div class="page_header_mes">
+                  <p>Review open dispute and examine booking evidence before taking action.</p>
+                  <span class="open_count_pill" id="openCountPill">
+                    Request your review  
+                  </span>
+                </div>
+                
+              
               <!-- text here ("5 Open Disputes") is filled in by JS too,
               same reasoning as the sidebar badge above -->
-              <span class="open_count_pill" id="openCountPill"></span>
+              
             </div>
 
             <!-- everything below (column headers, rows, and the
@@ -156,19 +166,23 @@
               <i class="ph ph-arrow-left" aria-hidden="true"></i>Back to Dispute Queue
             </a>
 
-            <div class="page_header">
-              <div>
+            <div class="page_header_two">
+              <div class="page_view_det">
+                <div class="page_det">
                 <h1>Dispute Details</h1>
                 <p class="dispute_id_line">
                   <span id="detailDisputeId"></span>
                   <span class="raised_by_badge" id="detailRaisedBy"></span>
                 </p>
-                <p>Review the dispute details, reliability history and appropriate action.</p>
+                <p class="rev_page">Review the dispute details, reliability history and appropriate action.</p>
               </div>
+              
               <div class="opened_status">
                 <span class="status_badge opened">Opened</span>
                 <p class="opened_sub">Dispute submitted on <span id="detailSubmittedDate"></span></p>
               </div>
+              </div>
+    
             </div>
 
             <!-- top row of 3 info cards - Booking / Guest / Listing&Host -->

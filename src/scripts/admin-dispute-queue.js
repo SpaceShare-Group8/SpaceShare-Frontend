@@ -148,6 +148,7 @@ const queueRowsEl = document.getElementById("queueRows");
 const openCountPill = document.getElementById("openCountPill");
 const queueFootnote = document.getElementById("queueFootnote");
 const moderationBadge = document.getElementById("moderationBadge");
+const notifCount = document.getElementById("notifCount");
 
 function renderQueue() {
   queueRowsEl.innerHTML = "";
@@ -159,6 +160,7 @@ function renderQueue() {
   openCountPill.textContent = `${disputes.length} Open Disputes`;
   queueFootnote.textContent = `Showing 1–${disputes.length} of ${disputes.length} open disputes`;
   moderationBadge.textContent = disputes.length;
+  notifCount.textContent = disputes.length;
 }
 
 function renderQueueRow(dispute) {

@@ -159,16 +159,24 @@ icon from the figma */
   color: var(--text);
 }
 
-/* the "new" dot - remove this span in the HTML once there's a real
-unread-count to show instead */
-.notif_dot {
+/* the unread-count badge - figma shows a number, not just a dot, so
+this is sized to fit 1-2 digits instead of the small plain dot style.
+text content comes from JS (renderQueue), same source as the sidebar's
+moderationBadge */
+.notif_count {
   position: absolute;
-  top: -1px;
-  right: -1px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: #e0433c;
+  top: -6px;
+  right: -8px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 8px;
+  background-color: var(--brand);
+  color: var(--white);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: center;
   border: 1.5px solid var(--white);
 }
 
@@ -176,6 +184,7 @@ unread-count to show instead */
 .main_bar {
   display: flex;
   flex: 1;
+  /* height: 771px; */
 }
 
 /* sidebar is desktop-only, see the mobile note in the HTML file about
@@ -193,16 +202,21 @@ there */
 .content {
   flex: 1;
   min-width: 0;
-  padding: 20px 16px 90px;
+  padding: 20px;
 }
 
 .page_header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  flex-direction: column;
   gap: 16px;
   flex-wrap: wrap;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  /* background-color: var(--white); */
+  padding: 20px;
+  border-radius: 12px;
+  min-width: 0;
 }
 
 .page_header h1 {
@@ -214,6 +228,74 @@ there */
   font-size: 13px;
   color: var(--muted);
   margin-top: 4px;
+  width: 620px;
+}
+
+
+.page_header_two > .page_view_det {
+  /* width: 100%; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+}
+
+.page_det{
+ display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 5px;
+  padding: 10px;
+  padding-bottom: 30px;
+}
+
+
+#detailDisputeId{
+  border-right: 1px solid var(--muted);
+  padding-right: 10px;
+}
+
+.page_det > .rev_page{
+  font-size: 13px;
+}
+
+.opened_status{
+  display: inline-flex;
+  flex-direction: column;
+  gap: 1px;
+  align-items: flex-start;
+}
+
+.opened_status{
+  width: 133px;
+  height: min-content;
+  border-radius: 10px;
+  background-color: var(--opened_bg);
+  color: var(--opened_text);
+  padding: 20px;
+  align-self: center;
+  justify-self: start;
+  font-size: 13px;
+}
+
+.opened_sub{
+  text-align: left;
+}
+
+.status_badge, .opened
+.opened_sub{
+  width:102px;
+  height: 34.34px;
+}
+
+
+
+.page_header_mes {
+  display: flex;
+  flex-direction: row;
+  gap: 200px;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 .open_count_pill {
@@ -232,9 +314,17 @@ there */
 just a transparent pass-through (queue_rows below stay individual
 cards) - at desktop it becomes the single bordered table-card box that
 the footnote sits inside too, see the min-width:1240px block */
+
+#queueView{
+background-color: var(--white);
+border-top-left-radius: 12px;
+border-top-right-radius: 12px;    
+}
+
 .queue_container {
   display: flex;
   flex-direction: column;
+
 }
 
 /* column headers - only shown on desktop, see the min-width:1240px
@@ -731,12 +821,16 @@ again at desktop, see the min-width:1240px block ===== */
 
   /* only targets whichever section isn't hidden - a plain ".view"
   rule would override the browser's default "[hidden] { display:none }"
-  and make both queueView and detailView show at once */
+  and make both queueView and detailView show at once.
+  "1 0 auto" (grow yes, shrink no) instead of the flex:1 shorthand
+  on purpose - flex:1 sets flex-basis:0%, which lets this shrink
+  below its own content height if the sidebar turns out shorter than
+  the queue table, squashing/hiding rows. shrink:0 means it can only
+  ever grow to match the sidebar, never compress below its content */
   .view:not([hidden]) {
     display: flex;
     flex-direction: column;
-    flex: 1;
-    min-height: 0;
+    flex: 1 0 auto;
   }
 
   .page_header h1 {
@@ -745,15 +839,16 @@ again at desktop, see the min-width:1240px block ===== */
 
   /* the single table-card box - queue_head, queue_rows and the
   footnote all sit inside this now instead of the footnote floating
-  below on its own. flex:1 makes this stretch down to fill the rest of
-  #queueView's height, so its border/background lines up with the
-  sidebar's height instead of shrink-wrapping just the 5 rows */
+  below on its own. same "1 0 auto" reasoning as .view above - this
+  grows to fill the rest of #queueView's height so its border lines up
+  with the sidebar's, but never shrinks below the head+rows+footnote's
+  natural height, so the footnote can't get squeezed out */
   .queue_container {
     background-color: var(--white);
     border: 1px solid var(--line);
     border-radius: 12px;
     padding: 8px 16px 16px;
-    flex: 1;
+    flex: 1 0 auto;
   }
 
   /* queue table look - column widths here need to add up sensibly
@@ -812,6 +907,29 @@ again at desktop, see the min-width:1240px block ===== */
 
   .info_card_row {
     flex-direction: row;
+  }
+
+  /* figma has "Take Action" + its description on the left and the
+  Refund/Penalty buttons on the right, both in the same row - the base
+  rule stacks them (title on top, buttons below) which is fine for
+  mobile width, this switches it to a row at desktop instead */
+  .take_action_card {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  /* buttons keep their natural width here instead of splitting the
+  card 50/50 like the base rule's flex:1 does for mobile */
+  .action_buttons {
+    flex-shrink: 0;
+  }
+
+  .refund_btn,
+  .penalty_btn {
+    flex: 0 0 auto;
+    padding: 11px 20px;
   }
 
   /* pushes the footer to the bottom of the sidebar (a flex column,
