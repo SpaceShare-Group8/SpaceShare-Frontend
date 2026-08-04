@@ -18,8 +18,9 @@ let disputes = [
     total: "₦45,000",
     workspace: "Hub One Workspace",
     location: "Lekki, Lagos",
-    // ICON/IMAGE: reusing the one workspace photo we have. once each
-    // listing has its own image on the backend, swap this per-dispute
+    // one workspace photo per dispute, matching the 001-005 files in
+    // src/Images - swap for a real per-listing image once the backend
+    // returns one
     workspaceImg: "/src/Images/booking_img_1.jpg",
     host: "Daniel Okafor",
     hostEmail: "DanielO@gmail.com",
@@ -46,7 +47,7 @@ let disputes = [
     total: "₦30,000",
     workspace: "WorkNest Hub",
     location: "Lekki, Lagos",
-    workspaceImg: "/src/Images/booking_img_1.jpg",
+    workspaceImg: "/src/Images/002.png",
     host: "Kemi O.",
     hostEmail: "kemi.o@gmail.com",
     hostPhone: "+234 803 555 0182",
@@ -72,7 +73,7 @@ let disputes = [
     total: "₦50,000",
     workspace: "Creative Space",
     location: "Lekki, Lagos",
-    workspaceImg: "/src/Images/booking_img_1.jpg",
+    workspaceImg: "/src/Images/003.png",
     host: "Michael Jose",
     hostEmail: "michael.jose@gmail.com",
     hostPhone: "+234 809 112 7743",
@@ -98,7 +99,7 @@ let disputes = [
     total: "₦35,000",
     workspace: "Innovation Hub",
     location: "Lekki, Lagos",
-    workspaceImg: "/src/Images/booking_img_1.jpg",
+    workspaceImg: "/src/Images/004.png",
     host: "Blessing Cyndy",
     hostEmail: "blessing.cyndy@gmail.com",
     hostPhone: "+234 815 340 9021",
@@ -124,7 +125,7 @@ let disputes = [
     total: "₦15,000",
     workspace: "Hub One Workspace",
     location: "Lekki, Lagos",
-    workspaceImg: "/src/Images/booking_img_1.jpg",
+    workspaceImg: "/src/Images/005.png",
     host: "Daniel Okafor",
     hostEmail: "DanielO@gmail.com",
     hostPhone: "+234 902 860 3195",
@@ -147,6 +148,7 @@ const queueRowsEl = document.getElementById("queueRows");
 const openCountPill = document.getElementById("openCountPill");
 const queueFootnote = document.getElementById("queueFootnote");
 const moderationBadge = document.getElementById("moderationBadge");
+const notifCount = document.getElementById("notifCount");
 
 function renderQueue() {
   queueRowsEl.innerHTML = "";
@@ -158,6 +160,7 @@ function renderQueue() {
   openCountPill.textContent = `${disputes.length} Open Disputes`;
   queueFootnote.textContent = `Showing 1–${disputes.length} of ${disputes.length} open disputes`;
   moderationBadge.textContent = disputes.length;
+  notifCount.textContent = disputes.length;
 }
 
 function renderQueueRow(dispute) {
@@ -261,6 +264,23 @@ function showDetail(id) {
   document.getElementById("detailEvidence").textContent = dispute.evidence;
 
   document.getElementById("detailScore").textContent = `${dispute.reliabilityScore} / 5`;
+
+  // reliability tier pill (High/Medium/Low Reliability) - figma only
+  // shows the "High" example, these thresholds are a reasonable guess
+  // for the other two tiers. adjust the numbers here if there's an
+  // official cutoff from the design/product side
+  const tierEl = document.getElementById("detailReliabilityTier");
+  if (dispute.reliabilityScore >= 4.5) {
+    tierEl.textContent = "High Reliability";
+    tierEl.className = "score_pill";
+  } else if (dispute.reliabilityScore >= 3.5) {
+    tierEl.textContent = "Medium Reliability";
+    tierEl.className = "score_pill medium";
+  } else {
+    tierEl.textContent = "Low Reliability";
+    tierEl.className = "score_pill low";
+  }
+
   document.getElementById("detailCompleted").textContent = dispute.completedBookings;
   document.getElementById("detailPrevDisputes").textContent = dispute.previousDisputes;
   document.getElementById("detailPrevCancellations").textContent = dispute.previousCancellations;

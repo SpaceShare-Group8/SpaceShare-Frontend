@@ -1,0 +1,1002 @@
+/* admin-dispute-queue.css
+   Covers both states from the figma - the queue list/table and the
+   opened-dispute detail view - since they're one HTML page with two
+   sections toggled by JS (see admin-dispute-queue.js).
+
+   BODY/HEIGHT NOTE: booking.css uses `height: auto` on body and a
+   `min-height:100%; height:15%` combo on its page wrapper - that 15%
+   only "works" because it has no defined parent height to resolve
+   against, so browsers fall back to auto anyway, but it's a bit
+   fragile to build on. I used the more standard `min-height: 100vh`
+   on .page here instead, same visual result (page always fills at
+   least the screen) but doesn't depend on that quirk. If you want
+   this to match booking.css byte-for-byte instead, this is the block
+   to edit - just swap .page's `min-height: 100vh;` for
+   `min-height: 100%; height: 15%;` and add `height: auto;` back to
+   body below. */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* same brand palette as booking.css / host-booking-requests.css so
+  all the screens feel like one app */
+  --primary_color: #052659;
+  --brand: #2862bc;
+  --brand_dark: #1f4c96;
+  --brand_soft: #eef4ff;
+  --line: #e3e3e3;
+  --text: #111111;
+  --muted: #6b6b6b;
+  --bg: #f5f5f5;
+  --white: #ffffff;
+
+  /* status colors - reused for the "Opened" badge and the reliability
+  tier pill (High/Medium/Low Reliability, see .score_pill below) */
+  --opened_bg: #e6f1fb;
+  --opened_text: #185fa5;
+  --score_good_bg: #eaf3de;
+  --score_good_text: #3b6d11;
+  --score_medium_bg: #fdf3d6;
+  --score_medium_text: #8a6d1a;
+  --score_low_bg: #fbe4e4;
+  --score_low_text: #a32d2d;
+}
+
+body {
+  font-family: sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ===== top bar - hidden on mobile, same as the other screens (the
+page_header "Dispute Queue" / "Dispute Details" title acts as the
+mobile header instead, and the bottom_nav down near the end of this
+file takes over navigation) ===== */
+.top_bar {
+  display: none;
+  
+}
+
+.top_menu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 14px 24px;
+  width: 100vw;
+}
+
+.logo_section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.logo_section .logo {
+  width: 36px;
+  height: 36px;
+}
+
+.logo_name {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--brand);
+}
+
+/* exact figma size (514x64) gets applied at desktop, see the
+min-width:1240px block - the top bar (and this) is hidden below that
+anyway so there's no mobile-width version to worry about */
+.search_bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 2px solid var(--line);
+  border-radius: 24px;
+  padding: 10px;
+  color: var(--muted);
+  width:514px;
+  height: 64px;
+  margin-right: 300px;
+}
+
+.search_bar > input {
+  border: none;
+  outline: none;
+  background: none;
+  flex: 1;
+  font-size: 14px;
+}
+
+.user_section {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 26px;
+  flex-shrink: 0;
+}
+
+.user_section .ph-caret-down {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* notification bell - see the ICON comment in the HTML for why this
+is phosphor's ph-bell instead of the exact carbon:notification-new
+icon from the figma */
+.notif_btn {
+  position: relative;
+  display: inline-flex;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 22px;
+  color: var(--muted);
+  padding: 0;
+}
+
+.notif_btn:hover {
+  color: var(--text);
+}
+
+/* the unread-count badge - figma shows a number, not just a dot, so
+this is sized to fit 1-2 digits instead of the small plain dot style.
+text content comes from JS (renderQueue), same source as the sidebar's
+moderationBadge */
+.notif_count {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 8px;
+  background-color: var(--brand);
+  color: var(--white);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: center;
+  border: 1.5px solid var(--white);
+}
+
+/* ===== layout ===== */
+/* flex:1 used to be here too, but that sets flex-basis:0% - since
+.page (the parent) is a column flex container, flex-basis controls
+height, so flex:1 was overriding the literal height:771px below and
+stretching this to fill the page instead. dropping flex:1 lets
+height:771px actually apply. .sidebar and .content (both children of
+this) then get their height from the default align-items:stretch,
+which needs main_bar's height to be a real fixed number to work off
+of - that's this 771px */
+.main_bar {
+  display: flex;
+  height: 771px;
+}
+
+/* sidebar is desktop-only, see the mobile note in the HTML file about
+whether this screen needs its own mobile nav */
+.sidebar {
+  display: none;
+  margin-top: 10px;
+  border-top-right-radius: 12px;
+  width: 20%;
+}
+
+/* bottom padding is extra tall on purpose - room for the fixed
+bottom_nav on mobile so it doesn't cover the last queue row/card.
+desktop resets this padding entirely below, so it's not an issue
+there */
+.content {
+  flex: 1;
+  width: 80%;
+  padding:0;
+}
+
+.view{
+  margin-top: 10px;
+}
+
+.page_header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  padding: 20px;
+  border-radius: 12px;
+  min-width: 0;
+}
+
+.page_header h1 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.page_header p {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 4px;
+  width: 620px;
+}
+
+
+.page_header_two > .page_view_det {
+  /* width: 100%; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+}
+
+.page_det{
+ display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 5px;
+  padding: 10px;
+  padding-bottom: 30px;
+}
+
+
+#detailDisputeId{
+  border-right: 1px solid var(--muted);
+  padding-right: 10px;
+}
+
+.page_det > .rev_page{
+  font-size: 13px;
+}
+
+.opened_status{
+  display: inline-flex;
+  flex-direction: column;
+  gap: 1px;
+  align-items: flex-start;
+}
+
+.opened_status{
+  width: 133px;
+  height: min-content;
+  border-radius: 10px;
+  background-color: var(--opened_bg);
+  color: var(--opened_text);
+  padding: 10px 14px;
+  align-self: center;
+  justify-self: start;
+  font-size: 13px;
+}
+
+.opened_sub{
+  text-align: left;
+}
+
+.status_badge, .opened
+.opened_sub{
+  width:102px;
+  height: 34.34px;
+}
+
+
+
+.page_header_mes {
+  display: flex;
+  flex-direction: row;
+  gap: 200px;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.open_count_pill {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--brand);
+  background-color: var(--brand_soft);
+  border-radius: 20px;
+  padding: 6px 14px;
+  white-space: nowrap;
+}
+
+/* ===== queue view ===== */
+
+/* wraps queue_head + queue_rows + queue_footnote. on mobile this is
+just a transparent pass-through (queue_rows below stay individual
+cards) - at desktop it becomes the single bordered table-card box that
+the footnote sits inside too, see the min-width:1240px block */
+
+#queueView{
+background-color: var(--white);
+border-top-left-radius: 12px;
+border-top-right-radius: 12px;    
+}
+
+.queue_container {
+  display: flex;
+  flex-direction: column;
+
+}
+
+/* column headers - only shown on desktop, see the min-width:1240px
+block near the bottom for where this becomes visible */
+.queue_head {
+  display: none;
+}
+
+.queue_rows {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.queue_footnote {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 14px;
+}
+
+/* one dispute row/card - same markup reflows from a stacked mobile
+card into a grid-row table look on desktop, see renderQueue() in the
+JS for how these get built */
+.queue_row {
+  background-color: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.row_field_label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.dispute_id_cell .dispute_id {
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.raised_by_badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-top: 4px;
+  background-color: var(--brand_soft);
+  color: var(--brand);
+}
+
+.raised_by_badge.by_host {
+  background-color: #8c3ac6;
+  color: #ffffff;
+}
+
+.booking_cell .booking_id_link {
+  color: var(--brand);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.booking_meta {
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.listing_cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.listing_thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.listing_name {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.listing_loc,
+.listing_host {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.summary_cell {
+  font-size: 13px;
+}
+
+.reliability_cell {
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.reliability_score {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.reliability_score .score_note {
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.action_cell {
+  display: flex;
+  gap: 8px;
+}
+
+.view_details_btn,
+.dismiss_btn {
+  flex: 1;
+  padding: 9px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--line);
+  background-color: var(--white);
+}
+
+.view_details_btn {
+  color: var(--brand);
+  border-color: #bcd3f2;
+}
+
+.view_details_btn:hover {
+  background-color: var(--brand_soft);
+}
+
+.dismiss_btn {
+  color: #a32d2d;
+  border-color: #f0c4c4;
+}
+
+.dismiss_btn:hover {
+  background-color: #fcebeb;
+}
+
+/* ===== detail view ===== */
+.back_link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--brand);
+  margin-bottom: 14px;
+}
+
+.dispute_id_line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text) !important;
+  font-weight: 600;
+  margin-top: 2px !important;
+}
+
+.opened_status {
+  /* was text-align:right - that's what was pushing both "Opened" and
+  the "Dispute submitted on..." line over, since text-align is
+  inherited by the badge/paragraph text inside this box */
+  text-align: left;
+}
+
+.status_badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.status_badge.opened {
+  background-color: var(--opened_bg);
+  color: var(--opened_text);
+}
+
+.opened_sub {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.info_card_row {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.info_card {
+  background-color: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+  flex: 1;
+}
+
+.info_card_title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.info_card_title i {
+  color: var(--brand);
+}
+
+.info_row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+  padding: 5px 0;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+.info_row:last-child {
+  border-bottom: none;
+}
+
+.info_row > span:first-child {
+  color: var(--muted);
+}
+
+.info_row > span:last-child {
+  font-weight: 600;
+  text-align: right;
+}
+
+.link_text {
+  color: var(--brand) !important;
+}
+
+.field_label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-top: 10px;
+  margin-bottom: 4px;
+}
+
+.field_label:first-of-type {
+  margin-top: 0;
+}
+
+.field_value {
+  font-size: 13px;
+}
+
+.field_value.muted {
+  color: var(--muted);
+}
+
+.field_value.small {
+  font-size: 11px;
+  margin-top: 10px;
+}
+
+.quote_box {
+  font-size: 12px;
+  font-style: normal;
+  background-color: var(--bg);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--text);
+}
+
+/* wraps the plain score text + the tier pill so they sit on one line,
+right-aligned like every other .info_row value - see the HTML comment
+above #detailScore for why these are two separate elements */
+.score_row_value {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+/* default/no-modifier = "High Reliability" (green). showDetail() in
+the JS adds .medium or .low on top of this depending on the dispute's
+reliabilityScore - add more tiers here if the scoring logic changes */
+.score_pill {
+  background-color: var(--score_good_bg);
+  color: var(--score_good_text);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+
+.score_pill.medium {
+  background-color: var(--score_medium_bg);
+  color: var(--score_medium_text);
+}
+
+.score_pill.low {
+  background-color: var(--score_low_bg);
+  color: var(--score_low_text);
+}
+
+.take_action_card {
+  background-color: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.action_buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.refund_btn,
+.penalty_btn {
+  flex: 1;
+  padding: 11px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.refund_btn {
+  background-color: var(--brand);
+  color: var(--white);
+  border: none;
+}
+
+.refund_btn:hover {
+  background-color: var(--brand_dark);
+}
+
+.penalty_btn {
+  background-color: var(--white);
+  color: var(--text);
+  border: 1px solid var(--line);
+}
+
+.penalty_btn:hover {
+  background-color: var(--bg);
+}
+
+/* lives inside .sidebar now (moved there in the HTML) - sized to the
+figma's 213x56, and only actually visible at desktop since the
+sidebar itself is mobile-hidden */
+.page_footer {
+  width: 213px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ===== mobile bottom tab bar - takes over navigation from the
+sidebar on mobile, same pattern as host-booking-requests.html. hidden
+again at desktop, see the min-width:1240px block ===== */
+.bottom_nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  background-color: var(--white);
+  border-top: 1px solid var(--line);
+  padding: 8px 0 10px;
+  z-index: 10;
+}
+
+.bottom_nav_item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  font-size: 10px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.bottom_nav_item i {
+  font-size: 20px;
+}
+
+.bottom_nav_item.is_active {
+  color: var(--brand);
+}
+
+/* ===== desktop ===== */
+@media (min-width: 1240px) {
+  .top_bar {
+    display: block;
+  }
+
+  .search_bar {
+    width: 514px;
+    height: 64px;
+    max-width: 100%;
+  }
+
+  .bottom_nav {
+    display: none;
+  }
+
+  .main_bar {
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  /* flex column (instead of just display:block) so .page_footer at
+  the bottom of the sidebar can use margin-top:auto to stick to the
+  bottom no matter how many nav items are above it */
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 220px;
+    flex-shrink: 0;
+    background-color: var(--white);
+    border-right: 1px solid var(--line);
+    padding: 20px 12px;
+    gap: 10px;
+    height: auto;
+  }
+
+  .sidebar_nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .nav_group_label {
+    margin-top: 40px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    padding: 14px 12px 6px;
+  }
+
+  .nav_item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    color: var(--text);
+    position: relative;
+  }
+
+  .nav_item i {
+    font-size: 18px;
+    color: var(--muted);
+  }
+
+  .nav_item:hover {
+    background-color: var(--bg);
+  }
+
+  .nav_item.is_active {
+    background-color: var(--brand_soft);
+    color: var(--brand);
+    font-weight: 600;
+  }
+
+  .nav_item.is_active i {
+    color: var(--brand);
+  }
+
+  .nav_badge {
+    margin-left: auto;
+    background-color: var(--brand);
+    color: var(--white);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 1px 7px;
+    border-radius: 10px;
+  }
+
+  /* flex column so #queueView/#detailView below can flex:1 and fill
+  whatever height .content ends up at - .main_bar's default row-flex
+  stretch already makes .content match .sidebar's height, this just
+  passes that height down to the queue_container box so its visible
+  border/background reaches the same bottom edge as the sidebar's,
+  instead of stopping short at its own content height.
+  no top padding here on purpose - the base .content rule has
+  padding:0, so this used to add 28px above #queueView's white box
+  while .sidebar only had its own margin-top:10px, which is why the
+  two white boxes didn't start on the same row. page_header's own
+  padding gives #queueView breathing room at the top instead, so this
+  box can start flush with the sidebar */
+  .content {
+    padding: 0 32px 28px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* base rule's margin-top:10px was meant for mobile spacing above
+  the page title - cancel it here so #queueView starts at the same
+  row as .sidebar instead of 10px further down */
+  .view {
+    margin-top: 0;
+  }
+
+  /* base rule's margin-top:10px (mobile-only spacing) would otherwise
+  carry into desktop too and offset the sidebar from #queueView's now
+  flush top edge */
+  .sidebar {
+    margin-top: 0;
+  }
+
+  /* only targets whichever section isn't hidden - a plain ".view"
+  rule would override the browser's default "[hidden] { display:none }"
+  and make both queueView and detailView show at once.
+  "1 0 auto" (grow yes, shrink no) instead of the flex:1 shorthand
+  on purpose - flex:1 sets flex-basis:0%, which lets this shrink
+  below its own content height if the sidebar turns out shorter than
+  the queue table, squashing/hiding rows. shrink:0 means it can only
+  ever grow to match the sidebar, never compress below its content */
+  .view:not([hidden]) {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+  }
+
+  .page_header h1 {
+    font-size: 24px;
+  }
+
+  /* the single table-card box - queue_head, queue_rows and the
+  footnote all sit inside this now instead of the footnote floating
+  below on its own. same "1 0 auto" reasoning as .view above - this
+  grows to fill the rest of #queueView's height so its border lines up
+  with the sidebar's, but never shrinks below the head+rows+footnote's
+  natural height, so the footnote can't get squeezed out */
+  .queue_container {
+    background-color: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 8px 16px 16px;
+    flex: 1 0 auto;
+  }
+
+  /* queue table look - column widths here need to add up sensibly
+  with .queue_row below, they're kept in sync on purpose. if you add
+  or remove a column, update both */
+  .queue_head {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr 1.4fr 1.4fr 1.3fr 1fr;
+    gap: 12px;
+    padding: 0 0 10px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  /* rows lose their own card look (background/border/radius) at
+  desktop since they're now inside queue_container's single box -
+  border-bottom instead makes them read as table rows */
+  .queue_row {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr 1.4fr 1.4fr 1.3fr 1fr;
+    gap: 12px;
+    align-items: center;
+    background: none;
+    border: none;
+    border-radius: 0;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .queue_rows > .queue_row:last-child {
+    border-bottom: none;
+  }
+
+  /* vertical divider lines between the columns - applied to both the
+  header row and every data row so they line up */
+  .queue_head > span,
+  .queue_row > * {
+    border-right: 1px solid var(--line);
+    padding-right: 12px;
+  }
+
+  .queue_head > span:last-child,
+  .queue_row > *:last-child {
+    border-right: none;
+    padding-right: 0;
+  }
+
+  .row_field_label {
+    display: none;
+  }
+
+  .action_cell {
+    flex-direction: column;
+  }
+
+  .info_card_row {
+    flex-direction: row;
+  }
+
+  /* figma has "Take Action" + its description on the left and the
+  Refund/Penalty buttons on the right, both in the same row - the base
+  rule stacks them (title on top, buttons below) which is fine for
+  mobile width, this switches it to a row at desktop instead */
+  .take_action_card {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  /* buttons keep their natural width here instead of splitting the
+  card 50/50 like the base rule's flex:1 does for mobile */
+  .action_buttons {
+    flex-shrink: 0;
+  }
+
+  .refund_btn,
+  .penalty_btn {
+    flex: 0 0 auto;
+    padding: 11px 20px;
+  }
+
+  /* pushes the footer to the bottom of the sidebar (a flex column,
+  see .sidebar above) no matter how tall the nav list above it is */
+  .page_footer {
+    margin-top: auto;
+  }
+}
