@@ -14,7 +14,7 @@
       type="text/css"
       href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"
     />
-    <link rel="stylesheet" href="../styles/host-booking-requests.css" />
+    <link rel="stylesheet" href="../styles/booking-requests.css" />
   </head>
   <body>
     <div class="page">
@@ -32,6 +32,15 @@
           </label>
 
           <div class="user_section">
+            <!-- notification bell, same pattern as the dispute-queue
+            screen - just a plain red dot here since there's no obvious
+            "unread count" data source for booking requests yet, unlike
+            dispute-queue's disputes.length. swap in a real number if a
+            notifications endpoint shows up later -->
+            <button type="button" class="notif_btn" aria-label="Notifications">
+              <i class="ph ph-bell" aria-hidden="true"></i>
+              <span class="notif_dot"></span>
+            </button>
             <i class="ph-fill ph-user-circle" aria-hidden="true"></i>
             <i class="ph ph-caret-down" aria-hidden="true"></i>
           </div>
@@ -51,7 +60,7 @@
             <a class="nav_item" href="#"><i class="ph ph-chat"></i>Messages</a>
             <a class="nav_item" href="#"><i class="ph ph-star"></i>Reviews</a>
 
-            <span class="nav_group_label">ACCOUNT</span>
+            <span class="nav_group_label account_label">ACCOUNT</span>
             <a class="nav_item" href="#"><i class="ph ph-user"></i>Profile</a>
             <a class="nav_item" href="#"><i class="ph ph-money"></i>Payouts</a>
             <a class="nav_item" href="#"><i class="ph ph-gear"></i>Settings</a>
@@ -80,6 +89,6 @@
       </nav>
     </div>
 
-    <script type="module" src="../scripts/host-booking-requests.js"></script>
+    <script type="module" src="../scripts/booking-requests.js"></script>
   </body>
 </html>

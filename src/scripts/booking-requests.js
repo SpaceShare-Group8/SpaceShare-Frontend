@@ -17,6 +17,14 @@ let bookings = [
   {
     id: "bk-1",
     guestName: "Amaka Johnson",
+    // profile_!.png in src/Images was a single sprite with 3 circular
+    // headshots side by side - cropped it into 3 separate files
+    // (profile_woman1/man1/woman2.png) plus profile3.jpg was already
+    // its own standalone photo, giving 4 distinct guest photos total
+    avatarImg: "/src/Images/profile_woman1.png",
+    // one workspace photo per booking (brk1-4.png in src/Images)
+    // instead of all 4 sharing booking_img_1.jpg
+    workspaceImg: "/src/Images/brk1.png",
     workspaceName: "Hub One Workspace",
     location: "Lekki, Lagos",
     date: "Fri, 3rd July 2026",
@@ -30,6 +38,8 @@ let bookings = [
   {
     id: "bk-2",
     guestName: "David Adeyemi",
+    avatarImg: "/src/Images/profile_man1.png",
+    workspaceImg: "/src/Images/brk2.png",
     workspaceName: "Innovation Hub",
     location: "Lekki, Lagos",
     date: "Mon, 14th Sept 2026",
@@ -43,6 +53,8 @@ let bookings = [
   {
     id: "bk-3",
     guestName: "Raphael Imoadibo",
+    avatarImg: "/src/Images/profile3.jpg",
+    workspaceImg: "/src/Images/brk3.png",
     workspaceName: "WorkNest Hub",
     location: "Lekki, Lagos",
     date: "Thu, 6th Aug 2026",
@@ -56,6 +68,8 @@ let bookings = [
   {
     id: "bk-4",
     guestName: "Esther Williams",
+    avatarImg: "/src/Images/profile_woman2.png",
+    workspaceImg: "/src/Images/brk4.png",
     workspaceName: "Creative Space",
     location: "Lekki, Lagos",
     date: "Wed, 29th July 2026",
@@ -74,15 +88,6 @@ const listEl = document.getElementById("requestsList");
 // reason is selected in it, keyed by booking id - kept outside the
 // data objects since it's just UI state, not booking data
 const declineUiState = {};
-
-function initials(name) {
-  return name
-    .split(" ")
-    .map((part) => part[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
-}
 
 function formatCountdown(totalSeconds) {
   const m = Math.floor(totalSeconds / 60);
@@ -111,47 +116,69 @@ function renderCard(booking) {
   const showExpiry = booking.status === "pending";
   const declineOpen = declineUiState[booking.id]?.open;
 
+  // card_row holds the 3 columns (guest/workspace info, booking
+  // details, expiry+actions) - stacked on mobile via .card_row being
+  // a column flex, side-by-side on desktop via the min-width:1240px
+  // block in the CSS switching it to a row. decline_panel sits outside
+  // card_row on purpose so it can span the full card width below all
+  // 3 columns instead of being squeezed into one of them
   card.innerHTML = `
-    <div class="card_top">
-      <div class="avatar">${initials(booking.guestName)}</div>
-      <span class="guest_name">${booking.guestName}</span>
-      <span class="status_badge ${booking.status}">${statusLabel(booking.status)}</span>
-    </div>
+    <div class="card_row">
+      <div class="card_col_guest">
+        <div class="card_top">
+          <img class="avatar" src="${booking.avatarImg}" alt="${booking.guestName}" />
+          <span class="guest_name">
+            ${booking.guestName}
+            <!-- ICON: verified checkmark, phosphor's ph-fill ph-seal-check
+            is the closest match to the blue twitter-style badge - every
+            guest shows as verified for now since there's no real
+            verification status in the mock data yet -->
+            <i class="ph-fill ph-seal-check verified_icon" aria-hidden="true"></i>
+          </span>
+        </div>
 
-    <div class="workspace_row">
-      <img class="workspace_thumb" src="/src/Images/booking_img_1.jpg" alt="${booking.workspaceName}" />
-      <div>
-        <p class="workspace_name">${booking.workspaceName}</p>
-        <p class="workspace_loc"><i class="ph ph-map-pin" aria-hidden="true"></i>${booking.location}</p>
+        <div class="workspace_row">
+          <img class="workspace_thumb" src="${booking.workspaceImg}" alt="${booking.workspaceName}" />
+          <div>
+            <p class="workspace_name">${booking.workspaceName}</p>
+            <p class="workspace_loc"><i class="ph ph-map-pin" aria-hidden="true"></i>${booking.location}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card_col_booking">
+        <div class="booking_details">
+          <p class="section_label">Booking Details</p>
+          <div class="detail_row"><span><i class="ph ph-calendar" aria-hidden="true"></i>Date</span><span>${booking.date}</span></div>
+          <div class="detail_row"><span><i class="ph ph-clock" aria-hidden="true"></i>Time</span><span>${booking.time}</span></div>
+          <div class="detail_row"><span><i class="ph ph-hourglass" aria-hidden="true"></i>Duration</span><span>${booking.duration}</span></div>
+          <div class="detail_row"><span><i class="ph ph-tag" aria-hidden="true"></i>Rate</span><span>${booking.rate}</span></div>
+          <div class="total_divider"></div>
+          <div class="detail_row total"><span><i class="ph-fill ph-receipt" aria-hidden="true"></i>Total</span><span>${booking.total}</span></div>
+        </div>
+      </div>
+
+      <div class="card_col_actions">
+        ${
+          showExpiry
+            ? `<span class="expiry"><i class="ph ph-timer" aria-hidden="true"></i>Expires in <strong class="countdown">${formatCountdown(booking.expiresIn)}</strong></span>`
+            : ""
+        }
+
+        <span class="status_badge ${booking.status}">${statusLabel(booking.status)}</span>
+
+        ${
+          showActions
+            ? `<div class="card_actions">
+                <button type="button" class="accept_btn">Accept Request</button>
+                <button type="button" class="decline_btn">Decline</button>
+              </div>`
+            : ""
+        }
+
+        <a class="guest_profile_link" href="#">View Guest Profile</a>
       </div>
     </div>
-
-    <div class="booking_details">
-      <p class="section_label">Booking Details</p>
-      <div class="detail_row"><span><i class="ph ph-calendar" aria-hidden="true"></i>Date</span><span>${booking.date}</span></div>
-      <div class="detail_row"><span><i class="ph ph-clock" aria-hidden="true"></i>Time</span><span>${booking.time}</span></div>
-      <div class="detail_row"><span><i class="ph ph-hourglass" aria-hidden="true"></i>Duration</span><span>${booking.duration}</span></div>
-      <div class="detail_row"><span><i class="ph ph-tag" aria-hidden="true"></i>Rate</span><span>${booking.rate}</span></div>
-      <div class="detail_row total"><span><i class="ph-fill ph-receipt" aria-hidden="true"></i>Total</span><span>${booking.total}</span></div>
-    </div>
-
-    <div class="card_footer">
-      ${
-        showExpiry
-          ? `<span class="expiry"><i class="ph ph-timer" aria-hidden="true"></i>Expires in <strong class="countdown">${formatCountdown(booking.expiresIn)}</strong></span>`
-          : `<span></span>`
-      }
-      <a class="guest_profile_link" href="#">View Guest Profile</a>
-    </div>
-
-    ${
-      showActions
-        ? `<div class="card_actions">
-            <button type="button" class="accept_btn">Accept Request</button>
-            <button type="button" class="decline_btn">Decline</button>
-          </div>`
-        : ""
-    }
 
     ${showActions ? renderDeclinePanel(booking, declineOpen) : ""}
   `;
