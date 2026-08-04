@@ -24,7 +24,7 @@
       type="text/css"
       href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"
     />
-    <link rel="stylesheet" href="../styles/admin-dispute-queue.css" />
+    <link rel="stylesheet" href="../styles/dispute-queue.css" />
   </head>
   <body>
     <div class="page">
@@ -229,7 +229,18 @@
 
               <div class="info_card wide">
                 <p class="info_card_title">Reliability History (Evidence)</p>
-                <div class="info_row"><span>Reliability Score</span><span id="detailScore" class="score_pill"></span></div>
+                <!-- score text and the "High/Medium/Low Reliability" pill
+                are two separate elements per figma - detailScore stays
+                plain text like the other rows, detailReliabilityTier is
+                the colored pill next to it, both filled in by showDetail()
+                in the JS based on dispute.reliabilityScore -->
+                <div class="info_row">
+                  <span>Reliability Score</span>
+                  <span class="score_row_value">
+                    <span id="detailScore"></span>
+                    <span id="detailReliabilityTier" class="score_pill"></span>
+                  </span>
+                </div>
                 <div class="info_row"><span>Completed Bookings</span><span id="detailCompleted"></span></div>
                 <div class="info_row"><span>Previous Disputes</span><span id="detailPrevDisputes"></span></div>
                 <div class="info_row"><span>Previous Cancellations</span><span id="detailPrevCancellations"></span></div>
@@ -271,6 +282,6 @@
       </nav>
     </div>
 
-    <script type="module" src="../scripts/admin-dispute-queue.js"></script>
+    <script type="module" src="../scripts/dispute-queue.js"></script>
   </body>
 </html>

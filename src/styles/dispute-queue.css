@@ -35,12 +35,15 @@
   --white: #ffffff;
 
   /* status colors - reused for the "Opened" badge and the reliability
-  score pill. add more here if a dispute status besides "Opened" ever
-  shows up on this screen */
+  tier pill (High/Medium/Low Reliability, see .score_pill below) */
   --opened_bg: #e6f1fb;
   --opened_text: #185fa5;
   --score_good_bg: #eaf3de;
   --score_good_text: #3b6d11;
+  --score_medium_bg: #fdf3d6;
+  --score_medium_text: #8a6d1a;
+  --score_low_bg: #fbe4e4;
+  --score_low_text: #a32d2d;
 }
 
 body {
@@ -75,6 +78,7 @@ mobile header instead, and the bottom_nav down near the end of this
 file takes over navigation) ===== */
 .top_bar {
   display: none;
+  
 }
 
 .top_menu {
@@ -83,7 +87,7 @@ file takes over navigation) ===== */
   justify-content: space-between;
   gap: 20px;
   padding: 14px 24px;
-  
+  width: 100vw;
 }
 
 .logo_section {
@@ -113,11 +117,11 @@ anyway so there's no mobile-width version to worry about */
   gap: 10px;
   border: 2px solid var(--line);
   border-radius: 24px;
-  padding: 10px 16px;
+  padding: 10px;
   color: var(--muted);
   width:514px;
   height: 64px;
-  margin-right: 150px;
+  margin-right: 300px;
 }
 
 .search_bar > input {
@@ -181,18 +185,26 @@ moderationBadge */
 }
 
 /* ===== layout ===== */
+/* flex:1 used to be here too, but that sets flex-basis:0% - since
+.page (the parent) is a column flex container, flex-basis controls
+height, so flex:1 was overriding the literal height:771px below and
+stretching this to fill the page instead. dropping flex:1 lets
+height:771px actually apply. .sidebar and .content (both children of
+this) then get their height from the default align-items:stretch,
+which needs main_bar's height to be a real fixed number to work off
+of - that's this 771px */
 .main_bar {
   display: flex;
-  flex: 1;
-  /* height: 771px; */
+  height: 771px;
 }
 
 /* sidebar is desktop-only, see the mobile note in the HTML file about
 whether this screen needs its own mobile nav */
 .sidebar {
   display: none;
-  margin-top: 30px;
-  border-top-right-radius: 12px
+  margin-top: 10px;
+  border-top-right-radius: 12px;
+  width: 20%;
 }
 
 /* bottom padding is extra tall on purpose - room for the fixed
@@ -201,8 +213,12 @@ desktop resets this padding entirely below, so it's not an issue
 there */
 .content {
   flex: 1;
-  min-width: 0;
-  padding: 20px;
+  width: 80%;
+  padding:0;
+}
+
+.view{
+  margin-top: 10px;
 }
 
 .page_header {
@@ -213,7 +229,6 @@ there */
   gap: 16px;
   flex-wrap: wrap;
   margin-bottom: 10px;
-  /* background-color: var(--white); */
   padding: 20px;
   border-radius: 12px;
   min-width: 0;
@@ -272,7 +287,7 @@ there */
   border-radius: 10px;
   background-color: var(--opened_bg);
   color: var(--opened_text);
-  padding: 20px;
+  padding: 10px 14px;
   align-self: center;
   justify-self: start;
   font-size: 13px;
@@ -505,7 +520,10 @@ JS for how these get built */
 }
 
 .opened_status {
-  text-align: right;
+  /* was text-align:right - that's what was pushing both "Opened" and
+  the "Dispute submitted on..." line over, since text-align is
+  inherited by the badge/paragraph text inside this box */
+  text-align: left;
 }
 
 .status_badge {
@@ -608,13 +626,26 @@ JS for how these get built */
 
 .quote_box {
   font-size: 12px;
-  font-style: italic;
+  font-style: normal;
   background-color: var(--bg);
   border-radius: 8px;
   padding: 10px 12px;
   color: var(--text);
 }
 
+/* wraps the plain score text + the tier pill so they sit on one line,
+right-aligned like every other .info_row value - see the HTML comment
+above #detailScore for why these are two separate elements */
+.score_row_value {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+/* default/no-modifier = "High Reliability" (green). showDetail() in
+the JS adds .medium or .low on top of this depending on the dispute's
+reliabilityScore - add more tiers here if the scoring logic changes */
 .score_pill {
   background-color: var(--score_good_bg);
   color: var(--score_good_text);
@@ -622,6 +653,17 @@ JS for how these get built */
   font-weight: 700;
   padding: 3px 10px;
   border-radius: 12px;
+  white-space: nowrap;
+}
+
+.score_pill.medium {
+  background-color: var(--score_medium_bg);
+  color: var(--score_medium_text);
+}
+
+.score_pill.low {
+  background-color: var(--score_low_bg);
+  color: var(--score_low_text);
 }
 
 .take_action_card {
@@ -812,11 +854,31 @@ again at desktop, see the min-width:1240px block ===== */
   stretch already makes .content match .sidebar's height, this just
   passes that height down to the queue_container box so its visible
   border/background reaches the same bottom edge as the sidebar's,
-  instead of stopping short at its own content height */
+  instead of stopping short at its own content height.
+  no top padding here on purpose - the base .content rule has
+  padding:0, so this used to add 28px above #queueView's white box
+  while .sidebar only had its own margin-top:10px, which is why the
+  two white boxes didn't start on the same row. page_header's own
+  padding gives #queueView breathing room at the top instead, so this
+  box can start flush with the sidebar */
   .content {
-    padding: 28px 32px;
+    padding: 0 32px 28px;
     display: flex;
     flex-direction: column;
+  }
+
+  /* base rule's margin-top:10px was meant for mobile spacing above
+  the page title - cancel it here so #queueView starts at the same
+  row as .sidebar instead of 10px further down */
+  .view {
+    margin-top: 0;
+  }
+
+  /* base rule's margin-top:10px (mobile-only spacing) would otherwise
+  carry into desktop too and offset the sidebar from #queueView's now
+  flush top edge */
+  .sidebar {
+    margin-top: 0;
   }
 
   /* only targets whichever section isn't hidden - a plain ".view"

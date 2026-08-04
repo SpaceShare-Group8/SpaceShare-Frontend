@@ -264,6 +264,23 @@ function showDetail(id) {
   document.getElementById("detailEvidence").textContent = dispute.evidence;
 
   document.getElementById("detailScore").textContent = `${dispute.reliabilityScore} / 5`;
+
+  // reliability tier pill (High/Medium/Low Reliability) - figma only
+  // shows the "High" example, these thresholds are a reasonable guess
+  // for the other two tiers. adjust the numbers here if there's an
+  // official cutoff from the design/product side
+  const tierEl = document.getElementById("detailReliabilityTier");
+  if (dispute.reliabilityScore >= 4.5) {
+    tierEl.textContent = "High Reliability";
+    tierEl.className = "score_pill";
+  } else if (dispute.reliabilityScore >= 3.5) {
+    tierEl.textContent = "Medium Reliability";
+    tierEl.className = "score_pill medium";
+  } else {
+    tierEl.textContent = "Low Reliability";
+    tierEl.className = "score_pill low";
+  }
+
   document.getElementById("detailCompleted").textContent = dispute.completedBookings;
   document.getElementById("detailPrevDisputes").textContent = dispute.previousDisputes;
   document.getElementById("detailPrevCancellations").textContent = dispute.previousCancellations;
