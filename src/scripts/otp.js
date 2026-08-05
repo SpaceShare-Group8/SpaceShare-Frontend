@@ -46,7 +46,7 @@ otpForm.addEventListener("submit", function(event){
     otpInputs.forEach(input =>{
         otp += input.value;
     });
-    if(otp.length !== 5){
+    if(otp.length !== 6){
         alert("Please enter the complete OTP.");
         return;
     }

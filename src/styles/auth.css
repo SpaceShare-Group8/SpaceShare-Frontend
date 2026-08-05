@@ -142,6 +142,22 @@ label{
     margin-top: 10px;
     margin-bottom: 25px;
 }
+.input-box{
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.toggle-password{
+    position: absolute;
+    right: 15px;
+    cursor: pointer;
+    font-size: 22px;
+    color: #777;
+    transition: 0.3s;
+}
+.toggle-password:hover{
+    color: #2862BC;
+}
 .forgot{
     display: block;
     text-align: right;
@@ -223,8 +239,8 @@ label{
     margin-bottom: 40px;
 }
 .otp-input{
-    width: 50px;
-    height: 50px;
+    width: 35px;
+    height: 35px;
     border: 1px solid #D9D9D9;
     text-align: center;
     font-size: 22px;
@@ -320,7 +336,7 @@ label{
     font-size: 30px;
     font-weight: 700;
     color: #000;
-    /* margin-top: -40px; */
+    
 }
 .success-page .subtitle{
     text-align: center;
