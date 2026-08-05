@@ -1,0 +1,168 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 'Inter', sans-serif;
+    background-color: #C2BCBC;
+}
+
+.container{
+    display: grid;
+    grid-template-columns: 297px 1fr;
+    gap: 9px;
+    height: 100vh;
+    width: 100%;
+}
+
+.left-container{
+    display: flex;
+    flex-direction: column;
+    padding: 0px 0px 0px 13px
+}
+
+.logo-section{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 50px 44px 23px 32px ;
+}
+
+.logo-section img {
+  width: 44px;
+  height: 40px;
+}
+
+.logo-section span {
+  font-size: 28px;
+  font-weight: 700;
+  color: #2862bc;
+}
+
+.after-logo-section{
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    padding-bottom: 202px;
+}
+
+.after-logo-section .admin-dashboard-text{
+    padding: 28px 49px 0 17px;
+    font-weight: 700;
+    font-size: 22px;
+    color: #2862bc;
+    opacity: 0.7;
+}
+
+
+
+.admin-nav .admin-nav-list-container{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    list-style: none;
+    margin: 0px 18px 142px 17px;
+}
+
+.admin-nav-list-container .admin-nav-list{
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 15px;
+    color: #9A9898;
+    font-size: 20px;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.admin-nav-list i{
+    font-size: 26px;
+}
+
+.admin-nav-list-container .admin-nav-list:hover{
+    background-color: #2862bc;
+    color: #ffffff;
+    border-radius: 15px;
+}
+
+.admin-nav-list-container .admin-nav-list:active{
+    background-color: #2862bc;
+    color: #111111;
+    border-radius: 15px;
+}
+
+.admin-nav-list-container .admin-nav-list.not{
+    justify-content: space-between;
+}
+
+.admin-nav-list-container .admin-nav-list.active{
+    background-color: #2862bc;
+    color: #ffffff;
+    border-radius: 15px;
+}
+
+.admin-nav-list .not-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4px 8px;
+    background: rgba(142, 138, 138, 0.17);
+    border-radius: 100%;
+    color: #2862BC;
+    font-weight: 510;
+font-size: 16px;
+}
+
+.admin-nav-list .not-box:hover{
+    background-color: #ffffff;
+}
+
+.account-nav-section{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin: 0px 18px 0px 17px;
+}
+
+.account-nav-section .account-text{
+    font-weight: 700;
+font-size: 20px;
+color: #2862BC;
+opacity: 0.7;
+}
+
+.account-nav-section .account-nav{
+    margin-right: 66px;
+}
+
+.account-nav .account-nav-list-container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    list-style: none;
+}
+
+.account-nav-list-container .account-nav-list{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    font-weight: 274;
+font-size: 24px;
+color: #9A9898;
+cursor: pointer;
+}
+
+.account-nav-list-container .account-nav-list i{
+    font-size: 32px;
+}
+
+.account-nav-list-container .account-nav-list:hover{
+    background-color: #2862bc;
+    color: #ffffff;
+    border-radius: 15px;
+}
