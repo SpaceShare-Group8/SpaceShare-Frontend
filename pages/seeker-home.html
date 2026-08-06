@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seeker Home</title>
+        <!-- Font Link -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet"
+        />
+        <!-- phosphor Icons Link -->
+        <link
+        rel="stylesheet"
+        type="text/css"
+        href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
+        />
+        <link
+        rel="stylesheet"
+        type="text/css"
+        href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/bold/style.css"
+        />
+        <link
+        rel="stylesheet"
+        type="text/css"
+        href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"
+        />
+        <link
+        rel="stylesheet"
+        type="text/css"
+        href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/thin/style.css"
+        />
+        <link
+        rel="stylesheet"
+        type="text/css"
+        href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/light/style.css"
+        />
+
+        <link rel="stylesheet" href="../styles/seeker-home.css"/>
+</head>
+<body>
+    
+    <section class="app">
+ 
+    <!-- Left sidebar -->
+      <aside class="sidebar">
+        <nav class="sidebar-nav">
+          <div class="sidebar-logo">
+            <img
+              src="/search-assets/blue-logo.svg"
+              alt="SpaceShare-Logo"
+              class="blue-logo"
+            />
+            <h3>SpaceShare</h3>
+          </div>
+
+          <ul class="nav-lists">
+            <li class="nav-links">
+              <a href="#"
+                ><i class="ph ph-house link-icon"></i><span>Home</span></a
+              >
+            </li>
+            <li class="nav-links">
+              <a href="#"
+                ><i class="ph ph-calendar-blank link-icon"></i
+                ><span>Bookings</span></a
+              >
+            </li>
+            <li class="nav-links">
+              <a href="/pages/favorite-spaces.html"
+                ><i class="ph ph-heart link-icon"></i><span>Favourite</span></a
+              >
+            </li>
+            <li class="nav-links">
+              <a href="#"
+                ><i class="ph ph-chat link-icon"></i><span>Messages</span></a
+              >
+            </li>
+          </ul>
+        </nav>
+      </aside>
+ 
+    <!-- Main content -->
+    <main class="main">
+ 
+      <!-- Header -->
+      <header class="seeker-home-header">
+        <div class="seeker-home-greeting">
+          <div class="avatar">ZD</div>
+          <div class="greeting-text">
+            <p class="greeting-title">Good Morning</p>
+            <p class="greeting-name">Zara Danjuma</p>
+          </div>
+        </div>
+ 
+        <div class="seeker-header-actions">
+          <i class="ph-fill ph-heart"></i>
+          <i class="ph ph-bell"></i>
+        </div>
+      </header>
+ 
+      <!-- Search -->
+      <div class="search-row">
+        <div class="search-bar">
+          <i class="ph ph-magnifying-glass"></i>
+          <input type="text" placeholder="Search bookings, spaces, guests">
+        </div>
+        <span class="icon-btn square"><i class="ph ph-sliders"></i></span>
+      </div>
+ 
+      <!-- Instant match banner -->
+      <div class="banner">
+        <p class="banner-eyebrow">INSTANT MATCH</p>
+        <h2 class="banner-title">Need Power Imediately?</h2>
+        <p class="banner-desc">Locate verified workspaces near you with active backup generators right now.</p>
+        <button class="banner-btn">
+            <i class="ph ph-lightning"></i>
+          <span class="bolt-icon">Find Me Power Now</span>
+        </button>
+      </div>
+ 
+      <!-- Filters -->
+      <div class="filters">
+        <button class="filter-chip"><span class="chevron">Type</span><i class="ph-bold ph-caret-down"></i></button>
+        <button class="filter-chip"><span class="chevron">Price</span><i class="ph-bold ph-caret-down"></i></button>
+        <button class="filter-chip"><span class="chevron">Power</span><i class="ph-bold ph-caret-down"></i></button>
+        <button class="filter-chip"><span class="chevron">Capacity</span><i class="ph-bold ph-caret-down"></i></button>
+        <button class="filter-chip"><span class="chevron">Amenities</span><i class="ph-bold ph-caret-down"></i></button>
+        <button class="filter-chip"><span class="chevron">Workspace</span><i class="ph-bold ph-caret-down"></i></button>
+        <button class="filter-chip"><span class="chevron">Availability</span><i class="ph-bold ph-caret-down"></i></button>
+        <button class="filter-chip icon-only"><i class="ph-bold ph-map-trifold"></i></button>
+      </div>
+ 
+      <!-- Summary cards -->
+      <section class="summary-cards">
+        <div class="summary-card">
+          <span class="summary-icon round-icon"><!-- heart icon --></span>
+          <h3>Favourites</h3>
+          <p>4 saved listings</p>
+        </div>
+        <div class="summary-card">
+          <span class="summary-icon round-icon"><!-- calendar icon --></span>
+          <h3>Bookings</h3>
+          <p>2 active sessions</p>
+        </div>
+      </section>
+ 
+      <!-- Nearby spaces -->
+      <section class="nearby">
+        <div class="nearby-header">
+          <h3>Nearby Spaces</h3>
+          <a href="#" class="see-all">See all <span class="chevron-right"></span></a>
+        </div>
+ 
+        <div class="space-grid">
+ 
+          <div class="space-card">
+            <div class="space-image">
+              <span class="tag power-tag">⚡ Power</span>
+              <span class="tag fav-tag active"><!-- filled heart --></span>
+              <span class="tag type-tag">Co-working space</span>
+            </div>
+            <div class="space-info">
+              <div class="space-info-top">
+                <h4>Hub One Workspace</h4>
+                <span class="price">₦15,000/hr</span>
+              </div>
+              <p class="space-location"><span class="pin-icon"><!-- pin --></span> Lekki Phase 1</p>
+              <div class="space-info-bottom">
+                <span class="rating"><span class="star-icon">★</span> 4.8 (120)</span>
+                <span class="wifi"><span class="wifi-icon"><!-- wifi --></span> 500Mbps</span>
+              </div>
+            </div>
+          </div>
+ 
+          <div class="space-card">
+            <div class="space-image">
+              <span class="tag power-tag">⚡ Power</span>
+              <span class="tag fav-tag"><!-- outline heart --></span>
+              <span class="tag type-tag">Meeting room</span>
+            </div>
+            <div class="space-info">
+              <div class="space-info-top">
+                <h4>Discovery Nest</h4>
+                <span class="price">₦75,000/day</span>
+              </div>
+              <p class="space-location"><span class="pin-icon"><!-- pin --></span> Victoria Island</p>
+              <div class="space-info-bottom">
+                <span class="rating"><span class="star-icon">★</span> 4.9 (96)</span>
+                <span class="wifi"><span class="wifi-icon"><!-- wifi --></span> 1.5Gbps</span>
+              </div>
+            </div>
+          </div>
+ 
+          <div class="space-card">
+            <div class="space-image">
+              <span class="tag power-tag">⚡ Power</span>
+              <span class="tag fav-tag"><!-- outline heart --></span>
+              <span class="tag type-tag">Podcast Studio</span>
+            </div>
+            <div class="space-info">
+              <div class="space-info-top">
+                <h4>Creative Space</h4>
+                <span class="price">₦50,000/hr</span>
+              </div>
+              <p class="space-location"><span class="pin-icon"><!-- pin --></span> Ikorodu</p>
+              <div class="space-info-bottom">
+                <span class="rating"><span class="star-icon">★</span> 4.9 (52)</span>
+                <span class="wifi"><span class="wifi-icon"><!-- wifi --></span> 1Gbps</span>
+              </div>
+            </div>
+          </div>
+ 
+          <div class="space-card">
+            <div class="space-image">
+              <span class="tag power-tag">⚡ Power</span>
+              <span class="tag fav-tag active"><!-- filled heart --></span>
+              <span class="tag type-tag">Private Office</span>
+            </div>
+            <div class="space-info">
+              <div class="space-info-top">
+                <h4>Work Nest Hub</h4>
+                <span class="price">₦15,000/hr</span>
+              </div>
+              <p class="space-location"><span class="pin-icon"><!-- pin --></span> Ikeja, GRA</p>
+              <div class="space-info-bottom">
+                <span class="rating"><span class="star-icon">★</span> 4.7 (80)</span>
+                <span class="wifi"><span class="wifi-icon"><!-- wifi --></span> 600Mbps</span>
+              </div>
+            </div>
+          </div>
+ 
+        </div>
+      </section>
+ 
+    </main>
+  </section>
+ 
+
+</body>
+</html>

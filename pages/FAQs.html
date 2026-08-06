@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SpaceShare FAQS</title>
+    <!-- Font Link -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- phosphor Icons Link -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/bold/style.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/thin/style.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/light/style.css"
+    />
+
+    <link rel="stylesheet" href="/styles/search-style.css" />
+    <link rel="stylesheet" href="/styles/FAQs.css" />
+  </head>
+  <body>
+    <section class="whole-container">
+      <aside class="sidebar">
+        <nav class="sidebar-nav">
+          <div class="sidebar-logo">
+            <img
+              src="/search-assets/blue-logo.svg"
+              alt="SpaceShare-Logo"
+              class="blue-logo"
+            />
+            <h3>SpaceShare</h3>
+          </div>
+
+          <ul class="nav-lists">
+            <li class="nav-links">
+              <a href="#"
+                ><i class="ph ph-house link-icon"></i><span>Home</span></a
+              >
+            </li>
+            <li class="nav-links">
+              <a href="#"
+                ><i class="ph ph-calendar-blank link-icon"></i
+                ><span>Bookings</span></a
+              >
+            </li>
+            <li class="nav-links">
+              <a href="#"
+                ><i class="ph ph-heart link-icon"></i><span>Favourite</span></a
+              >
+            </li>
+            <li class="nav-links">
+              <a href="#"
+                ><i class="ph ph-chat link-icon"></i><span>Messages</span></a
+              >
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="faqs-main">
+        <!-- Seeker FAQs Header -->
+        <header class="faqs-header">
+          <button class="header-back-btn">
+            <i class="ph ph-caret-left"></i>
+            <span>Back</span>
+          </button>
+
+          <h4 class="help-center-text">Help Center</h4>
+
+          <button class="header-option-btn">
+            <i class="ph-fill ph-dots-three-outline-vertical"></i>
+          </button>
+        </header>
+
+        <!-- How can we help Section -->
+        <section class="after-header-section">
+          <h4>How can we help?</h4>
+        </section>
+
+        <!-- Seeker FAQs main section -->
+        <section class="faq-main-section">
+          <!-- Search Keywords Input -->
+          <div class="keyword-search-container">
+            <i class="ph-bold ph-magnifying-glass"></i>
+            <input
+              type="text"
+              name=""
+              id=""
+              class="keyword-search-input"
+              placeholder="Search help topics, keywords, ......"
+            />
+          </div>
+
+          <div class="faq-btns-container">
+            <button class="faqs-btn seeker-btn active">Seeker FAQ</button>
+            <button class="faqs-btn host-btn">Host FAQ</button>
+            <button class="faqs-btn general-btn">General</button>
+          </div>
+
+          <!-- Seeker Faq Box Container -->
+          <div class="faq-box-container seeker-faq-box-container">
+            <!-- Box-1 -->
+            <div class="faq-box"></div>
+
+            <!-- Box-2 -->
+            <div class="faq-box"></div>
+
+            <!-- Box-3 -->
+            <div class="faq-box"></div>
+          </div>
+
+          <!-- Host Faq Box Container -->
+          <div class="faq-box-container host-faq-box-container">
+            <!-- Box-1 -->
+            <div class="faq-box"></div>
+
+            <!-- Box-2 -->
+            <div class="faq-box"></div>
+
+            <!-- Box-3 -->
+            <div class="faq-box"></div>
+          </div>
+
+          <!-- General Faq Box Container -->
+          <div class="faq-box-container general-faq-box-container">
+            <!-- Box-1 -->
+            <div class="faq-box"></div>
+
+            <!-- Box-2 -->
+            <div class="faq-box"></div>
+
+            <!-- Box-3 -->
+            <div class="faq-box"></div>
+          </div>
+
+          <div class="ticket-support-container">
+            <h4>Still need help?</h4>
+            <p>Can't find what you need? Submit a ticket directly to support</p>
+
+            <form action="" class="ticket-support-form">
+              <div class="subject-input-container">
+                <label for="subjectSearch">SUBJECT</label>
+
+                <div class="subject-search-container">
+                  <i class="ph-bold ph-magnifying-glass"></i>
+                  <input
+                    type="text"
+                    name=""
+                    id="subjectSearch"
+                    class="subject-search-input"
+                    placeholder="Search help topics, keywords, ......"
+                  />
+                </div>
+              </div>
+
+              <div class="message-container">
+                <label for="faqMesssage">MESSAGE</label>
+                <textarea
+                  name=""
+                  id="faqMesssage"
+                  class="message-textarea"
+                ></textarea>
+              </div>
+
+              <button type="submit" class="ticket-submit-btn">
+                Submit Support Ticket
+              </button>
+            </form>
+          </div>
+        </section>
+      </main>
+    </section>
+    <script src="../scripts/FAQS.js"></script>
+  </body>
+</html>
