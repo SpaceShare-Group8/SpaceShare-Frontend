@@ -86,9 +86,15 @@
 
               <nav class="account-nav">
                 <ul class="account-nav-list-container">
-                  <li class="account-nav-list"><i class="ph ph-user"></i><span>Profile</span></li>
-                  <li class="account-nav-list"><i class="ph ph-gear"></i><span>Settings</span></li>
-                  <li class="account-nav-list"><i class="ph ph-sign-out"></i><span>Logout</span></li>
+                  <li class="account-nav-list">
+                    <i class="ph ph-user"></i><span>Profile</span>
+                  </li>
+                  <li class="account-nav-list">
+                    <i class="ph ph-gear"></i><span>Settings</span>
+                  </li>
+                  <li class="account-nav-list">
+                    <i class="ph ph-sign-out"></i><span>Logout</span>
+                  </li>
                 </ul>
               </nav>
             </div>
@@ -100,11 +106,116 @@
         <header class="header">
           <div class="input-container">
             <i class="ph ph-magnifying-glass"></i>
-            <input type="text" placeholder="Search transactions, hosts, guests">
+            <input
+              type="text"
+              placeholder="Search transactions, hosts, guests"
+            />
           </div>
         </header>
 
-        <main class="main-container"></main>
+        <main class="main-container">
+          <section class="first-main-section">
+            <div class="payment-handling-heading">
+              <i class="ph ph-caret-left"></i>
+              <div class="heading-texts">
+                <h3 class="heading-texts-title">Payment Handling</h3>
+                <p>
+                  Transaction history, manual refunds, and pending host payouts.
+                </p>
+              </div>
+            </div>
+
+            <div class="after-heading-container">
+              <div class="transaction-type-btn-conatiner">
+                <button>All</button>
+                <button>Payments</button>
+                <button>Refunds</button>
+                <button>Payouts</button>
+              </div>
+
+              <div class="warning-box">
+                <i class="ph ph-warning"></i>
+                <p>
+                  Refunds and other admin actions must be logged with a
+                  timestamp and admin ID for accountability.
+                </p>
+              </div>
+            </div>
+
+            <div class="table-container">
+              <table>
+                
+                <thead>
+                  <th>TRANSACTION</th>
+                  <th>GUEST</th>
+                  <th>SPACE</th>
+                  <th>DATE</th>
+                  <th>TYPE</th>
+                  <th>STATUS</th>
+                  <th>AMOUNT</th>
+                  <th>ACTION</th>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td>TX-10432</td>
+                    <td>Aniaku Caleb</td>
+                    <td>Maple Loft</td>
+                    <td>Aug 4</td>
+                    <td><button>Payment</button></td>
+                    <td><button>Completed</button></td>
+                    <td>₦63,000</td>
+                    <td><button><span>Refund</span></button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="second-main-section">
+            <div class="pending-host-heading">
+              <i class="ph ph-caret-left"></i>
+              <div class="pending-host-texts">
+                <h3 class="heading-texts-title">Pending Host Payouts</h3>
+                <p>
+                  Awaiting the next payout cycle.
+                </p>
+              </div>
+            </div>
+
+            <div class="host-payouts-container">
+              <div class="each-host-container">
+                <div class="host-name-price">
+                  <div class="host-name">
+                    <h4>Peter Reyes</h4>
+                    <p>Maple Loft · Due: Jul 15</p>
+                  </div>
+
+                  <p class="host-price">₦100,000</p>
+                </div>
+                <button class="host-approve-btn">Approve</button>
+              </div>
+            </div>
+
+          </section>
+
+          <section class="tird-main-section">
+            <div class="active-action-heading">
+              <h3>Admin Action Log</h3>
+              <p>Every refund is recorded with a timestamp and admin ID.</p>
+            </div>
+
+            <div class="action-log-container">
+              <div class="each-action-log">
+                <h4>John Anichukwu · Refunded TX-10251</h4>
+                <div class="log-timestamp-container">
+                  <p class="log-type">₦98,000 - Duplicate charge</p>
+                  <p class="admin-log-timestamp">Jul 26, 2026, 11:14 AM · Admin ID: ADM-014</p>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
       </section>
     </section>
   </body>

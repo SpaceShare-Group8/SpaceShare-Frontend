@@ -155,15 +155,13 @@
           </section>
 
           <!-- Workspaces text Title Section-->
-          <section class="workspace-section workspace-section-empty">
+          <section class="workspace-section">
             <h4>42 WORKSPACES FOUND</h4>
             <p>Showing Matches Nearby</p>
           </section>
 
           <!-- Workspace Cards -->
-          <section
-            class="workspace-cards-container workspace-cards-container-empty"
-          >
+          <section class="workspace-cards-container">
             <!-- Workspace Card 1 -->
             <div class="workspace-card">
               <img
@@ -206,7 +204,7 @@
                 <div class="workspace-view-price">
                   <p class="workspace-price">₦15,000/hr</p>
                   <button class="workspace-view-btn">
-                    View Space<i class="ph-bold ph-caret-right"></i>/
+                    View Space<i class="ph-bold ph-caret-right"></i>
                   </button>
                 </div>
               </div>
@@ -261,7 +259,7 @@
             </div>
 
             <!-- Workspace Card 3 -->
-            <div class="workspace-card">
+            <!-- <div class="workspace-card">
               <img
                 src="/search-assets/creative-space.jpg"
                 class="workspace-img"
@@ -307,26 +305,32 @@
                   </button>
                 </div>
               </div>
+            </div> -->
+          </section>
+
+          <!-- Empty State Container -->
+          <section class="empty-state-section">
+            <img src="../search-assets/empty-search.png" alt="" />
+
+            <div class="empty-state-texts">
+              <h4>No workspaces found</h4>
+              <p>Try adjusting your filters or search another location</p>
+            </div>
+
+            <div class="empty-state-btns">
+              <button class="empty-state-btn clear-btn">Clear filters</button>
+              <button class="empty-state-btn search-filter-btn">
+                <span>Search Nearby</span><i class="ph-bold ph-caret-right"></i>
+              </button>
             </div>
           </section>
         </section>
 
-        <!-- Empty State Container -->
-        <section class="empty-state-section">
-          <img src="/search-assets/empty-search.png" alt="" />
-
-          <div class="empty-state-texts">
-            <h4>No workspaces found</h4>
-            <p>Try adjusting your filters or search another location</p>
-          </div>
-
-          <div class="empty-state-btns">
-            <button class="empty-state-btn clear-btn">Clear filters</button>
-            <button class="empty-state-btn search-filter-btn">
-              <span>Search Nearby</span><i class="ph-bold ph-caret-right"></i>
-            </button>
-          </div>
-        </section>
+        <div class="favorite-toast">
+          <i class="ph ph-check-square-offset toast-checkmark"></i>
+          <p class="toast-message"></p>
+          <button class="toast-undo-btn">Undo</button>
+        </div>
       </main>
     </section>
     <script src="../scripts/search-results-screen.js"></script>

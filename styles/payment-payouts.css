@@ -166,3 +166,9 @@ cursor: pointer;
     color: #ffffff;
     border-radius: 15px;
 }
+
+.right-container .main-container{
+    display: flex;
+    flex-direction: column;
+    gap: 23px;
+}
