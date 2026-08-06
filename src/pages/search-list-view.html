@@ -1,315 +1,317 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SpaceShare - Search results</title>
-    <!-- Font Link -->
+    <title>SpaceShare — Search Results (List View)</title>
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
-      rel="stylesheet"
-    />
-    <!-- phosphor Icons Link -->
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/bold/style.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/thin/style.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/light/style.css"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
 
-    <link rel="stylesheet" href="../styles/search-style.css" />
-    <link rel="stylesheet" href="text.css" />
-  </head>
-  <body>
-    <!-- The whole container -->
-    <section class="whole-container">
-      <!-- Left sidebar -->
-      <aside class="sidebar">
-        <nav class="sidebar-nav">
-          <div class="sidebar-logo">
-            <img
-              src="search-assets/blue-logo.svg"
-              alt="SpaceShare-Logo"
-              class="blue-logo"
-            />
-            <h3>SpaceShare</h3>
-          </div>
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
 
-          <ul class="nav-lists">
-            <li class="nav-links">
-              <a href="#"
-                ><i class="ph ph-house link-icon"></i><span>Home</span></a
-              >
-            </li>
-            <li class="nav-links">
-              <a href="#"
-                ><i class="ph ph-calendar-blank link-icon"></i
-                ><span>Bookings</span></a
-              >
-            </li>
-            <li class="nav-links">
-              <a href="#"
-                ><i class="ph ph-heart link-icon"></i><span>Favourite</span></a
-              >
-            </li>
-            <li class="nav-links">
-              <a href="#"
-                ><i class="ph ph-chat link-icon"></i><span>Messages</span></a
-              >
-            </li>
-          </ul>
-        </nav>
-      </aside>
+    <!-- PLACEHOLDER: CSS will be linked in the next step -->
+    <link rel="stylesheet" href="../styles/search-list-view.css" />
+</head>
+<body>
 
-      <!-- Main Section  -->
+    <!-- ============================================================ -->
+    <!-- MAIN WRAPPER (Sidebar + Content)                              -->
+    <!-- ============================================================ -->
+    <div class="search-page-wrapper">
 
-      <main class="main-container">
-        <!-- Header section -->
-        <header class="header-section">
-          <div class="search-input-div">
-            <i class="ph ph-magnifying-glass search-logo"></i>
-            <input
-              type="text"
-              name=""
-              id=""
-              class="search-input"
-              placeholder="Search bookings, places, guests"
-            />
-          </div>
-
-          <button class="user-icon-button">
-            <i class="ph-thin ph-user-circle user-icon"></i>
-            <i class="ph ph-caret-down arrow-icon"></i>
-          </button>
-        </header>
-
-        <!-- Second-input Section -->
-        <section class="second-search">
-          <dl class="dl-container dl-1">
-            <dt>Where</dt>
-            <dd>Lekki, Lagos</dd>
-          </dl>
-
-          <dl class="dl-container dl-2">
-            <dt>When</dt>
-            <dd>Tomorrow</dd>
-          </dl>
-
-          <dl class="dl-container dl-3">
-            <dt>No of People</dt>
-            <dd>2 people</dd>
-          </dl>
-
-          <div class="second-search-logo">
-            <i class="ph ph-magnifying-glass search-logo"></i>
-          </div>
-        </section>
-
-        <!-- Main section -->
-        <section class="main-section">
-          <!-- Filters and filters button section -->
-          <section class="filters-section">
-            <p class="filter-text">Filters</p>
-
-            <div class="filter-btns-container">
-              <button class="filter-btn">
-                Price
-                <i class="ph-bold ph-caret-down"></i>
-              </button>
-              <button class="filter-btn">
-                Amenities
-                <i class="ph-bold ph-caret-down"></i>
-              </button>
-              <button class="filter-btn">
-                Type
-                <i class="ph-bold ph-caret-down"></i>
-              </button>
-              <button class="filter-btn">
-                Sort
-                <i class="ph-bold ph-caret-down"></i>
-              </button>
-              <button class="filter-btn-map">
-                <i class="ph-bold ph-map-trifold"></i>
-              </button>
-            </div>
-          </section>
-
-          <!-- Workspaces text Title Section-->
-          <section class="workspace-section">
-            <h4>42 WORKSPACES FOUND</h4>
-            <p>Showing Matches Nearby</p>
-          </section>
-
-          <!-- Workspace Cards -->
-          <section class="workspace-cards-container">
-            <!-- Workspace Card 1 -->
-            <div class="workspace-card">
-              <img
-                src="search-assets/hub-one-workspace.jpg"
-                class="workspace-img"
-                alt="Hub One Workspace"
-              />
-
-              <div class="workspace-description">
-                <div class="workspace-title">
-                  <h4>Hub One Workspace</h4>
-                  <i class="ph-thin ph-heart heart-icon"></i>
-                </div>
-
-                <p class="workspace-subhead">Coworking Space</p>
-
-                <div class="workspace-details">
-                  <p class="workspace-rating">
-                    <i class="ph-fill ph-star" style="color: #ffc107"></i
-                    ><span>4.8(120)</span>
-                  </p>
-                  <p class="workspace-distance">
-                    <img src="/search-assets/map-marker.svg" alt="" />
-                    <span>2.5km Away</span>
-                  </p>
-                </div>
-
-                <div class="workspace-addons">
-                  <button class="workspace-addons-btn">
-                    <i class="ph-bold ph-wifi-high"></i>Wifi
-                  </button>
-                  <button class="workspace-addons-btn">
-                    <i class="ph-bold ph-snowflake"></i> AC
-                  </button>
-                  <button class="workspace-addons-btn">
-                    <i class="ph-fill ph-car-profile"></i>Parking
-                  </button>
-                </div>
-
-                <div class="workspace-view-price">
-                  <p class="workspace-price">₦15,000/hr</p>
-                  <button class="workspace-view-btn">
-                    View Space<i class="ph-bold ph-caret-right"></i>
-                  </button>
-                </div>
-              </div>
+        <!-- ========================================================== -->
+        <!-- LEFT SIDEBAR (Nav)                                          -->
+        <!-- ========================================================== -->
+        <aside class="sidebar-nav">
+            
+            <!-- Logo -->
+            <div class="sidebar-logo">
+                <img src="../assets/BLUE%20LOGO.png" alt="SpaceShare" class="logo-img" />
+                <span class="logo-text">SpaceShare</span>
             </div>
 
-            <!-- Workspace Card 2 -->
-            <div class="workspace-card">
-              <img
-                src="search-assets/work-nest-hub.jpg"
-                class="workspace-img"
-                alt="Work Nest Hub"
-              />
+            <!-- Nav Items -->
+            <nav class="sidebar-menu">
+                <a href="seeker-dashboard.html" class="nav-item">
+                    <i class="ph ph-house"></i>
+                    <span>Home</span>
+                </a>
+                <a href="booking.html" class="nav-item">
+                    <i class="ph ph-calendar-blank"></i>
+                    <span>Bookings</span>
+                </a>
+                <a href="favorite-spaces.html" class="nav-item active">
+                    <i class="ph-fill ph-heart" style="color: #FF383C;"></i>
+                    <span>Favourite</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ph ph-chat"></i>
+                    <span>Messages</span>
+                </a>
+            </nav>
 
-              <div class="workspace-description">
-                <div class="workspace-title">
-                  <h4>Work Nest Hub</h4>
-                  <i class="ph-thin ph-heart heart-icon"></i>
+        </aside>
+
+        <!-- ========================================================== -->
+        <!-- RIGHT MAIN CONTENT                                         -->
+        <!-- ========================================================== -->
+        <main class="main-content">
+
+            <!-- ======================================================== -->
+            <!-- TOP HEADER (Search & User)                               -->
+            <!-- ======================================================== -->
+            <header class="top-header">
+                <div class="search-bar-wrapper">
+                    <i class="ph ph-magnifying-glass search-icon"></i>
+                    <input type="text" placeholder="Search bookings, spaces, guests" class="search-input" />
                 </div>
 
-                <p class="workspace-subhead">Private Office</p>
-
-                <div class="workspace-details">
-                  <p class="workspace-rating">
-                    <i class="ph-fill ph-star" style="color: #ffc107"></i
-                    ><span>4.7(80)</span>
-                  </p>
-                  <p class="workspace-distance">
-                    <img src="/search-assets/map-marker.svg" alt="" />
-                    <span>1.7km Away</span>
-                  </p>
+                <div class="user-profile-trigger">
+                    <i class="ph-fill ph-user-circle user-icon"></i>
+                    <i class="ph ph-caret-down"></i>
                 </div>
+            </header>
 
-                <div class="workspace-addons">
-                  <button class="workspace-addons-btn">
-                    <i class="ph-bold ph-coffee"></i>Coffee
-                  </button>
-                  <button class="workspace-addons-btn">
-                    <i class="ph-bold ph-snowflake"></i> AC
-                  </button>
-                  <button class="workspace-addons-btn">
-                    <i class="ph-bold ph-car-battery"></i>Generator
-                  </button>
+            <!-- ======================================================== -->
+            <!-- FILTER & SEARCH DEEP DIVE BAR (Pill Shape)               -->
+            <!-- ======================================================== -->
+            <section class="deep-search-bar">
+                <div class="deep-search-pill">
+                    
+                    <!-- Segment 1: Location -->
+                    <div class="pill-segment">
+                        <span class="pill-label">Location</span>
+                        <span class="pill-value">Lekki, Lagos</span>
+                    </div>
+                    
+                    <div class="pill-divider"></div>
+
+                    <!-- Segment 2: Date -->
+                    <div class="pill-segment">
+                        <span class="pill-label">Date</span>
+                        <span class="pill-value">2nd Aug, 2026</span>
+                    </div>
+
+                    <div class="pill-divider"></div>
+
+                    <!-- Segment 3: Time -->
+                    <div class="pill-segment">
+                        <span class="pill-label">Time</span>
+                        <span class="pill-value">10:00 am</span>
+                    </div>
+
+                    <!-- Search Button (Inside the pill) -->
+                    <button class="pill-search-btn" aria-label="Search">
+                        <i class="ph-fill ph-magnifying-glass"></i>
+                    </button>
+
                 </div>
+            </section>
 
-                <div class="workspace-view-price">
-                  <p class="workspace-price">₦30,000/hr</p>
-                  <button class="workspace-view-btn">
-                    View Space<i class="ph-bold ph-caret-right"></i>
-                  </button>
+            <!-- ======================================================== -->
+            <!-- FILTER CHIPS ROW                                         -->
+            <!-- ======================================================== -->
+            <section class="filter-chips-row">
+                <span class="filter-label">Filters</span>
+                <div class="chips-container">
+                    <button class="filter-chip active">Type <i class="ph-bold ph-caret-down"></i></button>
+                    <button class="filter-chip">Price <i class="ph-bold ph-caret-down"></i></button>
+                    <button class="filter-chip">Power <i class="ph-bold ph-caret-down"></i></button>
+                    <button class="filter-chip">Capacity <i class="ph-bold ph-caret-down"></i></button>
+                    <button class="filter-chip">Amenities <i class="ph-bold ph-caret-down"></i></button>
+                    <button class="filter-chip">Workspace <i class="ph-bold ph-caret-down"></i></button>
+                    <button class="filter-chip">Availability <i class="ph-bold ph-caret-down"></i></button>
+                    <!-- Map Toggle -->
+                    <button class="filter-chip map-toggle-btn">
+                        <i class="ph-bold ph-map-trifold"></i>
+                    </button>
                 </div>
-              </div>
-            </div>
+            </section>
 
-            <!-- Workspace Card 3 -->
-            <div class="workspace-card">
-              <img
-                src="search-assets/hub-one-workspace.jpg"
-                class="workspace-img"
-                alt="Hub One Workspace"
-              />
+            <!-- ======================================================== -->
+            <!-- RESULTS HEADER                                           -->
+            <!-- ======================================================== -->
+            <section class="results-header">
+                <h2 class="results-count">42 WORKSPACES FOUND</h2>
+                <p class="results-subtitle">Showing matches nearby</p>
+            </section>
 
-              <div class="workspace-description">
-                <div class="workspace-title">
-                  <h4>Creative Space</h4>
-                  <i class="ph-thin ph-heart heart-icon"></i>
-                </div>
+            <!-- ======================================================== -->
+            <!-- LIST VIEW CARDS CONTAINER                                -->
+            <!-- ======================================================== -->
+            <section class="list-view-container" id="listViewContainer">
 
-                <p class="workspace-subhead">Podcast Studio</p>
+                <!-- ==================================================== -->
+                <!-- CARD 1: Hub One Workspace                            -->
+                <!-- ==================================================== -->
+                <article class="list-card">
+                    <!-- Left: Image -->
+                    <div class="list-card-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80" alt="Hub One Workspace" class="list-card-img" />
+                        <div class="list-card-overlays">
+                            <span class="badge-type">Co-working Space</span>
+                        </div>
+                    </div>
 
-                <div class="workspace-details">
-                  <p class="workspace-rating">
-                    <i class="ph-fill ph-star" style="color: #ffc107"></i
-                    ><span>4.9(52)</span>
-                  </p>
-                  <p class="workspace-distance">
-                    <img src="/search-assets/map-marker.svg" alt="" />
-                    <span>1.2km Away</span>
-                  </p>
-                </div>
+                    <!-- Right: Details -->
+                    <div class="list-card-details">
+                        
+                        <!-- Header: Title + Icons -->
+                        <div class="list-card-header">
+                            <h3 class="list-card-title">Hub One Workspace</h3>
+                            <div class="list-card-header-actions">
+                                <button class="icon-btn-compare" aria-label="Compare">
+                                    <i class="ph ph-arrows-left-right"></i>
+                                </button>
+                                <button class="icon-btn-fav" aria-label="Add to favourites">
+                                    <i class="ph-fill ph-heart" style="color: #FF383C;"></i>
+                                </button>
+                            </div>
+                        </div>
 
-                <div class="workspace-addons">
-                  <button class="workspace-addons-btn">
-                    <i class="ph-fill ph-microphone"></i>Sound System
-                  </button>
-                  <button class="workspace-addons-btn">
-                    <i class="ph-bold ph-coat-hanger"></i>Changing Room
-                  </button>
-                  <button class="workspace-addons-btn">
-                    <i class="ph-bold ph-speaker-simple-x"></i>Sound Proof
-                  </button>
-                </div>
+                        <!-- Subtitle -->
+                        <p class="list-card-subtitle">Coworking Space</p>
 
-                <div class="workspace-view-price">
-                  <p class="workspace-price">₦50,000/hr</p>
-                  <button class="workspace-view-btn">
-                    View Space<i class="ph-bold ph-caret-right"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </section>
-        </section>
-      </main>
-    </section>
-    <script src=""></script>
-  </body>
+                        <!-- Meta Row (Rating + Distance) -->
+                        <div class="list-card-meta">
+                            <div class="meta-rating">
+                                <i class="ph-fill ph-star" style="color: #FFC107;"></i>
+                                <span>4.8 <small>(120)</small></span>
+                            </div>
+                            <div class="meta-divider"></div>
+                            <div class="meta-distance">
+                                <i class="ph-fill ph-map-pin"></i>
+                                <span>2.5 km Away</span>
+                            </div>
+                        </div>
+
+                        <!-- Amenities Chips -->
+                        <div class="list-card-amenities">
+                            <button class="amenity-chip"><i class="ph-bold ph-wifi-high"></i> WiFi</button>
+                            <button class="amenity-chip"><i class="ph-bold ph-snowflake"></i> AC</button>
+                            <button class="amenity-chip"><i class="ph-fill ph-car-profile"></i> Parking</button>
+                        </div>
+
+                        <!-- Footer: Price + Button -->
+                        <div class="list-card-footer">
+                            <p class="list-card-price">₦ 15,000 <small>/hr</small></p>
+                            <button class="btn-view-space">
+                                View Space <i class="ph-bold ph-caret-right"></i>
+                            </button>
+                        </div>
+
+                    </div>
+                </article>
+
+                <!-- ==================================================== -->
+                <!-- CARD 2: Work Nest Hub                                -->
+                <!-- ==================================================== -->
+                <article class="list-card">
+                    <div class="list-card-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=600&q=80" alt="Work Nest Hub" class="list-card-img" />
+                        <div class="list-card-overlays">
+                            <span class="badge-type">Private Office</span>
+                        </div>
+                    </div>
+
+                    <div class="list-card-details">
+                        <div class="list-card-header">
+                            <h3 class="list-card-title">Work Nest Hub</h3>
+                            <div class="list-card-header-actions">
+                                <button class="icon-btn-compare"><i class="ph ph-arrows-left-right"></i></button>
+                                <button class="icon-btn-fav"><i class="ph ph-heart"></i></button>
+                            </div>
+                        </div>
+
+                        <p class="list-card-subtitle">Private Office</p>
+
+                        <div class="list-card-meta">
+                            <div class="meta-rating">
+                                <i class="ph-fill ph-star" style="color: #FFC107;"></i>
+                                <span>4.7 <small>(80)</small></span>
+                            </div>
+                            <div class="meta-divider"></div>
+                            <div class="meta-distance">
+                                <i class="ph-fill ph-map-pin"></i>
+                                <span>1.7 km Away</span>
+                            </div>
+                        </div>
+
+                        <div class="list-card-amenities">
+                            <button class="amenity-chip"><i class="ph-bold ph-coffee"></i> Coffee</button>
+                            <button class="amenity-chip"><i class="ph-bold ph-snowflake"></i> AC</button>
+                            <button class="amenity-chip"><i class="ph-bold ph-car-battery"></i> Generator</button>
+                        </div>
+
+                        <div class="list-card-footer">
+                            <p class="list-card-price">₦ 30,000 <small>/hr</small></p>
+                            <button class="btn-view-space">
+                                View Space <i class="ph-bold ph-caret-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- ==================================================== -->
+                <!-- CARD 3: Creative Space                               -->
+                <!-- ==================================================== -->
+                <article class="list-card">
+                    <div class="list-card-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=600&q=80" alt="Creative Space" class="list-card-img" />
+                        <div class="list-card-overlays">
+                            <span class="badge-type">Podcast Studio</span>
+                        </div>
+                    </div>
+
+                    <div class="list-card-details">
+                        <div class="list-card-header">
+                            <h3 class="list-card-title">Creative Space</h3>
+                            <div class="list-card-header-actions">
+                                <button class="icon-btn-compare"><i class="ph ph-arrows-left-right"></i></button>
+                                <button class="icon-btn-fav"><i class="ph-fill ph-heart" style="color: #FF383C;"></i></button>
+                            </div>
+                        </div>
+
+                        <p class="list-card-subtitle">Podcast Studio</p>
+
+                        <div class="list-card-meta">
+                            <div class="meta-rating">
+                                <i class="ph-fill ph-star" style="color: #FFC107;"></i>
+                                <span>4.9 <small>(52)</small></span>
+                            </div>
+                            <div class="meta-divider"></div>
+                            <div class="meta-distance">
+                                <i class="ph-fill ph-map-pin"></i>
+                                <span>1.2 km Away</span>
+                            </div>
+                        </div>
+
+                        <div class="list-card-amenities">
+                            <button class="amenity-chip"><i class="ph-fill ph-microphone"></i> Sound System</button>
+                            <button class="amenity-chip"><i class="ph-bold ph-coat-hanger"></i> Changing room</button>
+                            <button class="amenity-chip"><i class="ph-bold ph-speaker-simple-x"></i> Soundproof</button>
+                        </div>
+
+                        <div class="list-card-footer">
+                            <p class="list-card-price">₦ 50,000 <small>/hr</small></p>
+                            <button class="btn-view-space">
+                                View Space <i class="ph-bold ph-caret-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+            </section>
+
+        </main>
+    </div>
+
+    <!-- PLACEHOLDER: JS will be linked in the next step -->
+    <script src="../scripts/search-list-view.js"></script>
+
+</body>
 </html>

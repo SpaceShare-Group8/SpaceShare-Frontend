@@ -1,57 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In</title>
-     <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"
-    />
-    <link rel="stylesheet" href="../styles/auth.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign In · SpaceShare</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../styles/login.css" />
 </head>
 <body>
-    <div class="login-container">
 
-        <a href="create account.html" class="back-btn"><i class="ph ph-caret-left"></i></a>
-        <h1>Sign In</h1>
-        <p class="subtitle">Hello! Welcome Back, good to see you again</p>
+<div class="page">
 
-        <form id="loginForm">
-            <label>Enter your email</label>
-            <div class="input-box">
-                <i class="ph ph-envelope-simple"></i>
-                <input type="email" id="email" placeholder="Enter your email">
+    <!-- ========================================================== -->
+    <!-- LEFT PANEL — Hero image with overlay                        -->
+    <!-- ========================================================== -->
+    <div class="panel--hero" role="img" aria-label="Workspace environment background">
+        <div class="hero-overlay" aria-hidden="true"></div>
+
+        <div class="hero-content">
+            
+            <!-- Brand Logo -->
+            <div class="brand">
+                <img src="src/assets/BLUE LOGO 2.jpg" alt="SpaceShare" class="brand__logo" />
+                <span class="brand__name">SpaceShare</span>
             </div>
 
-            <label>Enter your password</label>
-            <div class="input-box">
-                <i class="ph ph-lock-key"></i>
-                <input type="password" id="password" placeholder="Enter your password">
+            <!-- Badge Pill -->
+            <span class="pill">SPACE-AS-A-SERVICE</span>
+
+            <!-- Hero Copy -->
+            <div class="hero-copy">
+                <h1>Welcome back</h1>
+                <p>Sign in to access your spaces, manage bookings, and connect with your workspace community.</p>
+                
+                <ul class="requirements">
+                    <li>View upcoming and past bookings</li>
+                    <li>Manage your listed spaces</li>
+                    <li>Track earnings and payouts</li>
+                </ul>
             </div>
 
-            <!-- hidden error message -->
-             <p id="password-error" class="error">Incorrect password, please try again.</p>
-             <a href="forgot password.html" class="forgot">Forgot Password?</a>
-
-             <button type="submit" class="login-btn">Login</button>
-        </form>
-
-        <a href="signup.html" class="signup-link">Sign Up</a>
-
-        <div class="divider"><span>Or continue using</span></div>
-
-        <div class="social-icons">
-            <i class="ph-fill ph-apple-logo"></i>
-            <i class="ph ph-google-logo"></i>
         </div>
     </div>
-    <script src="../scripts/login.js"></script>
+
+    <!-- ========================================================== -->
+    <!-- RIGHT PANEL — Sign-in form                                  -->
+    <!-- ========================================================== -->
+    <div class="panel--form">
+        <div class="form-wrap">
+
+            <!-- Header -->
+            <h1 class="title">Sign In</h1>
+            <p class="subtitle">Welcome back! Good to see you again.</p>
+
+            <form id="signinForm" class="signin-form" novalidate>
+                
+                <!-- Email Field -->
+                <div class="field" id="emailField">
+                    <span class="field-icon"><i class="ph ph-envelope-simple"></i></span>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        required
+                    />
+                </div>
+                <p class="form-error" id="emailError" role="alert"></p>
+
+                <!-- Password Field -->
+                <div class="field" id="passwordField">
+                    <span class="field-icon"><i class="ph ph-lock"></i></span>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    />
+                    <button type="button" class="toggle-visibility" data-target="password" aria-label="Show password">
+                        <i class="ph ph-eye icon-eye"></i>
+                        <i class="ph ph-eye-closed icon-eye-off" style="display:none;"></i>
+                    </button>
+                </div>
+                <p class="form-error" id="passwordError" role="alert"></p>
+
+                <!-- Forgot Password Link -->
+                <div class="forgot-password-wrapper">
+                    <a href="forgot-password.html" class="forgot-link">Forgot Password?</a>
+                </div>
+
+                <!-- Login Button -->
+                <button type="submit" class="submit-btn" id="loginBtn" disabled>
+                    <span class="btn-label">Login</span>
+                    <span class="btn-spinner" aria-hidden="true"></span>
+                </button>
+
+                <!-- Sign Up Prompt -->
+                <div class="signup-prompt">
+                    Don't have an account? <a href="signup.html" class="signup-link">Sign up</a>
+                </div>
+
+            </form>
+
+            <!-- Divider -->
+            <div class="divider">
+                <span>Or continue using</span>
+            </div>
+
+            <!-- Social Buttons -->
+            <div class="social-buttons">
+                <button type="button" class="btn-social btn-google">
+                    <span class="social-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M23.52 12.29C23.52 11.43 23.44 10.61 23.3 9.82H12V14.47H18.55C18.31 15.75 17.61 16.86 16.6 17.61V20.11H20.16C22.23 18.2 23.52 15.45 23.52 12.29Z" fill="#4285F4"/>
+                            <path d="M12 24C14.87 24 17.27 23.03 19.11 21.51L16.59 19.61C15.52 20.33 14.31 20.73 12 20.73C9.23 20.73 6.87 18.87 5.92 16.34H3.2V19.24C5.07 22.93 8.91 24 12 24Z" fill="#34A853"/>
+                            <path d="M5.92 16.33C5.65 15.52 5.5 14.67 5.5 13.8C5.5 12.08 5.92 11.27V8.37H3.2C2.43 9.93 2 11.63 2 13.49C2 15.35 2.43 17.05 3.2 18.61L5.92 16.33Z" fill="#FBBC05"/>
+                            <path d="M12 4.77C13.75 4.77 15.33 5.38 16.58 6.61L19.09 4.1C17.28 2.38 14.85 1.5 12 1.5C8.91 1.5 5.07 2.57 3.2 6.26L5.92 9.26C6.87 6.73 9.23 4.77 12 4.77Z" fill="#EA4335"/>
+                        </svg>
+                    </span>
+                    Continue with Google
+                </button>
+
+                <button type="button" class="btn-social btn-apple">
+                    <span class="social-icon" aria-hidden="true">
+                        <i class="ph-fill ph-apple-logo"></i>
+                    </span>
+                    Continue with Apple
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- JavaScript -->
+<script src="../scripts/login.js"></script>
 </body>
 </html>

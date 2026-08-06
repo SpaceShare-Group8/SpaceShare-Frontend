@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workspace Details - SpaceShare</title>
+
+    <!-- Leaflet.js Map CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    
+    <!-- Phosphor Icons CDN -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Custom Page Stylesheet -->
+    <link rel="stylesheet" href="../styles/workspace-details.css">
+</head>
+<body class="app-layout">
+
+    <!-- Sidebar Backdrop / Click-Outside Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
+    <!-- 1. Left Drawer Sidebar Navigation -->
+    <aside class="app-sidebar" id="appSidebar">
+        <div class="sidebar-top">
+            <!-- Brand Logo & Internal Close (X) Toggle -->
+            <div class="sidebar-brand-wrapper">
+                <a href="index.html" class="logo-link">
+                    <img src="../assets/BLUE LOGO 2.jpg" alt="SpaceShare Logo" class="logo-img" id="appLogo">
+                    <span class="logo-text">SpaceShare</span>
+                </a>
+                <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Close menu">
+                    <i class="ph ph-x"></i>
+                </button>
+            </div>
+
+            <!-- Search Bar inside Sidebar -->
+            <div class="sidebar-search">
+                <i class="ph ph-magnifying-glass search-icon"></i>
+                <input type="text" id="globalSearchInput" placeholder="Search spaces, locations...">
+            </div>
+
+            <!-- Main Navigation Links -->
+            <nav class="sidebar-menu">
+                <a href="index.html" class="menu-item active">
+                    <i class="ph ph-house"></i>
+                    <span>Home</span>
+                </a>
+                <a href="bookings.html" class="menu-item">
+                    <i class="ph ph-calendar-check"></i>
+                    <span>Bookings</span>
+                </a>
+                <a href="favorites.html" class="menu-item">
+                    <i class="ph ph-heart"></i>
+                    <span>Favorites</span>
+                </a>
+                <a href="support.html" class="menu-item">
+                    <i class="ph ph-headset"></i>
+                    <span>Support</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- Sidebar User Profile Info -->
+        <div class="sidebar-footer">
+            <div class="user-avatar">
+                <i class="ph ph-user"></i>
+            </div>
+            <div class="user-info">
+                <span class="user-name">Ayomide</span>
+                <span class="user-role">Member</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-wrapper">
+
+        <!-- Top Header Navigation Bar with Hamburger Trigger -->
+        <header class="top-bar">
+            <div class="top-bar-left">
+                <!-- Main Hamburger Trigger Button (Desktop & Mobile) -->
+                <button class="sidebar-toggle-btn" id="sidebarToggleBtn" aria-label="Open navigation menu">
+                    <i class="ph ph-list" id="toggleIcon"></i>
+                </button>
+
+                <!-- Breadcrumb Navigation -->
+                <nav class="breadcrumb-nav">
+                    <a href="index.html">Home</a>
+                    <span class="breadcrumb-separator"><i class="ph ph-caret-right"></i></span>
+                    <a href="bookings.html">Workspaces</a>
+                    <span class="breadcrumb-separator"><i class="ph ph-caret-right"></i></span>
+                    <span class="breadcrumb-current" id="breadcrumbWorkspaceName">Hub One Workspace</span>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Workspace Container -->
+        <main class="workspace-details-container">
+
+            <!-- 2. Hero Photo Gallery Carousel Section -->
+            <section class="gallery-section">
+                <div class="featured-photo-wrapper">
+                    <img id="featuredPhoto" src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80" alt="Featured Workspace View">
+                    
+                    <!-- Gallery Navigation Arrows -->
+                    <button class="gallery-nav-btn prev-btn" id="prevPhotoBtn" aria-label="Previous photo">
+                        <i class="ph ph-caret-left"></i>
+                    </button>
+                    <button class="gallery-nav-btn next-btn" id="nextPhotoBtn" aria-label="Next photo">
+                        <i class="ph ph-caret-right"></i>
+                    </button>
+
+                    <!-- Photo Counter Badge -->
+                    <div class="photo-counter-badge" id="photoCounter">1 / 12</div>
+
+                    <!-- Favorite Toggle Button -->
+                    <button class="favorite-toggle-btn" id="favoriteToggleBtn" aria-label="Save to favorites">
+                        <i class="ph ph-heart" id="favoriteHeartIcon"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- 3. Title & Header Metadata -->
+            <section class="workspace-header-section">
+                <div class="title-meta-wrapper">
+                    <div class="verification-badge">
+                        <i class="ph-fill ph-seal-check"></i>
+                        <span>Community-verified</span>
+                        <span class="tooltip-trigger" title="Verified by actual SpaceShare community bookings and reviews.">What does this mean?</span>
+                    </div>
+
+                    <h1 id="workspaceTitle">Hub One Workspace</h1>
+                    
+                    <div class="meta-tags-row">
+                        <div class="rating-badge">
+                            <i class="ph-fill ph-star"></i>
+                            <span id="workspaceRatingScore">4.8</span>
+                            <span id="workspaceReviewCount">(120 reviews)</span>
+                        </div>
+                        <span class="space-type-tag" id="workspaceTypeTag">COWORKING SPACE</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. Two-Column Content Dashboard Layout -->
+            <div class="content-grid">
+
+                <!-- Left Column Main Details -->
+                <div class="left-column">
+
+                    <!-- Amenities Grid -->
+                    <article class="card-section amenities-section">
+                        <h2>Amenities</h2>
+                        <div class="amenities-grid" id="amenitiesGrid">
+                            <div class="amenity-card">
+                                <i class="ph ph-clock"></i>
+                                <span>24/7 Access</span>
+                            </div>
+                            <div class="amenity-card">
+                                <i class="ph ph-wind"></i>
+                                <span>Air Conditioned</span>
+                            </div>
+                            <div class="amenity-card">
+                                <i class="ph ph-projector-screen"></i>
+                                <span>Projector & TV</span>
+                            </div>
+                            <div class="amenity-card">
+                                <i class="ph ph-coffee"></i>
+                                <span>Refreshments Available</span>
+                            </div>
+                            <div class="amenity-card">
+                                <i class="ph ph-wifi-high"></i>
+                                <span>Fast Internet</span>
+                            </div>
+                        </div>
+                        <button class="view-all-link" id="viewAllAmenitiesBtn">View All Amenities</button>
+                    </article>
+
+                    <!-- Support Banner -->
+                    <aside class="support-banner">
+                        <div class="banner-content">
+                            <h3>Need Help?</h3>
+                            <p>Contact our support team for instant booking assistance.</p>
+                        </div>
+                        <a href="support.html" class="banner-cta" aria-label="Get Support">
+                            <i class="ph ph-arrow-right"></i>
+                        </a>
+                    </aside>
+
+                    <!-- About The Space -->
+                    <article class="card-section about-section">
+                        <h2>About The Space</h2>
+                        <div class="expandable-text-container" id="aboutTextContainer">
+                            <p id="workspaceDescription">Hub One is a premium workspace in the heart of Lekki. Equipped with high-speed fiber internet, quiet meeting pods, ergonomic workstations, 24/7 uninterrupted power, and artisanal coffee.</p>
+                        </div>
+                        <button class="expand-text-btn" id="expandDescriptionBtn">Show More</button>
+                    </article>
+
+                    <!-- Location & Interactive Map -->
+                    <article class="card-section map-section">
+                        <h2>Location</h2>
+                        <div class="location-info-row">
+                            <span class="location-text" id="workspaceLocationText"><i class="ph ph-map-pin"></i> Lekki Phase 1, Lagos. 2.5km from your current location.</span>
+                            <button class="secondary-link-btn" id="viewMapModalBtn">View full map</button>
+                        </div>
+                        <!-- Leaflet.js Canvas Container -->
+                        <div id="workspaceMap" class="map-canvas"></div>
+                    </article>
+
+                    <!-- Ratings & Reviews Section -->
+                    <article class="card-section reviews-section">
+                        <div class="reviews-header">
+                            <h2>Ratings & Reviews</h2>
+                            <div class="overall-rating-summary">
+                                <span class="summary-score" id="summaryScore">4.8</span>
+                                <div class="stars-row" id="summaryStars">
+                                    <i class="ph-fill ph-star"></i>
+                                    <i class="ph-fill ph-star"></i>
+                                    <i class="ph-fill ph-star"></i>
+                                    <i class="ph-fill ph-star"></i>
+                                    <i class="ph-fill ph-star"></i>
+                                </div>
+                                <span class="summary-count" id="summaryReviewCount">120 Reviews</span>
+                                <a href="#leave-review" class="leave-review-link" id="leaveReviewBtn">Leave a review &gt;</a>
+                            </div>
+                        </div>
+
+                        <!-- Category Breakdown Bars -->
+                        <div class="ratings-categories-grid">
+                            <div class="category-rating-item">
+                                <span>Check-in</span>
+                                <div class="progress-bar-track">
+                                    <div class="progress-bar-fill" style="width: 98%;"></div>
+                                </div>
+                                <strong>4.9</strong>
+                            </div>
+                            <div class="category-rating-item">
+                                <span>Neatness</span>
+                                <div class="progress-bar-track">
+                                    <div class="progress-bar-fill" style="width: 94%;"></div>
+                                </div>
+                                <strong>4.7</strong>
+                            </div>
+                            <div class="category-rating-item">
+                                <span>Location</span>
+                                <div class="progress-bar-track">
+                                    <div class="progress-bar-fill" style="width: 90%;"></div>
+                                </div>
+                                <strong>4.5</strong>
+                            </div>
+                            <div class="category-rating-item">
+                                <span>Amenities</span>
+                                <div class="progress-bar-track">
+                                    <div class="progress-bar-fill" style="width: 84%;"></div>
+                                </div>
+                                <strong>4.2</strong>
+                            </div>
+                            <div class="category-rating-item">
+                                <span>Serenity</span>
+                                <div class="progress-bar-track">
+                                    <div class="progress-bar-fill" style="width: 70%;"></div>
+                                </div>
+                                <strong>3.5</strong>
+                            </div>
+                        </div>
+
+                        <!-- User Reviews List -->
+                        <div class="user-reviews-list" id="userReviewsList">
+                            <div class="review-card">
+                                <div class="review-card-header">
+                                    <strong class="reviewer-name">Ayomide</strong>
+                                    <span class="review-date">Oct 12, 2025</span>
+                                </div>
+                                <div class="review-stars">
+                                    <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                                </div>
+                                <p class="review-comment">The workspace environment was top-notch, super peaceful, and the Wi-Fi speed was reliable throughout my stay.</p>
+                            </div>
+                            <div class="review-card">
+                                <div class="review-card-header">
+                                    <strong class="reviewer-name">Elizabeth B.</strong>
+                                    <span class="review-date">Sep 28, 2025</span>
+                                </div>
+                                <div class="review-stars">
+                                    <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                                </div>
+                                <p class="review-comment">Great air conditioning and seamless check-in experience. Highly recommended!</p>
+                            </div>
+                        </div>
+
+                        <button class="show-more-reviews-btn" id="showMoreReviewsBtn">Show more reviews</button>
+                    </article>
+
+                </div>
+
+                <!-- Right Column Sticky Booking Widget Card -->
+                <aside class="right-column">
+                    <div class="booking-sticky-card">
+                        <div class="card-price-header">
+                            <span class="price-amount" id="workspacePrice">₦15,000</span>
+                            <span class="price-period">/ hour</span>
+                        </div>
+                        <p class="price-subtitle">Instant confirmation & verified power access</p>
+
+                        <hr class="card-divider">
+
+                        <div class="quick-highlights">
+                            <div class="highlight-item">
+                                <i class="ph ph-lightning"></i>
+                                <span>Guaranteed Power Supply</span>
+                            </div>
+                            <div class="highlight-item">
+                                <i class="ph ph-shield-check"></i>
+                                <span>Free Cancellation Policy</span>
+                            </div>
+                        </div>
+
+                        <button class="cta-btn-primary" id="checkAvailabilityBtn">Check Availability</button>
+                    </div>
+                </aside>
+
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Leaflet.js Map Library Script -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- Page Logic Script -->
+    <script src="../scripts/workspace-details.js"></script>
+</body>
+</html>

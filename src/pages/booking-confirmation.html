@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SpaceShare — Booking Confirmed</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+
+    <!-- PLACEHOLDER: CSS will be linked in the next step -->
+    <link rel="stylesheet" href="../styles/booking-confirmation.css" />
+</head>
+<body>
+
+    <!-- ============================================================ -->
+    <!-- MAIN WRAPPER                                                  -->
+    <!-- ============================================================ -->
+    <div class="confirmation-page-wrapper">
+
+        <!-- ========================================================== -->
+        <!-- CONFIRMATION CARD                                          -->
+        <!-- ========================================================== -->
+        <main class="confirmation-card">
+
+            <!-- ======================================================== -->
+            <!-- SUCCESS HEADER (Green Checkmark)                         -->
+            <!-- ======================================================== -->
+            <div class="confirmation-header">
+                <div class="success-icon-wrapper">
+                    <div class="success-circle">
+                        <i class="ph-fill ph-check" style="color: #FFFFFF; font-size: 48px;"></i>
+                    </div>
+                    <!-- Decorative confetti dots -->
+                    <div class="confetti-dot dot-1"></div>
+                    <div class="confetti-dot dot-2"></div>
+                    <div class="confetti-dot dot-3"></div>
+                    <div class="confetti-dot dot-4"></div>
+                </div>
+                <h1 class="confirmation-title">Payment Successful!</h1>
+                <p class="confirmation-subtitle">Your workspace has been booked successfully.</p>
+            </div>
+
+            <!-- ======================================================== -->
+            <!-- WORKSPACE CARD SUMMARY                                   -->
+            <!-- ======================================================== -->
+            <div class="confirmation-workspace-card">
+                <div class="confirmation-workspace-icon">
+                    <i class="ph-fill ph-buildings" style="color: #2862BC; font-size: 28px;"></i>
+                </div>
+                <div class="confirmation-workspace-info">
+                    <h2 class="confirmation-workspace-title" id="workspaceTitle">Hub One Workspace</h2>
+                    <p class="confirmation-workspace-location" id="workspaceLocation">
+                        <i class="ph-bold ph-map-pin"></i> Lekki phase 1, Lagos.
+                    </p>
+                </div>
+            </div>
+
+            <!-- ======================================================== -->
+            <!-- BOOKING DETAILS LIST                                    -->
+            <!-- ======================================================== -->
+            <div class="confirmation-details-list">
+                <div class="detail-row">
+                    <span class="detail-label"><i class="ph-bold ph-calendar"></i> Date</span>
+                    <span class="detail-value" id="bookingDate">Friday, 3rd July 2026</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label"><i class="ph-bold ph-clock"></i> Time</span>
+                    <span class="detail-value" id="bookingTime">08:00 AM – 09:00 AM</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label"><i class="ph-bold ph-hourglass"></i> Duration</span>
+                    <span class="detail-value" id="bookingDuration">1 Hour</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label"><i class="ph-bold ph-house"></i> Workspace Type</span>
+                    <span class="detail-value" id="workspaceType">Hub One Workspace</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label"><i class="ph-bold ph-receipt"></i> Total Paid</span>
+                    <span class="detail-value" id="totalPaid">₦16,931</span>
+                </div>
+            </div>
+
+            <!-- ======================================================== -->
+            <!-- BOOKING CODE DISPLAY                                     -->
+            <!-- ======================================================== -->
+            <div class="booking-code-section">
+                <h3 class="booking-code-label">Booking Code</h3>
+                <div class="booking-code-display">
+                    <div class="code-digit">4</div>
+                    <div class="code-digit">8</div>
+                    <div class="code-digit">3</div>
+                    <div class="code-digit">9</div>
+                    <div class="code-digit">8</div>
+                    <div class="code-digit">6</div>
+                </div>
+                <p class="booking-code-instruction">Show this code to the host when you arrive</p>
+            </div>
+
+            <!-- ======================================================== -->
+            <!-- ACTION BUTTONS                                           -->
+            <!-- ======================================================== -->
+            <div class="confirmation-actions">
+                <button class="btn-view-bookings" id="viewBookingsBtn">
+                    <i class="ph-bold ph-calendar-check"></i> View My Bookings
+                </button>
+                <button class="btn-get-directions" id="getDirectionsBtn">
+                    <i class="ph-bold ph-map-pin"></i> Get Directions
+                </button>
+            </div>
+
+            <!-- ======================================================== -->
+            <!-- FOOTER NOTE                                              -->
+            <!-- ======================================================== -->
+            <p class="confirmation-footer-note">
+                A confirmation has been sent to your email
+            </p>
+
+        </main>
+
+    </div>
+
+    <!-- PLACEHOLDER: JS will be linked in the next step -->
+    <script src="../scripts/booking-confirmation.js"></script>
+
+</body>
+</html>

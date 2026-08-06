@@ -2,103 +2,110 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-    <title>SpaceShare · Role Selection</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Role Selection – SpaceShare</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet" />
+
+    <!-- CSS -->
     <link rel="stylesheet" href="../styles/role-selection.css" />
 </head>
 <body>
-    <div class="role-card">
 
-        <!-- header with "I! SpaceShare" -->
-        <div class="header">
-            <span class="icon-mark">I!</span>
-            <span class="brand-name">SpaceShare</span>
-            <span class="divider">·</span>
-            <span class="tagline">SPACE-AS-A-SERVICE</span>
-        </div>
+    <div class="page">
 
-        <!-- main heading -->
-        <h1 class="title">Almost there!</h1>
-        <p class="subtitle">
-            This last step helps us personalise your<br />
-            SpaceShare experience. We'll surface the<br />
-            most relevant spaces and hosting tools for<br />
-            you.
-        </p>
-
-        <!-- feature list -->
-        <ul class="feature-list">
-            <li>
-                <span class="icon-circle">
-                    <i class="fas fa-rotate-right"></i>
-                </span>
-                Your preference can be changed at any time
-            </li>
-            <li>
-                <span class="icon-circle">
-                    <i class="fas fa-user-plus"></i>
-                </span>
-                Access both finding and posting in one<br />
-                account
-            </li>
-            <li>
-                <span class="icon-circle">
-                    <i class="fas fa-bolt"></i>
-                </span>
-                Tailored recommendations from day one
-            </li>
-        </ul>
-
-        <!-- question -->
-        <div class="question">
-            <span class="question-text">What brings you to</span>
-            <span class="highlight">SpaceShare?</span>
-        </div>
-
-        <!-- footnote -->
-        <div class="footnote">
-            <i class="fas fa-info-circle"></i>
-            You can always list a space later – this just sets your home<br />
-            screen.
-        </div>
-
-        <!-- option cards -->
-        <div class="options">
-
-            <!-- Find a space -->
-            <div class="option-card" id="findCard" tabindex="0">
-                <div class="option-icon find-icon">
-                    <i class="fas fa-search"></i>
+        <!-- ========================================================== -->
+        <!-- LEFT PANEL — Hero image with overlay                        -->
+        <!-- ========================================================== -->
+        <div class="panel--hero" role="img" aria-label="Workspace environment background">
+            <div class="hero-overlay" aria-hidden="true"></div>
+            
+            <div class="hero-content">
+                
+                <!-- Brand Logo -->
+                <div class="brand">
+                    <img src="../assets/BLUE%20LOGO%202.jpg" alt="SpaceShare" class="brand__logo" />
+                    <span class="brand__name">SpaceShare</span>
                 </div>
-                <div class="option-content">
-                    <div class="option-title">Find a space</div>
-                    <div class="option-desc">Book studios, venues and rooms nearby.</div>
+
+                <!-- Badge Pill -->
+                <span class="pill">SPACE-AS-A-SERVICE</span>
+
+                <!-- Hero Copy -->
+                <div class="hero-copy">
+                    <h2>Almost there!</h2>
+                    <p>This last step helps us personalise your SpaceShare experience. We'll surface the most relevant spaces and hosting tools for you.</p>
+                    
+                    <ul class="benefits-list">
+                        <li>Your preference can be changed at any time</li>
+                        <li>Access both finding and posting in one account</li>
+                        <li>Tailored recommendations from day one</li>
+                    </ul>
                 </div>
+
             </div>
-
-            <!-- List a space -->
-            <div class="option-card" id="listCard" tabindex="0">
-                <div class="option-icon list-icon">
-                    <i class="fas fa-pen"></i>
-                </div>
-                <div class="option-content">
-                    <div class="option-title">List a space</div>
-                    <div class="option-desc">Earn from a room, studio or venue you manage</div>
-                </div>
-            </div>
-
         </div>
 
-        <!-- pagination dots -->
-        <div class="dots">
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot active"></span>
+        <!-- ========================================================== -->
+        <!-- RIGHT PANEL — Role selection form                           -->
+        <!-- ========================================================== -->
+        <div class="panel--form">
+            <div class="form-wrap">
+
+                <!-- Back Button -->
+                <button type="button" class="back-btn" aria-label="Go back to previous page">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </button>
+
+                <!-- Heading -->
+                <h1 class="title">What brings you to SpaceShare?</h1>
+                <p class="subtitle">You can always list a space later – this just sets your home screen.</p>
+
+                <!-- Selection Form -->
+                <form id="roleForm" class="role-form">
+
+                    <!-- Card 1: Seeker -->
+                    <label class="role-card" data-role="seeker" tabindex="0" role="button" aria-pressed="false">
+                        <input type="radio" name="role" value="seeker" />
+                        <div class="selection-circle" aria-hidden="true"></div>
+                        <div class="card-text">
+                            <strong>Find a space</strong>
+                            <span>Book studios, venues and rooms nearby.</span>
+                        </div>
+                    </label>
+
+                    <!-- Card 2: Host -->
+                    <label class="role-card" data-role="host" tabindex="0" role="button" aria-pressed="false">
+                        <input type="radio" name="role" value="host" />
+                        <div class="selection-circle" aria-hidden="true"></div>
+                        <div class="card-text">
+                            <strong>List a space</strong>
+                            <span>Earn from a room, studio or venue you manage.</span>
+                        </div>
+                    </label>
+
+                    <!-- Alert Box (hidden by default) -->
+                    <div id="formAlert" class="alert-box" hidden role="alert"></div>
+
+                    <!-- Continue Button -->
+                    <button type="submit" id="continueBtn" class="continue-btn" disabled>
+                        Continue
+                    </button>
+
+                </form>
+
+            </div>
         </div>
 
     </div>
 
+    <!-- JavaScript -->
     <script src="../scripts/role-selection.js"></script>
+
 </body>
 </html>

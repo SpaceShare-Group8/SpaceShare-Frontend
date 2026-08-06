@@ -41,21 +41,21 @@
             title: 'SpaceShare puts inspiring workspaces at your fingertips',
             subtitle: 'Browse, book and unlock unique spaces tailored to your vibe, anywhere and anytime.',
             cta: 'Get Started',
-            ctaLink: 'src/pages/signup.html'
+            ctaLink: 'src/pages/role-selection.html'
         },
         {
             badge: 'CONNECT & COLLABORATE',
             title: 'Spaces that inspire collaboration',
             subtitle: 'Access premium rooms and co-working spaces designed to fuel team productivity.',
             cta: 'Get Started',
-            ctaLink: 'src/pages/signup.html'
+            ctaLink: 'src/pages/role-selection.html'
         },
         {
             badge: 'HOST & EARN',
             title: 'Host, Share and Earn',
             subtitle: 'List your underutilized space or discover stunning locations curated just for you.',
             cta: 'Get Started →',
-            ctaLink: 'src/pages/role_main_selection.html',
+            ctaLink: 'src/pages/role-selection.html',
             isFinal: true
         }
     ];
@@ -234,7 +234,7 @@
         DOM.mainCta.textContent = data.cta || 'Get Started';
         
         // Update link
-        DOM.mainCta.href = data.ctaLink || 'src/pages/signup.html';
+        DOM.mainCta.href = data.ctaLink || 'src/pages/role-selection.html';
 
         // Update class for final CTA
         if (isFinal) {

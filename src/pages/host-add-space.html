@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpaceShare - Add New Workspace</title>
+
+    <!-- Leaflet CSS file -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+    <style> #map { height: 400px; width: 100%; border-radius: 0.75rem; z-index: 10; } </style>
+    <link rel="stylesheet" href="../styles/host-add-space.css" />
+    <!-- Tailwind CSS CDN for quick styling and rapid prototyping matching Figma designs -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1D4ED8',
+                        brandBlue: '#0F2C59',
+                        sidebarBg: '#F8FAFC',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 font-sans text-gray-800 antialiased min-h-screen flex flex-col justify-between">
+
+    <div>
+        <!-- Top Navigation Bar -->
+        <header class="bg-white border-b border-gray-200 sticky top-0 z-50 flex items-center justify-between px-4 sm:px-6 py-3">
+            <div class="flex items-center space-x-3">
+                <!-- Mobile menu toggle (drives the off-canvas drawer below) -->
+                <button id="mobileMenuBtn" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobileSidebarDrawer" class="lg:hidden -ml-1 p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-brandBlue transition">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+                <div class="brand-panel">
+            <div class="brand-content">
+                <!-- Logo -->
+                <div class="brand-logo">
+                    <div class="logo-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7 6L11 8.5V18L7 15.5V6Z" fill="#FFFFFF"/>
+                            <path d="M13 8.5L17 6V15.5L13 18V8.5Z" fill="#8FB4EC"/>
+                        </svg>
+                    </div>
+                    <span class="logo-text">SpaceShare</span>
+                </div>
+
+            </div>
+            <div class="flex items-center space-x-2 sm:space-x-4">
+                <button type="button" aria-label="Notifications" class="relative text-gray-600 hover:text-brandBlue p-2 focus:outline-none">
+                    <i class="fa-regular fa-bell text-xl"></i>
+                    <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
+                </button>
+                <div class="flex items-center space-x-3 border-l pl-2 sm:pl-4 border-gray-200">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Profile" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover border border-gray-300">
+                    <div class="hidden md:block text-left">
+                        <p class="text-sm font-semibold text-gray-900 leading-tight">John Adewale</p>
+                        <p class="text-xs text-gray-500 font-medium">Host</p>
+                    </div>
+                    <i class="fa-solid fa-chevron-down text-xs text-gray-500 hidden sm:inline"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Mobile off-canvas navigation drawer + backdrop (mirrors the desktop sidebar) -->
+        <div id="mobileSidebarBackdrop" class="mobile-sidebar-backdrop"></div>
+        <aside id="mobileSidebarDrawer" class="mobile-sidebar-drawer flex flex-col justify-between p-6" aria-hidden="true">
+            <div class="space-y-6">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-blue-600 px-1">Host Dashboard</h3>
+                    <button id="closeMobileSidebarBtn" type="button" aria-label="Close navigation menu" class="p-2 -mr-2 text-gray-400 hover:text-gray-700">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+                <nav class="space-y-1">
+                    <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50 text-sm font-medium transition-colors">
+                        <i class="fa-solid fa-house text-gray-400 w-5"></i><span>Overview</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50 text-sm font-medium transition-colors">
+                        <i class="fa-solid fa-folder-open text-gray-400 w-5"></i><span>My Space</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg bg-blue-700 text-white text-sm font-medium shadow-sm transition-colors">
+                        <i class="fa-solid fa-plus-circle text-white w-5"></i><span>Add new workspace</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50 text-sm font-medium transition-colors">
+                        <i class="fa-solid fa-briefcase text-gray-400 w-5"></i><span>Bookings</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50 text-sm font-medium transition-colors">
+                        <i class="fa-regular fa-calendar-days text-gray-400 w-5"></i><span>Calendar</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50 text-sm font-medium transition-colors">
+                        <i class="fa-solid fa-wallet text-gray-400 w-5"></i><span>Earnings</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50 text-sm font-medium transition-colors">
+                        <i class="fa-regular fa-star text-gray-400 w-5"></i><span>Reviews</span>
+                    </a>
+                </nav>
+                <div>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3 px-1">Account</h3>
+                    <nav class="space-y-1">
+                        <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50 text-sm font-medium transition-colors">
+                            <i class="fa-regular fa-user text-gray-400 w-5"></i><span>Profile</span>
+                        </a>
+                        <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50 text-sm font-medium transition-colors">
+                            <i class="fa-solid fa-money-bill-transfer text-gray-400 w-5"></i><span>Payouts</span>
+                        </a>
+                        <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50 text-sm font-medium transition-colors">
+                            <i class="fa-solid fa-gear text-gray-400 w-5"></i><span>Settings</span>
+                        </a>
+                        <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50 text-sm font-medium transition-colors">
+                            <i class="fa-regular fa-circle-question text-gray-400 w-5"></i><span>Help & Support</span>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+            <div class="pt-4 border-t border-gray-200">
+                <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-red-600 hover:bg-red-50 text-sm font-medium transition-colors">
+                    <i class="fa-solid fa-right-from-bracket w-5"></i><span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <div class="flex min-h-[calc(100vh-65px)]">
+
+            <!-- Desktop Sidebar Navigation -->
+            <aside class="w-72 bg-white border-r border-gray-200 hidden lg:flex flex-col justify-between p-6">
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-blue-600 mb-4 px-3">Host Dashboard</h3>
+                        <nav class="space-y-1">
+                            <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50 text-sm font-medium transition-colors">
+                                <i class="fa-solid fa-house text-gray-400 w-5"></i>
+                                <span>Overview</span>
+                            </a>
+                            <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50 text-sm font-medium transition-colors">
+                                <i class="fa-solid fa-folder-open text-gray-400 w-5"></i>
+                                <span>My Space</span>
+                            </a>
+                            <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg bg-blue-700 text-white text-sm font-medium shadow-sm transition-colors">
+                                <i class="fa-solid fa-plus-circle text-white w-5"></i>
+                                <span>Add new workspace</span>
+                            </a>
+                            <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50 text-sm font-medium transition-colors">
+                                <i class="fa-solid fa-briefcase text-gray-400 w-5"></i>
+                                <span>Bookings</span>
+                            </a>
+                            <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50 text-sm font-medium transition-colors">
+                                <i class="fa-regular fa-calendar-days text-gray-400 w-5"></i>
+                                <span>Calendar</span>
+                            </a>
+                            <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50 text-sm font-medium transition-colors">
+                                <i class="fa-solid fa-wallet text-gray-400 w-5"></i>
+                                <span>Earnings</span>
+                            </a>
+                            <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50 text-sm font-medium transition-colors">
+                                <i class="fa-regular fa-star text-gray-400 w-5"></i>
+                                <span>Reviews</span>
+                            </a>
+                        </nav>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-4 px-3">Account</h3>
+                        <nav class="space-y-1">
+                            <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50 text-sm font-medium transition-colors">
+                                <i class="fa-regular fa-user text-gray-400 w-5"></i>
+                                <span>Profile</span>
+                            </a>
+                            <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50 text-sm font-medium transition-colors">
+                                <i class="fa-solid fa-money-bill-transfer text-gray-400 w-5"></i>
+                                <span>Payouts</span>
+                            </a>
+                            <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50 text-sm font-medium transition-colors">
+                                <i class="fa-solid fa-gear text-gray-400 w-5"></i>
+                                <span>Settings</span>
+                            </a>
+                            <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50 text-sm font-medium transition-colors">
+                                <i class="fa-regular fa-circle-question text-gray-400 w-5"></i>
+                                <span>Help & Support</span>
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-gray-200">
+                    <a href="#" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-red-600 hover:bg-red-50 text-sm font-medium transition-colors">
+                        <i class="fa-solid fa-right-from-bracket w-5"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="flex-1 p-4 sm:p-8 max-w-5xl mx-auto w-full">
+
+                <!-- Header Section with Save Draft -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-6 gap-4">
+                    <div>
+                        <h1 class="text-xl sm:text-2xl font-bold text-gray-900">Add New Workspace</h1>
+                        <p class="text-sm text-gray-500 mt-1">Create a new listing and start earning</p>
+                    </div>
+                    <button type="button" id="saveDraftBtn" class="px-5 py-2 border border-blue-600 text-blue-600 rounded-xl font-medium text-sm hover:bg-blue-50 transition shadow-sm whitespace-nowrap">
+                        Save Draft
+                    </button>
+                </div>
+
+                <!-- Stepper Progress Bar -->
+                <div class="bg-white rounded-2xl p-4 sm:p-6 border border-gray-200 shadow-sm mb-8 overflow-x-auto">
+                    <div class="flex items-center justify-center min-w-[420px] max-w-xl mx-auto relative px-4">
+                        <!-- Background Connector Line -->
+                        <div class="absolute left-16 right-16 top-1/2 -translate-y-1/2 h-1 bg-gray-200 z-0">
+                            <div id="stepProgressBar" class="h-full bg-blue-600 transition-all duration-300" style="width: 0%;"></div>
+                        </div>
+
+                        <!-- Step 1 -->
+                        <div class="flex flex-col items-center relative z-10 cursor-pointer step-indicator" data-step="1">
+                            <div id="stepIndicator1" class="w-10 h-10 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-sm shadow-md ring-4 ring-white transition-all">
+                                1
+                            </div>
+                            <span id="stepLabel1" class="text-xs font-semibold text-blue-600 mt-2">Basic Information</span>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="flex flex-col items-center relative z-10 mx-24 cursor-pointer step-indicator" data-step="2">
+                            <div id="stepIndicator2" class="w-10 h-10 rounded-full bg-gray-200 text-gray-600 font-bold flex items-center justify-center text-sm shadow-md ring-4 ring-white transition-all">
+                                2
+                            </div>
+                            <span id="stepLabel2" class="text-xs font-semibold text-gray-500 mt-2">Amenities & Pricing</span>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="flex flex-col items-center relative z-10 cursor-pointer step-indicator" data-step="3">
+                            <div id="stepIndicator3" class="w-10 h-10 rounded-full bg-gray-200 text-gray-600 font-bold flex items-center justify-center text-sm shadow-md ring-4 ring-white transition-all">
+                                3
+                            </div>
+                            <span id="stepLabel3" class="text-xs font-semibold text-gray-500 mt-2">Photos & Verify</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dynamic Form Wrapper -->
+                <form id="workspaceForm" class="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 sm:p-8" enctype="multipart/form-data" novalidate>
+
+                    <!-- ================= STEP 1: BASIC INFORMATION ================= -->
+                    <div class="form-step" id="step1Content">
+                        <h2 class="text-lg font-bold text-gray-900 mb-1">Basic Information</h2>
+                        <p class="text-sm text-gray-500 mb-6">Let's start with some basic details about your workspace.</p>
+
+                        <div class="space-y-5">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1.5" for="title">Workspace Name *</label>
+                                <input type="text" id="title" name="title" required placeholder="e.g. The Workspace Hub" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm outline-none transition">
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-1.5" for="workspace_type">Workspace Type *</label>
+                                    <select id="workspace_type" name="workspace_type" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm bg-white outline-none transition">
+                                        <option value="" disabled selected>Select workspace type</option>
+                                        <option value="private_office">Private Office</option>
+                                        <option value="coworking_space">Coworking Space</option>
+                                        <option value="meeting_room">Meeting Room</option>
+                                        <option value="conference_room">Conference Room</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-1.5" for="business_category">Business Category (Optional)</label>
+                                    <select id="business_category" name="business_category" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm bg-white outline-none transition">
+                                        <option value="" disabled selected>Select category</option>
+                                        <option value="tech">Technology & Startups</option>
+                                        <option value="creative">Creative & Design</option>
+                                        <option value="corporate">Corporate & Finance</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="relative">
+                                <label class="block text-sm font-semibold text-gray-700 mb-1.5" for="address-input">Address *</label>
+                                <div class="relative">
+                                    <input type="text" id="address-input" name="address" required autocomplete="off" placeholder="Search address in Nigeria (e.g., Lekki Phase 1, Lagos)" class="w-full px-4 py-3 pr-10 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm outline-none transition">
+                                    <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm pointer-events-none"></i>
+                                </div>
+                                <p class="text-xs text-gray-400 mt-1.5">Search an address above, or click / drag the pin directly on the map.</p>
+                            </div>
+
+                            <!-- Leaflet Interactive Map Preview -->
+                            <div class="rounded-xl overflow-hidden border border-gray-200 mb-1 relative">
+                                <div id="map"></div>
+                                <button type="button" id="useMyLocationBtn" class="absolute bottom-3 right-3 z-[400] bg-white text-xs font-semibold text-blue-700 px-3 py-2 rounded-lg shadow-md border border-gray-200 hover:bg-blue-50 transition flex items-center gap-1.5">
+                                    <i class="fa-solid fa-location-crosshairs"></i>
+                                    <span class="hidden sm:inline">Use my location</span>
+                                </button>
+                            </div>
+                            <p class="text-xs text-gray-400 mb-5" id="coordsHint">Pin set at default location · Lat 6.5244, Lng 3.3792</p>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-1.5" for="city">City *</label>
+                                    <select id="city" name="city" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm bg-white outline-none transition">
+                                        <option value="" disabled selected>Select city</option>
+                                        <option value="Lagos">Lagos</option>
+                                        <option value="Abuja">Abuja</option>
+                                        <option value="Port Harcourt">Port Harcourt</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-1.5" for="state">State *</label>
+                                    <select id="state" name="state" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm bg-white outline-none transition">
+                                        <option value="" disabled selected>Select state</option>
+                                        <option value="Lagos">Lagos State</option>
+                                        <option value="FCT">Federal Capital Territory</option>
+                                        <option value="Rivers">Rivers State</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1.5" for="description">Description *</label>
+                                <textarea id="description" name="description" rows="4" required placeholder="Tell users about your workspace, what makes it special, amenities, nearby landmarks etc." class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm outline-none transition"></textarea>
+                            </div>
+
+                            <!-- Hidden latitude and longitude defaults to match backend requirements -->
+                            <input type="hidden" id="latitude" name="latitude" value="6.5244">
+                            <input type="hidden" id="longitude" name="longitude" value="3.3792">
+                        </div>
+                    </div>
+
+                    <!-- ================= STEP 2: AMENITIES & PRICING ================= -->
+                    <div class="form-step hidden" id="step2Content">
+                        <h2 class="text-lg font-bold text-gray-900 mb-1">Amenities & Pricing</h2>
+                        <p class="text-sm text-gray-500 mb-6">Select all amenities available in your workspace.</p>
+
+                        <!-- Amenities Checkboxes Grid -->
+                        <div class="space-y-6 mb-8">
+                            <div>
+                                <h3 class="text-sm font-bold text-gray-800 mb-3">Power & Internet</h3>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+                                    <label class="amenity-card border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer text-center transition hover:border-blue-500 relative">
+                                        <input type="checkbox" name="amenities" value="Stable Power" class="sr-only">
+                                        <span class="amenity-check-badge"><i class="fa-solid fa-check"></i></span>
+                                        <i class="fa-solid fa-bolt text-gray-400 text-xl mb-2"></i>
+                                        <span class="text-xs font-semibold text-gray-800">Stable Power</span>
+                                    </label>
+                                    <label class="amenity-card border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer text-center transition hover:border-blue-500 relative">
+                                        <input type="checkbox" name="amenities" value="Generator" class="sr-only">
+                                        <span class="amenity-check-badge"><i class="fa-solid fa-check"></i></span>
+                                        <i class="fa-solid fa-charging-station text-gray-400 text-xl mb-2"></i>
+                                        <span class="text-xs font-semibold text-gray-800">Generator</span>
+                                    </label>
+                                    <label class="amenity-card border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer text-center transition hover:border-blue-500 relative">
+                                        <input type="checkbox" name="amenities" value="Solar Backup" class="sr-only">
+                                        <span class="amenity-check-badge"><i class="fa-solid fa-check"></i></span>
+                                        <i class="fa-solid fa-sun text-gray-400 text-xl mb-2"></i>
+                                        <span class="text-xs font-semibold text-gray-800">Solar Backup</span>
+                                    </label>
+                                    <label class="amenity-card border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer text-center transition hover:border-blue-500 relative">
+                                        <input type="checkbox" name="amenities" value="Fibre Internet" class="sr-only">
+                                        <span class="amenity-check-badge"><i class="fa-solid fa-check"></i></span>
+                                        <i class="fa-solid fa-network-wired text-gray-400 text-xl mb-2"></i>
+                                        <span class="text-xs font-semibold text-gray-800">Fibre Internet</span>
+                                    </label>
+                                    <label class="amenity-card border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer text-center transition hover:border-blue-500 relative">
+                                        <input type="checkbox" name="amenities" value="High-Speed Wifi" class="sr-only">
+                                        <span class="amenity-check-badge"><i class="fa-solid fa-check"></i></span>
+                                        <i class="fa-solid fa-wifi text-gray-400 text-xl mb-2"></i>
+                                        <span class="text-xs font-semibold text-gray-800">High-Speed Wifi</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 class="text-sm font-bold text-gray-800 mb-3">Workspace & Facilities</h3>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+                                    <label class="amenity-card border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer text-center transition hover:border-blue-500 relative">
+                                        <input type="checkbox" name="amenities" value="Air Conditioning" class="sr-only">
+                                        <span class="amenity-check-badge"><i class="fa-solid fa-check"></i></span>
+                                        <i class="fa-solid fa-snowflake text-gray-400 text-xl mb-2"></i>
+                                        <span class="text-xs font-semibold text-gray-800">Air Conditioning</span>
+                                    </label>
+                                    <label class="amenity-card border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer text-center transition hover:border-blue-500 relative">
+                                        <input type="checkbox" name="amenities" value="Meeting Room" class="sr-only">
+                                        <span class="amenity-check-badge"><i class="fa-solid fa-check"></i></span>
+                                        <i class="fa-solid fa-users-rectangle text-gray-400 text-xl mb-2"></i>
+                                        <span class="text-xs font-semibold text-gray-800">Meeting Room</span>
+                                    </label>
+                                    <label class="amenity-card border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer text-center transition hover:border-blue-500 relative">
+                                        <input type="checkbox" name="amenities" value="Private Office" class="sr-only">
+                                        <span class="amenity-check-badge"><i class="fa-solid fa-check"></i></span>
+                                        <i class="fa-solid fa-door-closed text-gray-400 text-xl mb-2"></i>
+                                        <span class="text-xs font-semibold text-gray-800">Private Office</span>
+                                    </label>
+                                    <label class="amenity-card border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer text-center transition hover:border-blue-500 relative">
+                                        <input type="checkbox" name="amenities" value="Printer" class="sr-only">
+                                        <span class="amenity-check-badge"><i class="fa-solid fa-check"></i></span>
+                                        <i class="fa-solid fa-print text-gray-400 text-xl mb-2"></i>
+                                        <span class="text-xs font-semibold text-gray-800">Printer</span>
+                                    </label>
+                                    <label class="amenity-card border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer text-center transition hover:border-blue-500 relative">
+                                        <input type="checkbox" name="amenities" value="White Board" class="sr-only">
+                                        <span class="amenity-check-badge"><i class="fa-solid fa-check"></i></span>
+                                        <i class="fa-solid fa-chalkboard text-gray-400 text-xl mb-2"></i>
+                                        <span class="text-xs font-semibold text-gray-800">White Board</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 class="text-sm font-bold text-gray-800 mb-3">Comfort & Convenience</h3>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+                                    <label class="amenity-card border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer text-center transition hover:border-blue-500 relative">
+                                        <input type="checkbox" name="amenities" value="Parking" class="sr-only">
+                                        <span class="amenity-check-badge"><i class="fa-solid fa-check"></i></span>
+                                        <i class="fa-solid fa-square-parking text-gray-400 text-xl mb-2"></i>
+                                        <span class="text-xs font-semibold text-gray-800">Parking</span>
+                                    </label>
+                                    <label class="amenity-card border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer text-center transition hover:border-blue-500 relative">
+                                        <input type="checkbox" name="amenities" value="Security" class="sr-only">
+                                        <span class="amenity-check-badge"><i class="fa-solid fa-check"></i></span>
+                                        <i class="fa-solid fa-shield-halved text-gray-400 text-xl mb-2"></i>
+                                        <span class="text-xs font-semibold text-gray-800">Security</span>
+                                    </label>
+                                    <label class="amenity-card border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer text-center transition hover:border-blue-500 relative">
+                                        <input type="checkbox" name="amenities" value="Kitchen" class="sr-only">
+                                        <span class="amenity-check-badge"><i class="fa-solid fa-check"></i></span>
+                                        <i class="fa-solid fa-utensils text-gray-400 text-xl mb-2"></i>
+                                        <span class="text-xs font-semibold text-gray-800">Kitchen</span>
+                                    </label>
+                                    <label class="amenity-card border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer text-center transition hover:border-blue-500 relative">
+                                        <input type="checkbox" name="amenities" value="Free Coffee" class="sr-only">
+                                        <span class="amenity-check-badge"><i class="fa-solid fa-check"></i></span>
+                                        <i class="fa-solid fa-mug-hot text-gray-400 text-xl mb-2"></i>
+                                        <span class="text-xs font-semibold text-gray-800">Free Coffee</span>
+                                    </label>
+                                    <label class="amenity-card border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer text-center transition hover:border-blue-500 relative">
+                                        <input type="checkbox" name="amenities" value="Restroom" class="sr-only">
+                                        <span class="amenity-check-badge"><i class="fa-solid fa-check"></i></span>
+                                        <i class="fa-solid fa-restroom text-gray-400 text-xl mb-2"></i>
+                                        <span class="text-xs font-semibold text-gray-800">Restroom</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pricing & Capacity Configuration -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 pt-4 border-t border-gray-100">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1.5" for="price_per_hour">Price per Hour (₦) *</label>
+                                <input type="number" min="0" id="price_per_hour" name="price_per_hour" value="1500" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm outline-none transition">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1.5" for="price_per_day">Price per Day (₦) *</label>
+                                <input type="number" min="0" id="price_per_day" name="price_per_day" value="12000" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm outline-none transition">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1.5" for="capacity">Capacity (People) *</label>
+                                <div class="flex items-center gap-3">
+                                    <button type="button" id="capacityMinusBtn" aria-label="Decrease capacity" class="w-11 h-11 flex-shrink-0 rounded-xl border border-gray-300 text-gray-600 font-bold hover:bg-gray-50 transition">−</button>
+                                    <input type="number" min="1" id="capacity" name="capacity" value="20" required class="w-full text-center px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm outline-none transition">
+                                    <button type="button" id="capacityPlusBtn" aria-label="Increase capacity" class="w-11 h-11 flex-shrink-0 rounded-xl border border-gray-300 text-gray-600 font-bold hover:bg-gray-50 transition">+</button>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1.5" for="minimum_booking_duration">Minimum Booking Duration *</label>
+                                <select id="minimum_booking_duration" name="minimum_booking_duration" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm bg-white outline-none transition">
+                                    <option value="1 hour" selected>1 hour</option>
+                                    <option value="2 hours">2 hours</option>
+                                    <option value="4 hours">4 hours</option>
+                                    <option value="1 day">1 day</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1.5" for="opening_time">Opening Time *</label>
+                                <input type="time" id="opening_time" name="opening_time" value="08:00" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm bg-white outline-none transition">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1.5" for="closing_time">Closing Time *</label>
+                                <input type="time" id="closing_time" name="closing_time" value="20:00" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm bg-white outline-none transition">
+                            </div>
+                        </div>
+
+                        <!-- Working Days Selector -->
+                        <div class="mt-5">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Working Days *</label>
+                            <div id="workingDaysGroup" class="flex flex-wrap gap-2">
+                                <button type="button" class="day-btn px-4 py-2 rounded-xl text-xs font-semibold bg-blue-600 text-white shadow-sm transition" data-day="Mon" aria-pressed="true">Mon</button>
+                                <button type="button" class="day-btn px-4 py-2 rounded-xl text-xs font-semibold bg-blue-600 text-white shadow-sm transition" data-day="Tue" aria-pressed="true">Tue</button>
+                                <button type="button" class="day-btn px-4 py-2 rounded-xl text-xs font-semibold bg-blue-600 text-white shadow-sm transition" data-day="Wed" aria-pressed="true">Wed</button>
+                                <button type="button" class="day-btn px-4 py-2 rounded-xl text-xs font-semibold bg-blue-600 text-white shadow-sm transition" data-day="Thu" aria-pressed="true">Thu</button>
+                                <button type="button" class="day-btn px-4 py-2 rounded-xl text-xs font-semibold bg-blue-600 text-white shadow-sm transition" data-day="Fri" aria-pressed="true">Fri</button>
+                                <button type="button" class="day-btn px-4 py-2 rounded-xl text-xs font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200 transition" data-day="Sat" aria-pressed="false">Sat</button>
+                                <button type="button" class="day-btn px-4 py-2 rounded-xl text-xs font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200 transition" data-day="Sun" aria-pressed="false">Sun</button>
+                            </div>
+                            <p id="workingDaysError" class="hidden text-xs text-red-600 mt-2">Select at least one working day.</p>
+                        </div>
+                    </div>
+
+                    <!-- ================= STEP 3: PHOTOS & VERIFY ================= -->
+                    <div class="form-step hidden" id="step3Content">
+                        <h2 class="text-lg font-bold text-gray-900 mb-1">Photos & Verification</h2>
+                        <p class="text-sm text-gray-500 mb-6">Add Photos and Verify your workspace.</p>
+
+                        <!-- Cover Photo Upload (No default preset image) -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Cover Photo *</label>
+                            <div id="coverPhotoContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <label class="border-2 border-dashed border-gray-300 rounded-2xl p-6 flex flex-col items-center justify-center cursor-pointer hover:border-blue-600 transition bg-gray-50/50 text-center min-h-[180px]">
+                                    <input type="file" id="coverPhotoInput" name="photo" accept="image/*" class="hidden">
+                                    <i class="fa-solid fa-cloud-arrow-up text-3xl text-blue-600 mb-2"></i>
+                                    <span class="text-sm font-semibold text-blue-600">Upload Cover Photo</span>
+                                    <span class="text-xs text-gray-400 mt-1">Recommended size: 1600 x 900px<br>Max 5MB</span>
+                                </label>
+                                <div id="coverPhotoPreviewWrapper" class="hidden relative rounded-2xl overflow-hidden border border-gray-200 bg-gray-100 h-44 flex items-center justify-center">
+                                    <img id="coverPhotoPreviewImg" src="" alt="Cover Preview" class="w-full h-full object-cover">
+                                    <button type="button" id="removeCoverPhotoBtn" class="absolute top-3 right-3 w-8 h-8 bg-red-600 text-white rounded-full flex items-center justify-center shadow hover:bg-red-700 transition" title="Remove cover photo">
+                                        <i class="fa-solid fa-xmark text-xs"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Workspace Gallery (Dynamic, starts completely empty for host uploads) -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Workspace Gallery (Max 10 photos)</label>
+                            <div id="galleryGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+                                <label id="galleryAddTile" class="border-2 border-dashed border-gray-300 rounded-xl h-28 flex flex-col items-center justify-center cursor-pointer hover:border-blue-600 transition bg-gray-50 text-gray-400">
+                                    <input type="file" id="galleryInput" multiple accept="image/*" class="hidden">
+                                    <i class="fa-solid fa-plus text-lg text-blue-600 mb-1"></i>
+                                    <span class="text-xs font-semibold text-blue-600">Add Photos</span>
+                                </label>
+                            </div>
+                            <p id="galleryLimitNote" class="hidden text-xs text-red-600 mt-2">You've reached the maximum of 10 gallery photos.</p>
+                        </div>
+
+                        <!-- Additional Information -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1.5" for="internet_provider">Internet Provider *</label>
+                                <select id="internet_provider" name="internet_provider" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm bg-white outline-none transition">
+                                    <option value="" disabled selected>Select internet provider</option>
+                                    <option value="Spectranet">Spectranet</option>
+                                    <option value="MTN Fibre">MTN Fibre</option>
+                                    <option value="IPNX">IPNX</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1.5" for="power_source">Power Source *</label>
+                                <select id="power_source" name="power_source" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm bg-white outline-none transition">
+                                    <option value="" disabled selected>Select power source</option>
+                                    <option value="Grid + Generator + Solar">Grid + Generator + Solar</option>
+                                    <option value="Grid Only">Grid Only</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Verification Documents -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Verification Documents <span class="text-xs font-normal text-gray-400">(Optional but recommended)</span></label>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="verificationDocsGrid">
+                                <div class="doc-upload-card rounded-2xl p-4 flex flex-col items-center justify-center text-center" data-doc="business_registration">
+                                    <i class="fa-solid fa-file-circle-check text-2xl text-gray-400 mb-2 doc-icon"></i>
+                                    <span class="text-xs font-bold text-gray-800 mb-1">Business Registration</span>
+                                    <label class="text-xs text-blue-600 font-medium mb-1 cursor-pointer hover:underline doc-upload-label">
+                                        Upload Document
+                                        <input type="file" class="hidden doc-file-input" data-doc="business_registration" accept=".pdf,.jpg,.jpeg,.png">
+                                    </label>
+                                    <span class="text-[10px] text-gray-400 doc-hint">PDF, JPG or PNG (Max 5MB)</span>
+                                    <span class="text-[11px] font-medium text-green-700 mt-1 hidden doc-filename"></span>
+                                    <button type="button" class="text-[11px] text-red-500 hover:underline mt-1 hidden doc-remove-btn">Remove</button>
+                                </div>
+                                <div class="doc-upload-card rounded-2xl p-4 flex flex-col items-center justify-center text-center" data-doc="utility_bill">
+                                    <i class="fa-solid fa-file-circle-check text-2xl text-gray-400 mb-2 doc-icon"></i>
+                                    <span class="text-xs font-bold text-gray-800 mb-1">Utility Bill</span>
+                                    <label class="text-xs text-blue-600 font-medium mb-1 cursor-pointer hover:underline doc-upload-label">
+                                        Upload Document
+                                        <input type="file" class="hidden doc-file-input" data-doc="utility_bill" accept=".pdf,.jpg,.jpeg,.png">
+                                    </label>
+                                    <span class="text-[10px] text-gray-400 doc-hint">PDF, JPG or PNG (Max 5MB)</span>
+                                    <span class="text-[11px] font-medium text-green-700 mt-1 hidden doc-filename"></span>
+                                    <button type="button" class="text-[11px] text-red-500 hover:underline mt-1 hidden doc-remove-btn">Remove</button>
+                                </div>
+                                <div class="doc-upload-card rounded-2xl p-4 flex flex-col items-center justify-center text-center" data-doc="government_id">
+                                    <i class="fa-solid fa-file-circle-check text-2xl text-gray-400 mb-2 doc-icon"></i>
+                                    <span class="text-xs font-bold text-gray-800 mb-1">Government ID</span>
+                                    <label class="text-xs text-blue-600 font-medium mb-1 cursor-pointer hover:underline doc-upload-label">
+                                        Upload Document
+                                        <input type="file" class="hidden doc-file-input" data-doc="government_id" accept=".pdf,.jpg,.jpeg,.png">
+                                    </label>
+                                    <span class="text-[10px] text-gray-400 doc-hint">PDF, JPG or PNG (Max 5MB)</span>
+                                    <span class="text-[11px] font-medium text-green-700 mt-1 hidden doc-filename"></span>
+                                    <button type="button" class="text-[11px] text-red-500 hover:underline mt-1 hidden doc-remove-btn">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Terms Agreement Checkbox -->
+                        <div class="flex items-center space-x-3 pt-2">
+                            <input type="checkbox" id="termsCheck" checked class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
+                            <label for="termsCheck" class="text-xs text-gray-600">
+                                I confirm that all information provided is accurate and I agree to SpaceShare's <a href="#" class="text-blue-600 underline">Terms & Conditions</a> and <a href="#" class="text-blue-600 underline">Host Guidelines</a>.
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Form Footer Navigation Buttons -->
+                    <div class="flex items-center justify-between pt-8 mt-8 border-t border-gray-200">
+                        <button type="button" id="prevBtn" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-medium text-sm hover:bg-gray-50 transition flex items-center space-x-2">
+                            <i class="fa-solid fa-arrow-left text-xs"></i>
+                            <span>Previous</span>
+                        </button>
+
+                        <button type="button" id="nextBtn" class="px-8 py-3 bg-blue-700 text-white rounded-xl font-medium text-sm hover:bg-blue-800 transition flex items-center space-x-2 shadow-sm">
+                            <span>Continue</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
+                    </div>
+
+                </form>
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer Component -->
+    <footer class="bg-white border-t border-gray-200 py-6 px-4 sm:px-8 mt-12">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+            <div class="flex items-center space-x-2">
+                <div class="bg-brandBlue text-white p-1.5 rounded-lg flex items-center justify-center font-bold text-sm w-7 h-7">
+                    <i class="fa-solid fa-columns text-xs"></i>
+                </div>
+                <span class="font-bold text-brandBlue text-sm">SpaceShare</span>
+                <span>&copy; 2026 SpaceShare Inc. All rights reserved.</span>
+            </div>
+            <div class="flex items-center space-x-6">
+                <a href="#" class="hover:text-brandBlue transition-colors">Privacy Policy</a>
+                <a href="#" class="hover:text-brandBlue transition-colors">Terms of Service</a>
+                <a href="#" class="hover:text-brandBlue transition-colors">Support</a>
+                <a href="#" class="hover:text-brandBlue transition-colors">Host Guidelines</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Leaflet JavaScript file (loaded just before use, deferred so it never races the page script) -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
+    <!-- Single canonical script. Not type="module" on purpose: module scripts are blocked by CORS
+         when this page is opened directly as a file:// URL instead of through a server, which is
+         exactly what produced the "access blocked" console error on the map. A plain script tag
+         works identically whether served over http(s) or opened straight from disk. -->
+    <script src="../scripts/host-add-space.js" defer></script>
+</body>
+</html>

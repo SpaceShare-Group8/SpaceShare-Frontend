@@ -78,8 +78,8 @@ body {
     width: 100%;
     min-height: 100vh;
     font-family: var(--font-body);
-    color: var(--black);
-    background: var(--black-5);
+    color: var(--white);
+    background: var(--white-5);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }

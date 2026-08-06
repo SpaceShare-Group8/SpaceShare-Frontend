@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SpaceShare — My Bookings</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+
+    <!-- PLACEHOLDER: CSS will be linked in the next step -->
+    <link rel="stylesheet" href="../styles/my-bookings.css" />
+</head>
+<body>
+
+    <!-- ============================================================ -->
+    <!-- MAIN WRAPPER                                                  -->
+    <!-- ============================================================ -->
+    <div class="my-bookings-page-wrapper">
+
+        <!-- ========================================================== -->
+        <!-- LEFT SIDEBAR (Navigation) - Desktop Only                   -->
+        <!-- ========================================================== -->
+        <aside class="sidebar-nav">
+            <div class="sidebar-logo">
+                <img src="../assets/BLUE%20LOGO.png" alt="SpaceShare" class="logo-img" />
+                <span class="logo-text">SpaceShare</span>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="seeker-dashboard.html" class="nav-item">
+                    <i class="ph ph-house"></i>
+                    <span>Home</span>
+                </a>
+                <a href="#" class="nav-item active">
+                    <i class="ph-fill ph-calendar-blank" style="color: #2862BC;"></i>
+                    <span>Bookings</span>
+                </a>
+                <a href="favorite-spaces.html" class="nav-item">
+                    <i class="ph-fill ph-heart" style="color: #FF383C;"></i>
+                    <span>Favourites</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ph ph-chat"></i>
+                    <span>Messages</span>
+                </a>
+                <!-- Help Button (Bottom of Sidebar) -->
+                <div class="sidebar-help">
+                    <button class="help-btn">
+                        <i class="ph-fill ph-headset" style="color: #2862BC;"></i>
+                        <div class="help-text">
+                            <strong>Need Help?</strong>
+                            <span>Contact our support team for assistance.</span>
+                        </div>
+                        <i class="ph-bold ph-caret-right" style="color: #2862BC;"></i>
+                    </button>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- ========================================================== -->
+        <!-- RIGHT MAIN CONTENT                                         -->
+        <!-- ========================================================== -->
+        <main class="main-content">
+
+            <!-- ======================================================== -->
+            <!-- TOP HEADER (Title & Search)                             -->
+            <!-- ======================================================== -->
+            <header class="page-header">
+                <h1 class="page-title">Booking History</h1>
+                <div class="page-search">
+                    <i class="ph ph-magnifying-glass search-icon"></i>
+                    <input type="text" placeholder="Search workspace..." class="search-input" />
+                </div>
+            </header>
+
+            <!-- ======================================================== -->
+            <!-- MOBILE SEARCH HEADER (Hidden on Desktop)                -->
+            <!-- ======================================================== -->
+            <section class="mobile-search-header">
+                <div class="search-pill-container">
+                    <button class="pill-back-btn" aria-label="Go back">
+                        <i class="ph-bold ph-arrow-left"></i>
+                    </button>
+                    <div class="pill-location-wrapper">
+                        <i class="ph-fill ph-map-pin"></i>
+                        <span>Lekki, Lagos</span>
+                    </div>
+                    <button class="pill-filter-btn" aria-label="Open filters">
+                        <i class="ph-fill ph-sliders"></i>
+                    </button>
+                </div>
+                <p class="search-pill-subtitle">2nd Aug, 2026 • 10:00 am</p>
+            </section>
+
+            <!-- ======================================================== -->
+            <!-- FILTER TABS (Dropdown Style)                            -->
+            <!-- ======================================================== -->
+            <section class="filter-tabs-section">
+                <div class="filter-dropdown">
+                    <button class="filter-dropdown-trigger" id="filterDropdownTrigger">
+                        <span id="activeFilterLabel">All bookings</span>
+                        <i class="ph-bold ph-caret-down"></i>
+                    </button>
+                    <div class="filter-dropdown-menu" id="filterDropdownMenu">
+                        <button class="filter-option active" data-filter="all">All bookings</button>
+                        <button class="filter-option" data-filter="pending">Pending</button>
+                        <button class="filter-option" data-filter="upcoming">Upcoming</button>
+                        <button class="filter-option" data-filter="in_progress">In Progress</button>
+                        <button class="filter-option" data-filter="completed">Completed</button>
+                        <button class="filter-option" data-filter="canceled">Canceled</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ======================================================== -->
+            <!-- BOOKING CARDS LIST                                      -->
+            <!-- ======================================================== -->
+            <section class="bookings-list" id="bookingsList">
+
+                <!-- Card 1: Pending -->
+                <article class="booking-card" data-status="pending">
+                    <div class="booking-card-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=200&q=80" alt="Hub One Workspace" class="booking-card-img" />
+                    </div>
+                    <div class="booking-card-details">
+                        <div class="booking-card-header">
+                            <h3 class="booking-card-title">Hub One Workspace</h3>
+                            <span class="status-badge status-pending">Pending</span>
+                        </div>
+                        <div class="booking-card-meta">
+                            <div class="meta-row">
+                                <i class="ph-bold ph-map-pin"></i>
+                                <span>Lekki, Lagos</span>
+                            </div>
+                            <div class="meta-row">
+                                <i class="ph-bold ph-calendar"></i>
+                                <span>03 July 2026</span>
+                            </div>
+                            <div class="meta-row">
+                                <i class="ph-bold ph-clock"></i>
+                                <span>08:00 – 09:00</span>
+                            </div>
+                        </div>
+                        <div class="booking-card-footer">
+                            <span class="booking-card-price">₦15,000</span>
+                            <button class="btn-view-booking">View Details <i class="ph-bold ph-caret-right"></i></button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 2: In Progress -->
+                <article class="booking-card" data-status="in_progress">
+                    <div class="booking-card-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=200&q=80" alt="WorkNest Hub" class="booking-card-img" />
+                    </div>
+                    <div class="booking-card-details">
+                        <div class="booking-card-header">
+                            <h3 class="booking-card-title">WorkNest Hub</h3>
+                            <span class="status-badge status-in-progress">In Progress</span>
+                        </div>
+                        <div class="booking-card-meta">
+                            <div class="meta-row">
+                                <i class="ph-bold ph-map-pin"></i>
+                                <span>Lekki, Lagos</span>
+                            </div>
+                            <div class="meta-row">
+                                <i class="ph-bold ph-calendar"></i>
+                                <span>01 July 2026</span>
+                            </div>
+                            <div class="meta-row">
+                                <i class="ph-bold ph-clock"></i>
+                                <span>09:00 – 11:00</span>
+                            </div>
+                        </div>
+                        <div class="booking-card-footer">
+                            <span class="booking-card-price">₦30,000</span>
+                            <button class="btn-view-booking">View Details <i class="ph-bold ph-caret-right"></i></button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 3: Upcoming -->
+                <article class="booking-card" data-status="upcoming">
+                    <div class="booking-card-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=200&q=80" alt="Creative Space" class="booking-card-img" />
+                    </div>
+                    <div class="booking-card-details">
+                        <div class="booking-card-header">
+                            <h3 class="booking-card-title">Creative Space</h3>
+                            <span class="status-badge status-upcoming">Upcoming</span>
+                        </div>
+                        <div class="booking-card-meta">
+                            <div class="meta-row">
+                                <i class="ph-bold ph-map-pin"></i>
+                                <span>Lekki, Lagos</span>
+                            </div>
+                            <div class="meta-row">
+                                <i class="ph-bold ph-calendar"></i>
+                                <span>15 April 2026</span>
+                            </div>
+                            <div class="meta-row">
+                                <i class="ph-bold ph-clock"></i>
+                                <span>12:00 – 13:00</span>
+                            </div>
+                        </div>
+                        <div class="booking-card-footer">
+                            <span class="booking-card-price">₦30,000</span>
+                            <button class="btn-view-booking">View Details <i class="ph-bold ph-caret-right"></i></button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 4: Completed -->
+                <article class="booking-card" data-status="completed">
+                    <div class="booking-card-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=200&q=80" alt="Hub One Workspace" class="booking-card-img" />
+                    </div>
+                    <div class="booking-card-details">
+                        <div class="booking-card-header">
+                            <h3 class="booking-card-title">Hub One Workspace</h3>
+                            <span class="status-badge status-completed">Completed</span>
+                        </div>
+                        <div class="booking-card-meta">
+                            <div class="meta-row">
+                                <i class="ph-bold ph-map-pin"></i>
+                                <span>Lekki, Lagos</span>
+                            </div>
+                            <div class="meta-row">
+                                <i class="ph-bold ph-calendar"></i>
+                                <span>02 June 2026</span>
+                            </div>
+                            <div class="meta-row">
+                                <i class="ph-bold ph-clock"></i>
+                                <span>14:00 – 17:00</span>
+                            </div>
+                        </div>
+                        <div class="booking-card-footer">
+                            <span class="booking-card-price">₦150,000</span>
+                            <button class="btn-view-booking">View Details <i class="ph-bold ph-caret-right"></i></button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 5: Canceled -->
+                <article class="booking-card" data-status="canceled">
+                    <div class="booking-card-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=200&q=80" alt="Innovation Hub" class="booking-card-img" />
+                    </div>
+                    <div class="booking-card-details">
+                        <div class="booking-card-header">
+                            <h3 class="booking-card-title">Innovation Hub</h3>
+                            <span class="status-badge status-canceled">Canceled</span>
+                        </div>
+                        <div class="booking-card-meta">
+                            <div class="meta-row">
+                                <i class="ph-bold ph-map-pin"></i>
+                                <span>Lekki, Lagos</span>
+                            </div>
+                            <div class="meta-row">
+                                <i class="ph-bold ph-calendar"></i>
+                                <span>25 March 2026</span>
+                            </div>
+                            <div class="meta-row">
+                                <i class="ph-bold ph-clock"></i>
+                                <span>15:00 – 17:00</span>
+                            </div>
+                        </div>
+                        <div class="booking-card-footer">
+                            <span class="booking-card-price">₦70,000</span>
+                            <button class="btn-view-booking">View Details <i class="ph-bold ph-caret-right"></i></button>
+                        </div>
+                    </div>
+                </article>
+
+            </section>
+
+            <!-- ======================================================== -->
+            <!-- BOTTOM NAVIGATION (Mobile Only)                          -->
+            <!-- ======================================================== -->
+            <nav class="bottom-nav" aria-label="Main navigation">
+                <a href="seeker-dashboard.html" class="nav-item">
+                    <i class="ph ph-house"></i>
+                    <span>Home</span>
+                </a>
+                <a href="#" class="nav-item active">
+                    <i class="ph-fill ph-calendar-blank" style="color: #2862BC;"></i>
+                    <span>Bookings</span>
+                </a>
+                <a href="favorite-spaces.html" class="nav-item">
+                    <i class="ph-fill ph-heart" style="color: #FF383C;"></i>
+                    <span>Favourites</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ph ph-chat"></i>
+                    <span>Messages</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ph ph-user"></i>
+                    <span>Profile</span>
+                </a>
+            </nav>
+
+        </main>
+    </div>
+
+    <!-- PLACEHOLDER: JS will be linked in the next step -->
+    <script src="../scripts/my-bookings.js"></script>
+
+</body>
+</html>

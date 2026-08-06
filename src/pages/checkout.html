@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SpaceShare — Checkout</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+
+    <!-- PLACEHOLDER: CSS will be linked in the next step -->
+    <link rel="stylesheet" href="../styles/checkout.css" />
+</head>
+<body>
+
+    <!-- ============================================================ -->
+    <!-- MAIN WRAPPER                                                  -->
+    <!-- ============================================================ -->
+    <div class="checkout-page-wrapper">
+
+        <!-- ========================================================== -->
+        <!-- LEFT PANEL: BOOKING SUMMARY (Desktop)                       -->
+        <!-- ========================================================== -->
+        <aside class="checkout-left-panel">
+            
+            <div class="checkout-left-header">
+                <h1>Checkout</h1>
+                <p>Review your booking details</p>
+            </div>
+
+            <!-- Workspace Card -->
+            <div class="checkout-workspace-card">
+                <div class="checkout-workspace-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80" alt="Hub One Workspace" class="checkout-workspace-img" />
+                    <span class="checkout-workspace-badge">Co-working Space</span>
+                </div>
+                <div class="checkout-workspace-info">
+                    <h2 class="checkout-workspace-title">Hub One Workspace</h2>
+                    <p class="checkout-workspace-location">
+                        <i class="ph-bold ph-map-pin"></i> Lekki phase 1, Lagos.
+                    </p>
+                    <div class="checkout-workspace-rating">
+                        <i class="ph-fill ph-star" style="color: #FFC107;"></i>
+                        <span>4.8 <small>(120 reviews)</small></span>
+                        <span class="checkout-workspace-price">₦15,000 / hour</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reliability Badges -->
+            <div class="checkout-reliability-badges">
+                <div class="badge-item">
+                    <i class="ph-fill ph-lightning" style="color: #2862BC; font-size: 28px;"></i>
+                    <div class="badge-text">
+                        <strong>95%</strong>
+                        <span>Power Reliability</span>
+                    </div>
+                </div>
+                <div class="badge-divider"></div>
+                <div class="badge-item">
+                    <i class="ph-fill ph-wifi-high" style="color: #2862BC; font-size: 28px;"></i>
+                    <div class="badge-text">
+                        <strong>95%</strong>
+                        <span>Wi-Fi Reliability</span>
+                    </div>
+                </div>
+                <div class="badge-divider"></div>
+                <div class="badge-item">
+                    <i class="ph-fill ph-shield-check" style="color: #2862BC; font-size: 28px;"></i>
+                    <div class="badge-text">
+                        <strong>Secure Booking</strong>
+                        <span>Your payment is safe and encrypted</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Booking Summary List -->
+            <div class="checkout-summary-list">
+                <div class="summary-row">
+                    <span class="summary-label"><i class="ph-bold ph-calendar"></i> Date</span>
+                    <span class="summary-value" id="summaryDate">Friday, 3rd July 2026</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label"><i class="ph-bold ph-clock"></i> Time</span>
+                    <span class="summary-value" id="summaryTime">08:00 AM – 09:00 AM</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label"><i class="ph-bold ph-hourglass"></i> Duration</span>
+                    <span class="summary-value" id="summaryDuration">1 Hour</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label"><i class="ph-bold ph-house"></i> Workspace Type</span>
+                    <span class="summary-value">Hub One Workspace</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label"><i class="ph-bold ph-tag"></i> Rate</span>
+                    <span class="summary-value">₦15,000 / hour</span>
+                </div>
+            </div>
+
+            <!-- Price Breakdown -->
+            <div class="checkout-price-breakdown">
+                <h3>Price Breakdown</h3>
+                <div class="price-row">
+                    <span>Subtotal (1 hour)</span>
+                    <span>₦15,000</span>
+                </div>
+                <div class="price-row">
+                    <span>Service Fee (5%)</span>
+                    <span>₦750</span>
+                </div>
+                <div class="price-row">
+                    <span>VAT (7.5%)</span>
+                    <span>₦1,181</span>
+                </div>
+                <div class="price-row total">
+                    <strong>Total Amount</strong>
+                    <strong id="summaryTotal">₦16,931</strong>
+                </div>
+                <p class="checkout-secure-note">
+                    <i class="ph-fill ph-lock-key" style="color: #2862BC;"></i>
+                    Your payment details are secure and encrypted.
+                </p>
+            </div>
+
+            <!-- Continue to Payment Button (Desktop) -->
+            <button class="btn-continue-payment desktop-only" id="continuePaymentBtn">
+                Continue to Payment <i class="ph-bold ph-arrow-right"></i>
+            </button>
+
+        </aside>
+
+        <!-- ========================================================== -->
+        <!-- RIGHT PANEL: PAYMENT METHOD SELECTION (Desktop & Mobile)    -->
+        <!-- ========================================================== -->
+        <main class="checkout-right-panel">
+
+            <!-- ======================================================== -->
+            <!-- STEP PROGRESS INDICATOR (4 Steps)                        -->
+            <!-- ======================================================== -->
+            <div class="step-progress">
+                <div class="step-item completed">
+                    <div class="step-circle"><i class="ph-bold ph-check"></i></div>
+                    <span class="step-label">Booking Details</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step-item active">
+                    <div class="step-circle">2</div>
+                    <span class="step-label">Payment</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step-item">
+                    <div class="step-circle">3</div>
+                    <span class="step-label">Review</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step-item">
+                    <div class="step-circle">4</div>
+                    <span class="step-label">Confirmation</span>
+                </div>
+            </div>
+
+            <!-- ======================================================== -->
+            <!-- MOBILE SUMMARY CARD (Hidden on Desktop)                  -->
+            <!-- ======================================================== -->
+            <div class="mobile-summary-card">
+                <div class="mobile-summary-header">
+                    <strong>Total Amount</strong>
+                    <span id="mobileTotal">₦16,931</span>
+                </div>
+                <p class="mobile-summary-sub">Booking: Hub One Workspace</p>
+            </div>
+
+            <!-- ======================================================== -->
+            <!-- PAYMENT METHOD SELECTION                                 -->
+            <!-- ======================================================== -->
+            <div class="payment-section">
+                <h2 class="payment-title">Select a payment method</h2>
+                
+                <div class="payment-methods-grid">
+                    
+                    <!-- Card -->
+                    <label class="payment-option">
+                        <input type="radio" name="paymentMethod" value="card" checked />
+                        <div class="payment-option-content">
+                            <div class="payment-icon-wrapper" style="background: #DDE8F5;">
+                                <i class="ph-fill ph-credit-card" style="color: #2862BC; font-size: 24px;"></i>
+                            </div>
+                            <div class="payment-option-text">
+                                <strong>Card</strong>
+                                <span>Visa, Mastercard, Verve and more</span>
+                            </div>
+                            <div class="payment-logos">
+                                <span>VISA</span>
+                                <span>Mastercard</span>
+                                <span>Verve</span>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Bank Transfer -->
+                    <label class="payment-option">
+                        <input type="radio" name="paymentMethod" value="bank_transfer" />
+                        <div class="payment-option-content">
+                            <div class="payment-icon-wrapper" style="background: #E2F0E5;">
+                                <i class="ph-fill ph-bank" style="color: #1A7A3A; font-size: 24px;"></i>
+                            </div>
+                            <div class="payment-option-text">
+                                <strong>Bank Transfer</strong>
+                                <span>Pay directly from your bank</span>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- USSD -->
+                    <label class="payment-option">
+                        <input type="radio" name="paymentMethod" value="ussd" />
+                        <div class="payment-option-content">
+                            <div class="payment-icon-wrapper" style="background: #FDF5E5;">
+                                <i class="ph-fill ph-asterisk-simple" style="color: #B8860B; font-size: 24px;"></i>
+                            </div>
+                            <div class="payment-option-text">
+                                <strong>USSD</strong>
+                                <span>Dial *737*000*amount# to pay</span>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Wallet -->
+                    <label class="payment-option">
+                        <input type="radio" name="paymentMethod" value="wallet" />
+                        <div class="payment-option-content">
+                            <div class="payment-icon-wrapper" style="background: #F3EAF8;">
+                                <i class="ph-fill ph-wallet" style="color: #7B3F9E; font-size: 24px;"></i>
+                            </div>
+                            <div class="payment-option-text">
+                                <strong>Wallet</strong>
+                                <span>Pay with your SpaceShare wallet</span>
+                            </div>
+                        </div>
+                    </label>
+
+                </div>
+            </div>
+
+            <!-- ======================================================== -->
+            <!-- SECURE PAYMENTS FOOTER                                   -->
+            <!-- ======================================================== -->
+            <div class="secure-payments-footer">
+                <div class="secure-icon-wrapper">
+                    <i class="ph-fill ph-shield-user" style="font-size: 32px; color: #FFFFFF;"></i>
+                </div>
+                <div class="secure-text">
+                    <strong>Secure Payments</strong>
+                    <p>Powered by Paystack. Your payment information is encrypted and secure.</p>
+                </div>
+                <div class="paystack-logo">
+                    <svg width="80" height="24" viewBox="0 0 80 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 0H0V24H20V0Z" fill="#00C3F9"/>
+                        <path d="M40 0H20V24H40V0Z" fill="#0D2A4B"/>
+                        <path d="M60 0H40V24H60V0Z" fill="#00C3F9"/>
+                        <path d="M80 0H60V24H80V0Z" fill="#0D2A4B"/>
+                        <path d="M12 6H8V18H12V6Z" fill="white"/>
+                        <path d="M32 6H28V18H32V6Z" fill="white"/>
+                        <path d="M52 6H48V18H52V6Z" fill="white"/>
+                        <path d="M72 6H68V18H72V6Z" fill="white"/>
+                        <text x="0" y="22" font-family="Arial, sans-serif" font-weight="700" font-size="10" fill="#0D2A4B" letter-spacing="0.5">paystack</text>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- ======================================================== -->
+            <!-- CONTINUE BUTTON (Mobile Only)                            -->
+            <!-- ======================================================== -->
+            <button class="btn-continue-payment mobile-only" id="mobileContinueBtn">
+                Continue to Payment <i class="ph-bold ph-arrow-right"></i>
+            </button>
+
+        </main>
+    </div>
+
+    <!-- PLACEHOLDER: JS will be linked in the next step -->
+    <script src="../scripts/checkout.js"></script>
+
+</body>
+</html>

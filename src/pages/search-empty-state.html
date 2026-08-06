@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SpaceShare — No Workspaces Found</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+
+    <!-- PLACEHOLDER: CSS will be linked in the next step -->
+    <link rel="stylesheet" href="../styles/search-empty-state.css" />
+</head>
+<body>
+
+    <!-- ============================================================ -->
+    <!-- MAIN WRAPPER (Sidebar + Content)                              -->
+    <!-- ============================================================ -->
+    <div class="empty-page-wrapper">
+
+        <!-- ========================================================== -->
+        <!-- LEFT SIDEBAR (Nav) - Desktop Only                          -->
+        <!-- ========================================================== -->
+        <aside class="sidebar-nav">
+            
+            <!-- Logo -->
+            <div class="sidebar-logo">
+                <img src="../assets/BLUE%20LOGO.png" alt="SpaceShare" class="logo-img" />
+                <span class="logo-text">SpaceShare</span>
+            </div>
+
+            <!-- Nav Items -->
+            <nav class="sidebar-menu">
+                <a href="seeker-dashboard.html" class="nav-item">
+                    <i class="ph ph-house"></i>
+                    <span>Home</span>
+                </a>
+                <a href="booking.html" class="nav-item">
+                    <i class="ph ph-calendar-blank"></i>
+                    <span>Bookings</span>
+                </a>
+                <a href="favorite-spaces.html" class="nav-item active">
+                    <i class="ph-fill ph-heart" style="color: #FF383C;"></i>
+                    <span>Favourite</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ph ph-chat"></i>
+                    <span>Messages</span>
+                </a>
+            </nav>
+
+        </aside>
+
+        <!-- ========================================================== -->
+        <!-- RIGHT MAIN CONTENT                                         -->
+        <!-- ========================================================== -->
+        <main class="main-content">
+
+            <!-- ======================================================== -->
+            <!-- TOP HEADER (Search + User) - Desktop                    -->
+            <!-- ======================================================== -->
+            <header class="top-header">
+                <div class="search-bar-wrapper">
+                    <i class="ph ph-magnifying-glass search-icon"></i>
+                    <input type="text" placeholder="Search bookings, spaces, guests" class="search-input" />
+                </div>
+
+                <div class="user-profile-trigger">
+                    <i class="ph-fill ph-user-circle user-icon"></i>
+                    <i class="ph ph-caret-down"></i>
+                </div>
+            </header>
+
+            <!-- ======================================================== -->
+            <!-- DEEP SEARCH BAR (Pill Shape) - Desktop Only             -->
+            <!-- ======================================================== -->
+            <section class="deep-search-bar">
+                <div class="deep-search-pill">
+                    
+                    <!-- Segment 1: Location -->
+                    <div class="pill-segment">
+                        <span class="pill-label">Location</span>
+                        <span class="pill-value">Lekki, Lagos</span>
+                    </div>
+                    
+                    <div class="pill-divider"></div>
+
+                    <!-- Segment 2: Date -->
+                    <div class="pill-segment">
+                        <span class="pill-label">Date</span>
+                        <span class="pill-value">2nd Aug, 2026</span>
+                    </div>
+
+                    <div class="pill-divider"></div>
+
+                    <!-- Segment 3: Time -->
+                    <div class="pill-segment">
+                        <span class="pill-label">Time</span>
+                        <span class="pill-value">10:00 am</span>
+                    </div>
+
+                    <!-- Search Button (Inside the pill) -->
+                    <button class="pill-search-btn" aria-label="Search">
+                        <i class="ph-fill ph-magnifying-glass"></i>
+                    </button>
+
+                </div>
+            </section>
+
+            <!-- ======================================================== -->
+            <!-- FILTER CHIPS ROW                                         -->
+            <!-- ======================================================== -->
+            <section class="filter-chips-row">
+                <span class="filter-label">Filters</span>
+                <div class="chips-container">
+                    <button class="filter-chip active">Type <i class="ph-bold ph-caret-down"></i></button>
+                    <button class="filter-chip">Price <i class="ph-bold ph-caret-down"></i></button>
+                    <button class="filter-chip">Power <i class="ph-bold ph-caret-down"></i></button>
+                    <button class="filter-chip">Capacity <i class="ph-bold ph-caret-down"></i></button>
+                    <button class="filter-chip">Amenities <i class="ph-bold ph-caret-down"></i></button>
+                    <button class="filter-chip">Workspace <i class="ph-bold ph-caret-down"></i></button>
+                    <button class="filter-chip">Availability <i class="ph-bold ph-caret-down"></i></button>
+                    <!-- Map Toggle -->
+                    <button class="filter-chip map-toggle-btn">
+                        <i class="ph-bold ph-map-trifold"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- ======================================================== -->
+            <!-- MOBILE SEARCH HEADER (Hidden on Desktop)                 -->
+            <!-- ======================================================== -->
+            <section class="mobile-search-header">
+                <div class="search-pill-container">
+                    <button class="pill-back-btn" aria-label="Go back">
+                        <i class="ph-bold ph-arrow-left"></i>
+                    </button>
+                    <div class="pill-location-wrapper">
+                        <i class="ph-fill ph-map-pin"></i>
+                        <span>Lekki, Lagos</span>
+                    </div>
+                    <button class="pill-filter-btn" aria-label="Open filters">
+                        <i class="ph-fill ph-sliders"></i>
+                    </button>
+                </div>
+                <p class="search-pill-subtitle">2nd Aug, 2026 &bull; 10:00 am</p>
+            </section>
+
+            <!-- ======================================================== -->
+            <!-- EMPTY STATE HERO SECTION (The Magnifying Glass)         -->
+            <!-- ======================================================== -->
+            <section class="empty-state-hero">
+                
+                <!-- The large magnifying glass graphic (Grey Scale) -->
+                <div class="magnifying-glass-wrapper">
+                    <div class="glass-ring"></div>
+                    <div class="glass-handle"></div>
+                </div>
+
+                <!-- Text Content -->
+                <div class="empty-state-text">
+                    <h2 class="empty-title">No workspaces found</h2>
+                    <p class="empty-subtitle">Try adjusting your filters or search another location</p>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="empty-state-actions">
+                    <button class="btn-clear-filters" onclick="window.location.href='seeker-dashboard.html'">
+                        Clear Filters <i class="ph-bold ph-caret-right"></i>
+                    </button>
+                    <button class="btn-search-nearby" onclick="window.location.href='search-map-view.html'">
+                        Search Nearby <i class="ph-bold ph-caret-right"></i>
+                    </button>
+                </div>
+
+            </section>
+
+            <!-- ======================================================== -->
+            <!-- BOTTOM NAVIGATION (Mobile Only)                          -->
+            <!-- ======================================================== -->
+            <nav class="bottom-nav" aria-label="Main navigation">
+                <a href="seeker-dashboard.html" class="nav-item">
+                    <i class="ph ph-house"></i>
+                    <span>Home</span>
+                </a>
+                <a href="booking.html" class="nav-item">
+                    <i class="ph ph-calendar-blank"></i>
+                    <span>Bookings</span>
+                </a>
+                <a href="#" class="nav-item active">
+                    <i class="ph-fill ph-heart" style="color: #2862BC;"></i>
+                    <span>Favorites</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ph ph-chat"></i>
+                    <span>Messages</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ph ph-user"></i>
+                    <span>Profile</span>
+                </a>
+            </nav>
+
+        </main>
+    </div>
+
+    <!-- PLACEHOLDER: JS will be linked in the next step -->
+    <script src="../scripts/search-empty-state.js"></script>
+
+</body>
+</html>

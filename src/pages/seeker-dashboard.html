@@ -11,176 +11,367 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
 
     <!-- Phosphor Icons -->
-    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js" defer></script>
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
 
-    <!-- Styles -->
+    <!-- CSS -->
     <link rel="stylesheet" href="../styles/seeker-dashboard.css" />
 </head>
 <body>
+
     <!-- ============================================================ -->
-    <!-- MAIN CONTAINER                                               -->
+    <!-- MAIN DASHBOARD WRAPPER                                        -->
     <!-- ============================================================ -->
-    <div class="dashboard-container">
+    <div class="dashboard-wrapper">
 
         <!-- ========================================================== -->
-        <!-- HEADER / TOP BAR                                            -->
+        <!-- DESKTOP SIDEBAR (Visible on Large Screens)                  -->
         <!-- ========================================================== -->
-        <header class="dashboard-header">
-            <div class="header-left">
-                <div class="logo-wrapper">
-                    <img src="../assets/BLUE LOGO.png" alt="SpaceShare" class="logo-icon" />
-                    <span class="logo-text">SpaceShare</span>
+        <aside class="desktop-sidebar">
+            
+            <!-- Logo -->
+            <div class="sidebar-logo">
+                <img src="../assets/BLUE%20LOGO.png" alt="SpaceShare" class="logo-img" />
+                <span class="logo-text">SpaceShare</span>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="sidebar-menu">
+                <a href="seeker-dashboard.html" class="nav-item active">
+                    <i class="ph-fill ph-house"></i>
+                    <span>Home</span>
+                </a>
+                <a href="search-list-view.html" class="nav-item">
+                    <i class="ph ph-calendar-blank"></i>
+                    <span>Bookings</span>
+                </a>
+                <a href="favorite-spaces.html" class="nav-item">
+                    <i class="ph-fill ph-heart" style="color: #FF383C;"></i>
+                    <span>Favourite</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ph ph-chat"></i>
+                    <span>Messages</span>
+                </a>
+            </nav>
+
+        </aside>
+
+        <!-- ========================================================== -->
+        <!-- MAIN CONTENT AREA                                           -->
+        <!-- ========================================================== -->
+        <div class="main-content-area">
+
+            <!-- ======================================================== -->
+            <!-- TOP HEADER (Logo, Search, Avatar)                        -->
+            <!-- ======================================================== -->
+            <header class="dashboard-header">
+                
+                <!-- Left: Logo & Brand (Hidden on Desktop Sidebar) -->
+                <div class="header-left">
+                    <a href="#" class="brand-link">
+                        <img src="../assets/BLUE%20LOGO.png" alt="SpaceShare" class="brand-logo" />
+                        <span class="brand-name">SpaceShare</span>
+                    </a>
                 </div>
-            </div>
 
-            <div class="header-center">
-                <div class="search-bar">
-                    <i class="ph ph-magnifying-glass search-icon"></i>
-                    <input 
-                        type="text" 
-                        placeholder="Search bookings, spaces, guests" 
-                        class="search-input" 
-                        id="searchInput"
-                        aria-label="Search workspaces"
-                    />
-                </div>
-            </div>
-
-            <div class="header-right">
-                <button class="icon-btn notifications-btn" id="notificationsBtn" aria-label="Notifications">
-                    <i class="ph ph-bell"></i>
-                    <span class="notification-dot" id="notificationDot"></span>
-                </button>
-                <div class="user-avatar" id="userAvatar" role="button" tabindex="0" aria-label="User profile">
-                    <img 
-                        src="https://ui-avatars.com/api/?name=Zara+Danjuma&background=2563EB&color=fff&size=40&font-size=0.5" 
-                        alt="Zara Danjuma" 
-                        id="avatarImg"
-                    />
-                </div>
-            </div>
-        </header>
-
-        <!-- ========================================================== -->
-        <!-- GREETING & INSTANT MATCH CARD                               -->
-        <!-- ========================================================== -->
-        <section class="greeting-section">
-            <div class="greeting-text">
-                <h1>Good Morning <span class="highlight" id="userNameDisplay">Zara Danjuma</span></h1>
-                <p class="greeting-sub">Find your perfect workspace in seconds</p>
-            </div>
-
-            <div class="instant-match-card">
-                <div class="instant-match-content">
-                    <div class="instant-match-icon-wrapper">
-                        <i class="ph-fill ph-lightning instant-icon"></i>
+                <!-- Center: Search Input -->
+                <div class="header-center">
+                    <div class="search-bar-wrapper">
+                        <i class="ph ph-magnifying-glass search-icon"></i>
+                        <input type="text" placeholder="Search spaces, locations..." class="search-input" id="mainSearchInput" />
                     </div>
-                    <div class="instant-match-text">
-                        <h3>Need Power Immediately?</h3>
-                        <p>Locate verified workspaces near you with active backup generators right now.</p>
+                </div>
+
+                <!-- Right: Notifications & User Profile -->
+                <div class="header-right">
+                    <button class="icon-btn notification-btn" aria-label="Notifications">
+                        <i class="ph ph-bell"></i>
+                        <span class="notification-dot"></span>
+                    </button>
+                    <div class="user-avatar-wrapper" tabindex="0" role="button" aria-label="User profile">
+                        <span class="avatar-initials">ZD</span>
                     </div>
                 </div>
-                <button class="btn-primary instant-match-btn" id="instantMatchBtn">
-                    <i class="ph ph-power"></i>
-                    Find Me Power Now
+
+            </header>
+
+            <!-- ======================================================== -->
+            <!-- GREETING SECTION                                         -->
+            <!-- ======================================================== -->
+            <section class="greeting-section">
+                <div class="greeting-wrapper">
+                    <div class="greeting-text-block">
+                        <span class="greeting-label">Good Morning</span>
+                        <h1 class="greeting-name" id="userNameDisplay">Zara Danjuma</h1>
+                    </div>
+                    <!-- Mobile-only icons (Hidden on Desktop) -->
+                    <div class="greeting-actions-mobile">
+                        <a href="favorite-spaces.html" class="icon-btn mobile-fav-btn" aria-label="Favorites">
+                            <i class="ph-fill ph-heart" style="color: #FF383C;"></i>
+                        </a>
+                        <button class="icon-btn mobile-notif-btn" aria-label="Notifications">
+                            <i class="ph-fill ph-bell" style="color: #FFFFFF; background: #2862BC; border-radius: 50%; padding: 4px;"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ======================================================== -->
+            <!-- INSTANT MATCH CARD                                       -->
+            <!-- ======================================================== -->
+            <section class="instant-match-section">
+                <div class="instant-match-card">
+                    <div class="instant-match-content">
+                        <div class="instant-match-text">
+                            <h2>Need Power Immediately?</h2>
+                            <p>Locate verified workspaces near you with active backup generators right now.</p>
+                        </div>
+                    </div>
+                    <button class="instant-match-btn" id="instantMatchBtn">
+                        <i class="ph-fill ph-lightning"></i>
+                        Find Me Power Now
+                    </button>
+                </div>
+            </section>
+
+            <!-- ======================================================== -->
+            <!-- FILTER BAR (PILLS)                                       -->
+            <!-- ======================================================== -->
+            <nav class="filter-bar" aria-label="Search filters">
+                <!-- These buttons will open filter modals or trigger search functions in JS -->
+                <button class="filter-chip active" data-filter="type">
+                    Type <i class="ph-bold ph-caret-down"></i>
                 </button>
-            </div>
-        </section>
-
-        <!-- ========================================================== -->
-        <!-- FILTER BAR                                                  -->
-        <!-- ========================================================== -->
-        <nav class="filter-bar" aria-label="Search filters">
-            <button class="filter-chip active" data-filter="type">
-                <i class="ph ph-buildings"></i> Type
-            </button>
-            <button class="filter-chip" data-filter="price">
-                <i class="ph ph-currency-ngn"></i> Price
-            </button>
-            <button class="filter-chip" data-filter="power">
-                <i class="ph ph-plug"></i> Power
-            </button>
-            <button class="filter-chip" data-filter="capacity">
-                <i class="ph ph-users"></i> Capacity
-            </button>
-            <button class="filter-chip" data-filter="amenities">
-                <i class="ph ph-wifi-high"></i> Amenities
-            </button>
-            <button class="filter-chip" data-filter="workspace">
-                <i class="ph ph-layout"></i> Workspace
-            </button>
-            <button class="filter-chip" data-filter="availability">
-                <i class="ph ph-calendar-blank"></i> Availability
-            </button>
-        </nav>
-
-        <!-- ========================================================== -->
-        <!-- FAVOURITES SECTION                                          -->
-        <!-- ========================================================== -->
-        <section class="favourites-section">
-            <div class="section-header">
-                <h2>
-                    <i class="ph-fill ph-heart favourites-icon"></i>
-                    Favourites
-                </h2>
-                <span class="favourites-count" id="favouritesCount">0 saved listings</span>
-            </div>
-            <div class="favourites-scroll" id="favouritesScroll">
-                <!-- Cards injected by JS -->
-                <div class="loading-placeholder">Loading favourites...</div>
-            </div>
-        </section>
-
-        <!-- ========================================================== -->
-        <!-- NEARBY SPACES SECTION                                       -->
-        <!-- ========================================================== -->
-        <section class="nearby-section">
-            <div class="section-header">
-                <h2>
-                    <i class="ph-fill ph-map-pin nearby-icon"></i>
-                    Nearby Spaces
-                </h2>
-                <button class="view-all-btn" id="viewAllBtn">
-                    View All <i class="ph ph-arrow-right"></i>
+                <button class="filter-chip" data-filter="price">
+                    Price <i class="ph-bold ph-caret-down"></i>
                 </button>
-            </div>
+                <button class="filter-chip" data-filter="power">
+                    Power <i class="ph-bold ph-caret-down"></i>
+                </button>
+                <button class="filter-chip" data-filter="capacity">
+                    Capacity <i class="ph-bold ph-caret-down"></i>
+                </button>
+                <button class="filter-chip" data-filter="amenities">
+                    Amenities <i class="ph-bold ph-caret-down"></i>
+                </button>
+                <button class="filter-chip" data-filter="workspace">
+                    Workspace <i class="ph-bold ph-caret-down"></i>
+                </button>
+                <button class="filter-chip" data-filter="availability">
+                    Availability <i class="ph-bold ph-caret-down"></i>
+                </button>
+                <!-- Map toggle button -->
+                <a href="search-map-view.html" class="filter-chip map-toggle-btn" aria-label="Toggle map view">
+                    <i class="ph-bold ph-map-trifold"></i>
+                </a>
+            </nav>
 
-            <div class="spaces-grid" id="spacesGrid">
-                <!-- Cards injected by JS -->
-                <div class="loading-placeholder">Loading spaces...</div>
-            </div>
-        </section>
+            <!-- ======================================================== -->
+            <!-- QUICK SUMMARY CARDS (Favourites & Bookings)              -->
+            <!-- ======================================================== -->
+            <section class="summary-cards-section">
+                <div class="summary-cards-grid">
+                    
+                    <!-- Card 1: Favourites -->
+                    <a href="favorite-spaces.html" class="summary-card">
+                        <div class="summary-card-icon-wrapper">
+                            <i class="ph-fill ph-heart summary-card-icon" style="color: #FF383C;"></i>
+                        </div>
+                        <div class="summary-card-content">
+                            <h3 class="summary-card-title">Favourites</h3>
+                            <p class="summary-card-subtitle" id="favouritesSubtitle">4 saved listings</p>
+                        </div>
+                    </a>
 
-        <!-- ========================================================== -->
-        <!-- BOTTOM NAVIGATION (Mobile)                                  -->
-        <!-- ========================================================== -->
-        <nav class="bottom-nav" aria-label="Main navigation">
-            <a href="#" class="nav-item active" data-nav="home">
-                <i class="ph-fill ph-house"></i>
-                <span>Home</span>
-            </a>
-            <a href="#" class="nav-item" data-nav="search">
-                <i class="ph ph-magnifying-glass"></i>
-                <span>Search</span>
-            </a>
-            <a href="#" class="nav-item" data-nav="favourites">
-                <i class="ph ph-heart"></i>
-                <span>Favourites</span>
-            </a>
-            <a href="#" class="nav-item" data-nav="bookings">
-                <i class="ph ph-calendar-blank"></i>
-                <span>Bookings</span>
-            </a>
-            <a href="#" class="nav-item" data-nav="profile">
-                <i class="ph ph-user"></i>
-                <span>Profile</span>
-            </a>
-        </nav>
-    </div>
+                    <!-- Card 2: Bookings -->
+                    <a href="booking.html" class="summary-card">
+                        <div class="summary-card-icon-wrapper">
+                            <i class="ph ph-calendar-blank summary-card-icon" style="color: #2862BC;"></i>
+                        </div>
+                        <div class="summary-card-content">
+                            <h3 class="summary-card-title">Bookings</h3>
+                            <p class="summary-card-subtitle" id="bookingsSubtitle">2 active sessions</p>
+                        </div>
+                    </a>
 
-    <!-- ============================================================ -->
-    <!-- JAVASCRIPT                                                    -->
-    <!-- ============================================================ -->
+                </div>
+            </section>
+
+            <!-- ======================================================== -->
+            <!-- NEARBY SPACES SECTION                                    -->
+            <!-- ======================================================== -->
+            <section class="nearby-section">
+                <div class="section-header">
+                    <h2 class="section-title">Nearby Spaces</h2>
+                    <a href="search-list-view.html" class="section-view-all">
+                        See all <i class="ph-bold ph-caret-right"></i>
+                    </a>
+                </div>
+
+                <!-- Nearby Spaces Grid -->
+                <div class="nearby-spaces-grid" id="spacesGrid">
+                    
+                    <!-- CARD 1: Hub One Workspace -->
+                    <article class="space-card">
+                        <a href="workspace-details.html?id=1" class="space-card-link">
+                            <div class="space-card-image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80" alt="Hub One Workspace" class="space-card-img" />
+                                
+                                <!-- Badges & Overlays -->
+                                <div class="space-card-overlays">
+                                    <div class="space-card-badges-top">
+                                        <span class="badge-power"><i class="ph-fill ph-lightning"></i> Power</span>
+                                        <span class="badge-type">Co-working space</span>
+                                    </div>
+                                    <button class="space-card-fav-btn" aria-label="Add to favourites">
+                                        <i class="ph-fill ph-heart"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="space-card-body">
+                                <div class="space-card-top-row">
+                                    <h3 class="space-card-title">Hub One Workspace</h3>
+                                    <p class="space-card-price">₦15,000<small>/hr</small></p>
+                                </div>
+                                
+                                <div class="space-card-location-row">
+                                    <i class="ph-bold ph-map-pin"></i>
+                                    <span>Lekki Phase 1</span>
+                                </div>
+
+                                <div class="space-card-bottom-row">
+                                    <div class="space-card-rating">
+                                        <i class="ph-fill ph-star" style="color: #FFC107;"></i>
+                                        <span>4.8 <small>(120)</small></span>
+                                    </div>
+                                    <div class="space-card-wifi">
+                                        <i class="ph ph-wifi-high"></i>
+                                        <span>500Mbps</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </article>
+
+                    <!-- CARD 2: Work Nest Hub -->
+                    <article class="space-card">
+                        <a href="workspace-details.html?id=2" class="space-card-link">
+                            <div class="space-card-image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=600&q=80" alt="Work Nest Hub" class="space-card-img" />
+                                
+                                <div class="space-card-overlays">
+                                    <div class="space-card-badges-top">
+                                        <span class="badge-power"><i class="ph-fill ph-lightning"></i> Power</span>
+                                        <span class="badge-type">Private office</span>
+                                    </div>
+                                    <button class="space-card-fav-btn" aria-label="Add to favourites">
+                                        <i class="ph-fill ph-heart"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="space-card-body">
+                                <div class="space-card-top-row">
+                                    <h3 class="space-card-title">Work Nest Hub</h3>
+                                    <p class="space-card-price">₦30,000<small>/hr</small></p>
+                                </div>
+                                
+                                <div class="space-card-location-row">
+                                    <i class="ph-bold ph-map-pin"></i>
+                                    <span>Ikeja, GRA</span>
+                                </div>
+
+                                <div class="space-card-bottom-row">
+                                    <div class="space-card-rating">
+                                        <i class="ph-fill ph-star" style="color: #FFC107;"></i>
+                                        <span>4.7 <small>(80)</small></span>
+                                    </div>
+                                    <div class="space-card-wifi">
+                                        <i class="ph ph-wifi-high"></i>
+                                        <span>600Mbps</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </article>
+
+                    <!-- CARD 3: Creative Space -->
+                    <article class="space-card">
+                        <a href="workspace-details.html?id=3" class="space-card-link">
+                            <div class="space-card-image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=600&q=80" alt="Creative Space" class="space-card-img" />
+                                
+                                <div class="space-card-overlays">
+                                    <div class="space-card-badges-top">
+                                        <span class="badge-power"><i class="ph-fill ph-lightning"></i> Power</span>
+                                        <span class="badge-type">Podcast studio</span>
+                                    </div>
+                                    <button class="space-card-fav-btn" aria-label="Add to favourites">
+                                        <i class="ph ph-heart"></i> <!-- Unfilled heart -->
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="space-card-body">
+                                <div class="space-card-top-row">
+                                    <h3 class="space-card-title">Creative Space</h3>
+                                    <p class="space-card-price">₦50,000<small>/hr</small></p>
+                                </div>
+                                
+                                <div class="space-card-location-row">
+                                    <i class="ph-bold ph-map-pin"></i>
+                                    <span>Ikorodu</span>
+                                </div>
+
+                                <div class="space-card-bottom-row">
+                                    <div class="space-card-rating">
+                                        <i class="ph-fill ph-star" style="color: #FFC107;"></i>
+                                        <span>4.9 <small>(52)</small></span>
+                                    </div>
+                                    <div class="space-card-wifi">
+                                        <i class="ph ph-wifi-high"></i>
+                                        <span>1Gbps</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </article>
+
+                </div>
+            </section>
+
+            <!-- ======================================================== -->
+            <!-- BOTTOM NAVIGATION (Mobile Only)                          -->
+            <!-- ======================================================== -->
+            <nav class="bottom-nav" aria-label="Main navigation">
+                <a href="seeker-dashboard.html" class="nav-item active" data-nav="home">
+                    <i class="ph-fill ph-house"></i>
+                    <span>Home</span>
+                </a>
+                <a href="search-list-view.html" class="nav-item" data-nav="search">
+                    <i class="ph ph-magnifying-glass"></i>
+                    <span>Search</span>
+                </a>
+                <a href="favorite-spaces.html" class="nav-item" data-nav="favourites">
+                    <i class="ph-fill ph-heart" style="color: #FF383C;"></i>
+                    <span>Favourites</span>
+                </a>
+                <a href="booking.html" class="nav-item" data-nav="bookings">
+                    <i class="ph ph-calendar-blank"></i>
+                    <span>Bookings</span>
+                </a>
+                <a href="#" class="nav-item" data-nav="profile">
+                    <i class="ph ph-user"></i>
+                    <span>Profile</span>
+                </a>
+            </nav>
+
+        </div> <!-- End of Main Content Area -->
+
+    </div> <!-- End of Dashboard Wrapper -->
+
+    <!-- JS -->
     <script type="module" src="../scripts/seeker-dashboard.js"></script>
 </body>
 </html>

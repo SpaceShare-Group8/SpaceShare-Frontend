@@ -1,0 +1,1059 @@
+/* ============================================================
+   SPACESHARE — COMPARE MODE CSS
+   Pixel-Perfect Match to Figma (Page 4 of Mobile PDF)
+   100% Responsive (Desktop, Tablet, Mobile, Small Phones)
+   Includes: Dark Mode, Accessibility, Consistent Layout
+   ============================================================ */
+
+/* ---------- RESET & BASE ---------- */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Figma Design Colors */
+    --bg-main: #F5F5F5;
+    --bg-white: #FFFFFF;
+    --primary-blue: #2862BC;
+    --primary-blue-dark: #1A4A8A;
+    --primary-blue-light: #EEF4FF;
+    --text-dark: #111111;
+    --text-gray: #8E8E93;
+    --text-light-gray: #948E8E;
+    --border-color: #D1D1D6;
+    --border-light: #E5E7EC;
+    --red: #FF383C;
+    --star-yellow: #FFC107;
+    --shadow-card: 0px 4px 12px rgba(0, 0, 0, 0.06);
+    --shadow-hover: 0px 8px 24px rgba(0, 0, 0, 0.10);
+
+    /* Status Colors for Reliability */
+    --reliability-high: #1f9d5a;
+    --reliability-medium: #d97706;
+    --reliability-low: #dc2626;
+
+    /* Font Family */
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+    /* Border Radius */
+    --radius-pill: 9999px;
+    --radius-large: 16px;
+    --radius-medium: 12px;
+    --radius-small: 8px;
+    --radius-xs: 4px;
+
+    /* Dark Mode Overrides */
+    --bg-main-dark: #0D0F14;
+    --bg-white-dark: #1A1D24;
+    --text-dark-dark: #F3F4F8;
+    --text-gray-dark: #9AA0AB;
+    --text-light-gray-dark: #5B6270;
+    --border-color-dark: #2A2D36;
+    --shadow-card-dark: 0px 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-hover-dark: 0px 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-family);
+    background: var(--bg-main);
+    color: var(--text-dark);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ============================================================
+   MAIN WRAPPER (Sidebar + Content)
+   ============================================================ */
+.compare-page-wrapper {
+    display: flex;
+    min-height: 100vh;
+    max-width: 1440px;
+    margin: 0 auto;
+    background: var(--bg-main);
+    transition: background-color 0.3s ease;
+}
+
+/* ============================================================
+   LEFT SIDEBAR (Navigation) - Desktop Only
+   ============================================================ */
+.sidebar-nav {
+    width: 280px;
+    flex-shrink: 0;
+    padding: 48px 24px;
+    background: var(--bg-white);
+    border-right: 1px solid var(--border-light);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 48px;
+    padding-left: 8px;
+}
+
+.logo-img {
+    width: 44px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.logo-text {
+    font-weight: 700;
+    font-size: 28px;
+    color: var(--primary-blue);
+    letter-spacing: -0.5px;
+    transition: color 0.3s ease;
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border-radius: var(--radius-medium);
+    text-decoration: none;
+    color: var(--text-gray);
+    font-weight: 500;
+    font-size: 18px;
+    transition: all 0.25s ease;
+}
+
+.nav-item i {
+    font-size: 24px;
+    color: var(--text-light-gray);
+    transition: color 0.3s ease;
+}
+
+.nav-item:hover {
+    background: var(--bg-main);
+    color: var(--text-dark);
+}
+
+.nav-item.active {
+    background: var(--bg-main);
+    color: var(--text-dark);
+}
+
+.nav-item.active i {
+    color: var(--red);
+}
+
+/* ============================================================
+   RIGHT MAIN CONTENT
+   ============================================================ */
+.main-content {
+    flex: 1;
+    padding: 48px 56px;
+    background: var(--bg-main);
+    transition: background-color 0.3s ease;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ============================================================
+   COMPARE HEADER (Back, Title, Selection Pill)
+   ============================================================ */
+.compare-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 32px;
+    border-bottom: 1px solid transparent;
+}
+
+.back-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    color: var(--text-gray);
+    font-family: var(--font-family);
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 4px 8px;
+}
+
+.back-btn:hover {
+    color: var(--text-dark);
+    transform: translateX(-2px);
+}
+
+.back-btn i {
+    font-size: 20px;
+}
+
+.back-btn:focus-visible {
+    outline: 2px solid var(--primary-blue);
+    outline-offset: 2px;
+}
+
+.compare-title-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.compare-mode-label {
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--primary-blue);
+    transition: color 0.3s ease;
+}
+
+.compare-title {
+    font-weight: 700;
+    font-size: 28px;
+    color: var(--text-dark);
+    margin: 0;
+    transition: color 0.3s ease;
+}
+
+.selection-pill {
+    background: var(--border-color);
+    color: var(--text-light-gray);
+    padding: 8px 20px;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ============================================================
+   COMPARE IMAGE CARDS (Side-by-Side)
+   ============================================================ */
+.compare-image-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 32px 0 24px 0;
+}
+
+.compare-card-image-wrapper {
+    position: relative;
+    border-radius: var(--radius-large);
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+    background: var(--bg-main);
+    box-shadow: var(--shadow-card);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.compare-card-image-wrapper:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.compare-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.compare-card-name-badge {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    background: var(--bg-white);
+    padding: 4px 14px;
+    border-radius: var(--radius-pill);
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--text-dark);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* ============================================================
+   COMPARISON TABLE MATRIX
+   ============================================================ */
+.comparison-table-wrapper {
+    overflow-x: auto;
+    margin-top: 4px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-family);
+    min-width: 600px; /* Ensures table doesn't squish on mobile */
+}
+
+.comparison-table thead th {
+    text-align: left;
+    padding: 12px 16px;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--text-gray);
+    border-bottom: 1px solid var(--border-color);
+    transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.comparison-table thead th:first-child {
+    color: var(--text-dark);
+    width: 140px;
+    transition: color 0.3s ease;
+}
+
+.comparison-table tbody td {
+    padding: 14px 16px;
+    font-weight: 400;
+    font-size: 14px;
+    color: var(--text-dark);
+    border-bottom: 1px solid var(--border-color);
+    transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.comparison-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.feature-name {
+    font-weight: 600 !important;
+    color: var(--text-dark) !important;
+    transition: color 0.3s ease;
+}
+
+/* Table Footer (Book Now Buttons) */
+.comparison-table tfoot td {
+    padding: 16px 16px 8px 16px;
+}
+
+.comparison-table tfoot td:first-child {
+    padding: 0;
+}
+
+.btn-book-now {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    padding: 10px 16px;
+    background: var(--primary-blue);
+    border: none;
+    border-radius: var(--radius-pill);
+    color: var(--bg-white);
+    font-family: var(--font-family);
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.btn-book-now:hover {
+    background: var(--primary-blue-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(40, 98, 188, 0.3);
+}
+
+.btn-book-now:active {
+    transform: translateY(0);
+}
+
+.btn-book-now:focus-visible {
+    outline: 2px solid var(--primary-blue);
+    outline-offset: 2px;
+}
+
+.btn-book-now i {
+    font-size: 14px;
+    transition: transform 0.2s ease;
+}
+
+.btn-book-now:hover i {
+    transform: translateX(3px);
+}
+
+/* ============================================================
+   TABLE INNER COMPONENTS (Chips, Ratings, Distances)
+   ============================================================ */
+
+/* Reliability Scores */
+.reliability-high {
+    color: var(--reliability-high);
+    font-weight: 600;
+}
+
+.reliability-medium {
+    color: var(--reliability-medium);
+    font-weight: 600;
+}
+
+.reliability-low {
+    color: var(--reliability-low);
+    font-weight: 600;
+}
+
+/* Amenities Chips inside the table */
+.amenity-chips-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.amenity-chip {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    background: var(--bg-white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-family);
+    font-weight: 500;
+    font-size: 11px;
+    color: var(--text-dark);
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.3s ease;
+}
+
+.amenity-chip i {
+    font-size: 14px;
+    color: var(--text-dark);
+    transition: color 0.3s ease;
+}
+
+/* Rating Display inside the table */
+.rating-display {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--text-dark);
+    transition: color 0.3s ease;
+}
+
+.rating-display i {
+    font-size: 16px;
+}
+
+.rating-display small {
+    font-weight: 400;
+    color: var(--text-gray);
+    transition: color 0.3s ease;
+}
+
+/* Distance Display inside the table */
+.distance-display {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--text-gray);
+    transition: color 0.3s ease;
+}
+
+.distance-display i {
+    font-size: 16px;
+    color: var(--text-dark);
+    transition: color 0.3s ease;
+}
+
+/* ============================================================
+   SWIPE INDICATOR (Mobile Only)
+   ============================================================ */
+.swipe-indicator {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 20px 0 10px 0;
+    color: var(--primary-blue);
+    font-weight: 600;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.swipe-indicator i {
+    font-size: 20px;
+    animation: swipeLeft 1.5s ease-in-out infinite;
+}
+
+@keyframes swipeLeft {
+    0%, 100% { transform: translateX(0); opacity: 0.5; }
+    50% { transform: translateX(-8px); opacity: 1; }
+}
+
+/* ============================================================
+   BOTTOM NAVIGATION (Mobile Only)
+   ============================================================ */
+.bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-white);
+    border-top: 1px solid var(--border-color);
+    padding: 10px 0 env(safe-area-inset-bottom, 12px);
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+    z-index: 100;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    text-decoration: none;
+    color: var(--text-gray);
+    font-family: var(--font-family);
+    font-size: 11px;
+    font-weight: 500;
+    transition: all 0.25s ease;
+    padding: 4px 8px;
+    border-radius: var(--radius-xs);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.nav-item i {
+    font-size: 22px;
+}
+
+.nav-item:hover {
+    color: var(--text-dark);
+}
+
+.nav-item.active {
+    color: var(--primary-blue);
+}
+
+.nav-item.active i {
+    color: var(--primary-blue);
+}
+
+.nav-item:focus-visible {
+    outline: 2px solid var(--primary-blue);
+    outline-offset: 2px;
+}
+
+/* ============================================================
+   🌙 DARK MODE SUPPORT
+   ============================================================ */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-main: var(--bg-main-dark);
+        --bg-white: var(--bg-white-dark);
+        --text-dark: var(--text-dark-dark);
+        --text-gray: var(--text-gray-dark);
+        --text-light-gray: var(--text-light-gray-dark);
+        --border-color: var(--border-color-dark);
+        --border-light: var(--border-color-dark);
+        --shadow-card: var(--shadow-card-dark);
+        --shadow-hover: var(--shadow-hover-dark);
+    }
+
+    body {
+        background: var(--bg-main-dark);
+    }
+
+    .compare-page-wrapper {
+        background: var(--bg-main-dark);
+    }
+
+    .sidebar-nav {
+        background: var(--bg-white-dark);
+        border-right-color: var(--border-color-dark);
+    }
+
+    .logo-text {
+        color: #4A7FD4;
+    }
+
+    .nav-item:hover {
+        background: var(--bg-main-dark);
+        color: var(--text-dark-dark);
+    }
+
+    .nav-item.active {
+        background: var(--bg-main-dark);
+        color: var(--text-dark-dark);
+    }
+
+    .nav-item i {
+        color: var(--text-light-gray-dark);
+    }
+
+    .main-content {
+        background: var(--bg-main-dark);
+    }
+
+    .compare-mode-label {
+        color: #4A7FD4;
+    }
+
+    .compare-title {
+        color: var(--text-dark-dark);
+    }
+
+    .selection-pill {
+        background: var(--border-color-dark);
+        color: var(--text-gray-dark);
+    }
+
+    .back-btn {
+        color: var(--text-gray-dark);
+    }
+
+    .back-btn:hover {
+        color: var(--text-dark-dark);
+    }
+
+    .compare-card-image-wrapper {
+        background: var(--bg-main-dark);
+    }
+
+    .compare-card-name-badge {
+        background: var(--bg-white-dark);
+        color: var(--text-dark-dark);
+    }
+
+    .comparison-table thead th {
+        color: var(--text-gray-dark);
+        border-bottom-color: var(--border-color-dark);
+    }
+
+    .comparison-table thead th:first-child {
+        color: var(--text-dark-dark);
+    }
+
+    .comparison-table tbody td {
+        color: var(--text-dark-dark);
+        border-bottom-color: var(--border-color-dark);
+    }
+
+    .feature-name {
+        color: var(--text-dark-dark) !important;
+    }
+
+    .reliability-high {
+        color: #34D399;
+    }
+
+    .reliability-medium {
+        color: #FBBF24;
+    }
+
+    .reliability-low {
+        color: #F87171;
+    }
+
+    .amenity-chip {
+        background: var(--bg-white-dark);
+        border-color: var(--border-color-dark);
+        color: var(--text-dark-dark);
+    }
+
+    .amenity-chip i {
+        color: var(--text-dark-dark);
+    }
+
+    .rating-display {
+        color: var(--text-dark-dark);
+    }
+
+    .rating-display small {
+        color: var(--text-gray-dark);
+    }
+
+    .distance-display {
+        color: var(--text-gray-dark);
+    }
+
+    .distance-display i {
+        color: var(--text-dark-dark);
+    }
+
+    .btn-book-now {
+        background: #4A7FD4;
+    }
+
+    .btn-book-now:hover {
+        background: #386AB8;
+        box-shadow: 0 4px 12px rgba(74, 127, 212, 0.4);
+    }
+
+    .swipe-indicator {
+        color: #4A7FD4;
+    }
+
+    .bottom-nav {
+        background: var(--bg-white-dark);
+        border-top-color: var(--border-color-dark);
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .nav-item {
+        color: var(--text-gray-dark);
+    }
+
+    .nav-item:hover {
+        color: var(--text-dark-dark);
+    }
+
+    .nav-item.active {
+        color: #4A7FD4;
+    }
+
+    .nav-item.active i {
+        color: #4A7FD4;
+    }
+}
+
+/* ============================================================
+   ♿ ACCESSIBILITY (Reduced Motion)
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .compare-card-image-wrapper:hover {
+        transform: none !important;
+    }
+
+    .btn-book-now:hover {
+        transform: none !important;
+    }
+
+    .back-btn:hover {
+        transform: none !important;
+    }
+
+    .swipe-indicator i {
+        animation: none !important;
+    }
+}
+
+/* ============================================================
+   ♿ ACCESSIBILITY (Focus States)
+   ============================================================ */
+a:focus-visible,
+button:focus-visible {
+    outline: 2px solid var(--primary-blue);
+    outline-offset: 2px;
+    border-radius: var(--radius-small);
+}
+
+/* ============================================================
+   📱 100% FULLY RESPONSIVE BREAKPOINTS
+   ============================================================ */
+
+/* ---------- 1240px and below ---------- */
+@media (max-width: 1240px) {
+    .sidebar-nav {
+        width: 240px;
+        padding: 32px 20px;
+    }
+
+    .main-content {
+        padding: 32px 32px;
+    }
+
+    .comparison-table {
+        min-width: 500px;
+    }
+}
+
+/* ---------- 1024px and below ---------- */
+@media (max-width: 1024px) {
+    .sidebar-nav {
+        display: none;
+    }
+
+    .main-content {
+        padding: 24px 24px 90px 24px;
+    }
+
+    .compare-header {
+        padding-bottom: 24px;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .compare-title-wrapper {
+        order: 3;
+        width: 100%;
+        padding-top: 8px;
+    }
+
+    .selection-pill {
+        order: 2;
+    }
+
+    .back-btn {
+        order: 1;
+    }
+
+    .compare-image-cards {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        padding: 24px 0 16px 0;
+    }
+
+    .comparison-table {
+        min-width: 450px;
+    }
+}
+
+/* ---------- 768px and below (Mobile) ---------- */
+@media (max-width: 768px) {
+    .main-content {
+        padding: 16px 16px 80px 16px;
+    }
+
+    .compare-header {
+        padding-bottom: 16px;
+        gap: 8px;
+    }
+
+    .compare-mode-label {
+        font-size: 14px;
+    }
+
+    .compare-title {
+        font-size: 22px;
+    }
+
+    .selection-pill {
+        font-size: 12px;
+        padding: 6px 16px;
+    }
+
+    .back-btn {
+        font-size: 16px;
+    }
+
+    .back-btn i {
+        font-size: 18px;
+    }
+
+    .compare-image-cards {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        padding: 16px 0 12px 0;
+    }
+
+    .compare-card-name-badge {
+        font-size: 10px;
+        padding: 3px 10px;
+        bottom: 8px;
+        left: 8px;
+    }
+
+    .comparison-table-wrapper {
+        margin: 0 -4px;
+        padding: 0 4px;
+    }
+
+    .comparison-table {
+        min-width: 420px;
+        font-size: 13px;
+    }
+
+    .comparison-table thead th {
+        padding: 10px 12px;
+        font-size: 11px;
+    }
+
+    .comparison-table thead th:first-child {
+        width: 100px;
+    }
+
+    .comparison-table tbody td {
+        padding: 12px 12px;
+        font-size: 13px;
+    }
+
+    .feature-name {
+        font-size: 13px !important;
+    }
+
+    .amenity-chip {
+        font-size: 10px;
+        padding: 3px 8px;
+    }
+
+    .amenity-chip i {
+        font-size: 12px;
+    }
+
+    .rating-display {
+        font-size: 13px;
+    }
+
+    .distance-display {
+        font-size: 13px;
+    }
+
+    .btn-book-now {
+        font-size: 13px;
+        padding: 8px 12px;
+    }
+
+    /* Show Swipe Indicator on Mobile */
+    .swipe-indicator {
+        display: flex;
+    }
+
+    /* Bottom Nav - Show on Mobile */
+    .bottom-nav {
+        display: flex;
+    }
+}
+
+/* ---------- 480px and below (Small Phones) ---------- */
+@media (max-width: 480px) {
+    .main-content {
+        padding: 12px 12px 70px 12px;
+    }
+
+    .compare-title {
+        font-size: 18px;
+    }
+
+    .selection-pill {
+        font-size: 11px;
+        padding: 4px 12px;
+    }
+
+    .compare-image-cards {
+        gap: 6px;
+    }
+
+    .compare-card-name-badge {
+        font-size: 8px;
+        padding: 2px 8px;
+        bottom: 6px;
+        left: 6px;
+    }
+
+    .comparison-table {
+        min-width: 360px;
+        font-size: 12px;
+    }
+
+    .comparison-table thead th {
+        padding: 8px 10px;
+        font-size: 10px;
+    }
+
+    .comparison-table thead th:first-child {
+        width: 80px;
+    }
+
+    .comparison-table tbody td {
+        padding: 10px 10px;
+        font-size: 12px;
+    }
+
+    .feature-name {
+        font-size: 12px !important;
+    }
+
+    .amenity-chip {
+        font-size: 9px;
+        padding: 2px 6px;
+    }
+
+    .amenity-chip i {
+        font-size: 10px;
+    }
+
+    .rating-display {
+        font-size: 12px;
+    }
+
+    .distance-display {
+        font-size: 12px;
+    }
+
+    .btn-book-now {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+
+    .swipe-indicator {
+        font-size: 12px;
+        padding: 12px 0 4px 0;
+    }
+
+    .swipe-indicator i {
+        font-size: 16px;
+    }
+
+    .nav-item i {
+        font-size: 20px;
+    }
+
+    .nav-item span {
+        font-size: 10px;
+    }
+}
+
+/* ---------- 360px and below (Extra Small) ---------- */
+@media (max-width: 360px) {
+    .compare-title {
+        font-size: 16px;
+    }
+
+    .comparison-table {
+        min-width: 320px;
+        font-size: 11px;
+    }
+
+    .comparison-table tbody td {
+        padding: 8px 8px;
+        font-size: 11px;
+    }
+
+    .feature-name {
+        font-size: 11px !important;
+    }
+
+    .btn-book-now {
+        font-size: 11px;
+    }
+}

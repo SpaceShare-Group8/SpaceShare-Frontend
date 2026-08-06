@@ -1,0 +1,837 @@
+/* ============================================================
+   SPACESHARE — BOOKING CONFIRMATION CSS
+   Pixel-Perfect Match to Figma (PAYMENT.pdf - Page 3)
+   100% Responsive (Desktop, Tablet, Mobile)
+   Includes: Dark Mode, Accessibility, Consistent Layout
+   ============================================================ */
+
+/* ---------- RESET & BASE ---------- */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Figma Design Colors */
+    --bg-main: #F5F5F5;
+    --bg-white: #FFFFFF;
+    --primary-blue: #2862BC;
+    --primary-blue-dark: #1A4A8A;
+    --primary-blue-light: #EEF4FF;
+    --text-dark: #111111;
+    --text-gray: #8E8E93;
+    --text-light-gray: #948E8E;
+    --border-color: #D1D1D6;
+    --border-light: #E5E7EC;
+    --green-success: #10B981;
+    --green-success-light: #D1FAE5;
+    --shadow-card: 0px 4px 20px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0px 8px 24px rgba(0, 0, 0, 0.12);
+
+    /* Font Family */
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+    /* Border Radius */
+    --radius-pill: 9999px;
+    --radius-large: 20px;
+    --radius-medium: 12px;
+    --radius-small: 8px;
+    --radius-xs: 4px;
+
+    /* Dark Mode Overrides */
+    --bg-main-dark: #0D0F14;
+    --bg-white-dark: #1A1D24;
+    --text-dark-dark: #F3F4F8;
+    --text-gray-dark: #9AA0AB;
+    --text-light-gray-dark: #5B6270;
+    --border-color-dark: #2A2D36;
+    --shadow-card-dark: 0px 4px 20px rgba(0, 0, 0, 0.4);
+    --shadow-hover-dark: 0px 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-family);
+    background: var(--bg-main);
+    color: var(--text-dark);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ============================================================
+   MAIN WRAPPER
+   ============================================================ */
+.confirmation-page-wrapper {
+    width: 100%;
+    max-width: 520px;
+}
+
+/* ============================================================
+   CONFIRMATION CARD
+   ============================================================ */
+.confirmation-card {
+    background: var(--bg-white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-large);
+    padding: 40px 32px 32px 32px;
+    box-shadow: var(--shadow-card);
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* ============================================================
+   SUCCESS HEADER (Green Checkmark & Confetti)
+   ============================================================ */
+.confirmation-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.success-icon-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 16px;
+}
+
+.success-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--green-success);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Decorative confetti dots */
+.confetti-dot {
+    position: absolute;
+    border-radius: 50%;
+    z-index: 1;
+    animation: floatDot 3s ease-in-out infinite;
+}
+
+.confetti-dot.dot-1 {
+    width: 8px;
+    height: 8px;
+    background: #34D399;
+    top: -10px;
+    left: -10px;
+    animation-delay: 0.2s;
+}
+
+.confetti-dot.dot-2 {
+    width: 6px;
+    height: 6px;
+    background: #6EE7B7;
+    top: -5px;
+    right: -15px;
+    animation-delay: 0.6s;
+}
+
+.confetti-dot.dot-3 {
+    width: 10px;
+    height: 10px;
+    background: #A7F3D0;
+    bottom: -12px;
+    left: -8px;
+    animation-delay: 0.4s;
+}
+
+.confetti-dot.dot-4 {
+    width: 6px;
+    height: 6px;
+    background: #34D399;
+    bottom: -8px;
+    right: -8px;
+    animation-delay: 0.8s;
+}
+
+@keyframes floatDot {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+        opacity: 0.6;
+    }
+    50% {
+        transform: translateY(-12px) scale(1.2);
+        opacity: 1;
+    }
+}
+
+.confirmation-title {
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--text-dark);
+    margin-bottom: 6px;
+    transition: color 0.3s ease;
+}
+
+.confirmation-subtitle {
+    font-weight: 400;
+    font-size: 14px;
+    color: var(--text-gray);
+    transition: color 0.3s ease;
+}
+
+/* ============================================================
+   WORKSPACE CARD SUMMARY
+   ============================================================ */
+.confirmation-workspace-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-medium);
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.confirmation-workspace-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-medium);
+    background: var(--primary-blue-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background-color 0.3s ease;
+}
+
+.confirmation-workspace-info {
+    flex: 1;
+}
+
+.confirmation-workspace-title {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--text-dark);
+    margin-bottom: 2px;
+    transition: color 0.3s ease;
+}
+
+.confirmation-workspace-location {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 400;
+    font-size: 13px;
+    color: var(--text-gray);
+    transition: color 0.3s ease;
+}
+
+.confirmation-workspace-location i {
+    font-size: 14px;
+    color: var(--text-dark);
+    transition: color 0.3s ease;
+}
+
+/* ============================================================
+   BOOKING DETAILS LIST
+   ============================================================ */
+.confirmation-details-list {
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-medium);
+    padding: 4px 20px;
+    margin-bottom: 24px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.detail-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-light);
+    transition: border-color 0.3s ease;
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--text-dark);
+    transition: color 0.3s ease;
+}
+
+.detail-label i {
+    font-size: 18px;
+    color: var(--text-dark);
+    transition: color 0.3s ease;
+}
+
+.detail-value {
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--text-gray);
+    transition: color 0.3s ease;
+}
+
+/* ============================================================
+   BOOKING CODE DISPLAY
+   ============================================================ */
+.booking-code-section {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.booking-code-label {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+    transition: color 0.3s ease;
+}
+
+.booking-code-display {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.code-digit {
+    width: 48px;
+    height: 48px;
+    background: var(--bg-white);
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-medium);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--text-dark);
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.booking-code-instruction {
+    font-weight: 400;
+    font-size: 13px;
+    color: var(--text-gray);
+    transition: color 0.3s ease;
+}
+
+/* ============================================================
+   ACTION BUTTONS
+   ============================================================ */
+.confirmation-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.btn-view-bookings,
+.btn-get-directions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px 20px;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-family);
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.btn-view-bookings {
+    background: var(--primary-blue);
+    border: none;
+    color: var(--bg-white);
+}
+
+.btn-view-bookings:hover {
+    background: var(--primary-blue-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(40, 98, 188, 0.3);
+}
+
+.btn-view-bookings:active {
+    transform: translateY(0);
+}
+
+.btn-view-bookings:focus-visible {
+    outline: 2px solid var(--primary-blue);
+    outline-offset: 2px;
+}
+
+.btn-get-directions {
+    background: var(--bg-white);
+    border: 1px solid var(--border-color);
+    color: var(--text-dark);
+}
+
+.btn-get-directions:hover {
+    background: var(--bg-main);
+    border-color: var(--text-dark);
+    transform: translateY(-1px);
+}
+
+.btn-get-directions:active {
+    transform: translateY(0);
+}
+
+.btn-get-directions:focus-visible {
+    outline: 2px solid var(--primary-blue);
+    outline-offset: 2px;
+}
+
+.btn-view-bookings i,
+.btn-get-directions i {
+    font-size: 18px;
+    transition: transform 0.2s ease;
+}
+
+.btn-view-bookings:hover i,
+.btn-get-directions:hover i {
+    transform: translateX(3px);
+}
+
+/* ============================================================
+   FOOTER NOTE
+   ============================================================ */
+.confirmation-footer-note {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-gray);
+    transition: color 0.3s ease;
+}
+
+/* ============================================================
+   🌙 DARK MODE SUPPORT
+   ============================================================ */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-main: var(--bg-main-dark);
+        --bg-white: var(--bg-white-dark);
+        --text-dark: var(--text-dark-dark);
+        --text-gray: var(--text-gray-dark);
+        --text-light-gray: var(--text-light-gray-dark);
+        --border-color: var(--border-color-dark);
+        --border-light: var(--border-color-dark);
+        --shadow-card: var(--shadow-card-dark);
+        --shadow-hover: var(--shadow-hover-dark);
+    }
+
+    body {
+        background: var(--bg-main-dark);
+    }
+
+    .confirmation-card {
+        background: var(--bg-white-dark);
+        border-color: var(--border-color-dark);
+        box-shadow: var(--shadow-card-dark);
+    }
+
+    .confirmation-title {
+        color: var(--text-dark-dark);
+    }
+
+    .confirmation-subtitle {
+        color: var(--text-gray-dark);
+    }
+
+    .confirmation-workspace-card {
+        background: var(--bg-main-dark);
+        border-color: var(--border-color-dark);
+    }
+
+    .confirmation-workspace-icon {
+        background: rgba(74, 127, 212, 0.15);
+    }
+
+    .confirmation-workspace-title {
+        color: var(--text-dark-dark);
+    }
+
+    .confirmation-workspace-location {
+        color: var(--text-gray-dark);
+    }
+
+    .confirmation-workspace-location i {
+        color: var(--text-dark-dark);
+    }
+
+    .confirmation-details-list {
+        background: var(--bg-main-dark);
+        border-color: var(--border-color-dark);
+    }
+
+    .detail-row {
+        border-bottom-color: var(--border-color-dark);
+    }
+
+    .detail-label {
+        color: var(--text-dark-dark);
+    }
+
+    .detail-label i {
+        color: var(--text-dark-dark);
+    }
+
+    .detail-value {
+        color: var(--text-gray-dark);
+    }
+
+    .booking-code-label {
+        color: var(--text-dark-dark);
+    }
+
+    .code-digit {
+        background: var(--bg-white-dark);
+        border-color: var(--border-color-dark);
+        color: var(--text-dark-dark);
+    }
+
+    .booking-code-instruction {
+        color: var(--text-gray-dark);
+    }
+
+    .btn-view-bookings {
+        background: #4A7FD4;
+    }
+
+    .btn-view-bookings:hover {
+        background: #386AB8;
+        box-shadow: 0 4px 12px rgba(74, 127, 212, 0.4);
+    }
+
+    .btn-get-directions {
+        background: var(--bg-white-dark);
+        border-color: var(--border-color-dark);
+        color: var(--text-dark-dark);
+    }
+
+    .btn-get-directions:hover {
+        background: var(--bg-main-dark);
+        border-color: var(--text-dark-dark);
+    }
+
+    .confirmation-footer-note {
+        color: var(--text-gray-dark);
+    }
+}
+
+/* ============================================================
+   ♿ ACCESSIBILITY (Reduced Motion)
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .success-circle {
+        animation: none !important;
+        transform: scale(1) !important;
+    }
+
+    .confetti-dot {
+        animation: none !important;
+        transform: translateY(0) !important;
+    }
+
+    .btn-view-bookings:hover,
+    .btn-get-directions:hover {
+        transform: none !important;
+    }
+}
+
+/* ============================================================
+   ♿ ACCESSIBILITY (Focus States)
+   ============================================================ */
+a:focus-visible,
+button:focus-visible {
+    outline: 2px solid var(--primary-blue);
+    outline-offset: 2px;
+    border-radius: var(--radius-small);
+}
+
+/* ============================================================
+   📱 100% FULLY RESPONSIVE BREAKPOINTS
+   ============================================================ */
+
+/* ---------- 900px and below (Tablet) ---------- */
+@media (max-width: 900px) {
+    body {
+        padding: 16px;
+    }
+
+    .confirmation-card {
+        padding: 32px 24px 24px 24px;
+    }
+
+    .success-circle {
+        width: 72px;
+        height: 72px;
+    }
+
+    .success-circle i {
+        font-size: 40px !important;
+    }
+
+    .confirmation-title {
+        font-size: 22px;
+    }
+
+    .confirmation-subtitle {
+        font-size: 13px;
+    }
+}
+
+/* ---------- 768px and below (Mobile) ---------- */
+@media (max-width: 768px) {
+    body {
+        padding: 12px;
+        align-items: flex-start;
+        padding-top: 20px;
+    }
+
+    .confirmation-card {
+        padding: 28px 20px 20px 20px;
+        border-radius: var(--radius-medium);
+    }
+
+    .confirmation-header {
+        margin-bottom: 24px;
+    }
+
+    .success-circle {
+        width: 64px;
+        height: 64px;
+    }
+
+    .success-circle i {
+        font-size: 36px !important;
+    }
+
+    .confirmation-title {
+        font-size: 20px;
+    }
+
+    .confirmation-workspace-card {
+        padding: 14px 16px;
+        gap: 12px;
+    }
+
+    .confirmation-workspace-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .confirmation-workspace-icon i {
+        font-size: 22px !important;
+    }
+
+    .confirmation-workspace-title {
+        font-size: 15px;
+    }
+
+    .confirmation-workspace-location {
+        font-size: 12px;
+    }
+
+    .confirmation-details-list {
+        padding: 2px 16px;
+        margin-bottom: 20px;
+    }
+
+    .detail-row {
+        padding: 10px 0;
+    }
+
+    .detail-label {
+        font-size: 13px;
+    }
+
+    .detail-label i {
+        font-size: 16px;
+    }
+
+    .detail-value {
+        font-size: 13px;
+    }
+
+    .booking-code-section {
+        margin-bottom: 24px;
+    }
+
+    .booking-code-label {
+        font-size: 15px;
+    }
+
+    .booking-code-display {
+        gap: 8px;
+    }
+
+    .code-digit {
+        width: 44px;
+        height: 44px;
+        font-size: 20px;
+    }
+
+    .booking-code-instruction {
+        font-size: 12px;
+    }
+
+    .confirmation-actions {
+        gap: 10px;
+        margin-bottom: 16px;
+    }
+
+    .btn-view-bookings,
+    .btn-get-directions {
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+
+    .btn-view-bookings i,
+    .btn-get-directions i {
+        font-size: 16px;
+    }
+
+    .confirmation-footer-note {
+        font-size: 11px;
+    }
+}
+
+/* ---------- 480px and below (Small Phones) ---------- */
+@media (max-width: 480px) {
+    body {
+        padding: 8px;
+        padding-top: 12px;
+    }
+
+    .confirmation-card {
+        padding: 20px 16px 16px 16px;
+    }
+
+    .success-circle {
+        width: 56px;
+        height: 56px;
+    }
+
+    .success-circle i {
+        font-size: 32px !important;
+    }
+
+    .confirmation-title {
+        font-size: 18px;
+    }
+
+    .confirmation-subtitle {
+        font-size: 12px;
+    }
+
+    .confirmation-workspace-title {
+        font-size: 14px;
+    }
+
+    .confirmation-details-list {
+        padding: 2px 12px;
+    }
+
+    .detail-row {
+        padding: 8px 0;
+    }
+
+    .detail-label {
+        font-size: 12px;
+    }
+
+    .detail-label i {
+        font-size: 14px;
+    }
+
+    .detail-value {
+        font-size: 12px;
+    }
+
+    .booking-code-label {
+        font-size: 14px;
+    }
+
+    .code-digit {
+        width: 38px;
+        height: 38px;
+        font-size: 18px;
+        gap: 6px;
+    }
+
+    .btn-view-bookings,
+    .btn-get-directions {
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+}
+
+/* ---------- 360px and below (Extra Small) ---------- */
+@media (max-width: 360px) {
+    .confirmation-card {
+        padding: 16px 12px 12px 12px;
+    }
+
+    .success-circle {
+        width: 48px;
+        height: 48px;
+    }
+
+    .success-circle i {
+        font-size: 28px !important;
+    }
+
+    .confirmation-title {
+        font-size: 16px;
+    }
+
+    .code-digit {
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+        gap: 4px;
+    }
+}

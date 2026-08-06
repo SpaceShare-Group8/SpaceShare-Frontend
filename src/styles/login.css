@@ -1,0 +1,820 @@
+/* ==========================================================
+   login.css
+   Premium Design System — Exact match to role-selection.css
+   ========================================================== */
+
+:root {
+  /* Brand Colors - Exact match from role-selection */
+  --primary-start: #2862BC;
+  --primary-end: #4A7FD4;
+  --primary-gradient: linear-gradient(135deg, #2862BC 0%, #4A7FD4 100%);
+
+  /* Neutral Colors */
+  --ink-900: #14161a;
+  --ink-700: #2A2D36;
+  --ink-600: #5b6270;
+  --ink-400: #9aa0ab;
+  --ink-300: #C5C9D2;
+  --ink-200: #E5E7EC;
+  --ink-100: #F3F4F8;
+  --ink-50: #FAFAFC;
+  --white: #ffffff;
+
+  /* Status Colors */
+  --red: #e6362f;
+  --red-bg: #FEF2F2;
+  --green: #1f9d5a;
+  --green-bg: #ECFDF5;
+
+  /* Radii */
+  --radius-pill: 999px;
+  --radius-lg: 20px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Inter', 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--ink-900);
+  background: var(--white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+.brand__name {
+  font-family: 'Poppins', 'Inter', sans-serif;
+}
+
+/* ==========================================================
+   PAGE LAYOUT - Exact match to role-selection.css
+   ========================================================== */
+.page {
+  display: grid;
+  grid-template-columns: minmax(360px, 40%) 1fr;
+  min-height: 100vh;
+}
+
+/* ==========================================================
+   LEFT HERO PANEL - Background image with overlay
+   ========================================================== */
+.panel--hero {
+  position: relative;
+  overflow: hidden;
+  /* Replace the URL below with your actual image */
+  background-image: linear-gradient(180deg,
+      rgba(8, 14, 28, 0.78) 0%,
+      rgba(8, 14, 28, 0.40) 40%,
+      rgba(10, 12, 20, 0.85) 100%),
+    url('https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-start;
+  padding: 48px 56px;
+}
+
+/* Subtle extra overlay for depth */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+      rgba(6, 10, 22, 0.25) 0%,
+      rgba(6, 10, 22, 0.05) 40%,
+      rgba(6, 10, 22, 0.60) 100%);
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  width: 100%;
+  max-width: 480px;
+}
+
+/* ---------- BRAND LOGO ---------- */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand__logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  object-fit: cover;
+  display: block;
+}
+
+.brand__name {
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.35rem;
+  letter-spacing: -0.01em;
+}
+
+/* ---------- BADGE PILL ---------- */
+.pill {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  padding: 7px 18px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(120, 150, 220, 0.18);
+  color: #dfe6fb;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  backdrop-filter: blur(2px);
+}
+
+/* ---------- HERO COPY ---------- */
+.hero-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 180px;
+}
+
+.hero-copy h1 {
+  color: #fff;
+  font-size: 2.4rem;
+  line-height: 1.15;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.hero-copy p {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 1.02rem;
+  line-height: 1.55;
+  margin: 0;
+  max-width: 420px;
+}
+
+/* ---------- BENEFITS LIST (Bullets) ---------- */
+.requirements {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.requirements li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.98rem;
+  line-height: 1.5;
+}
+
+.requirements li::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  min-width: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.15);
+}
+
+/* ==========================================================
+   RIGHT FORM PANEL
+   ========================================================== */
+.panel--form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 56px;
+  background: var(--white);
+}
+
+.form-wrap {
+  width: 100%;
+  max-width: 580px;
+}
+
+/* ---------- BACK BUTTON (optional, hidden on login) ---------- */
+.back-btn {
+  border: none;
+  background: none;
+  color: var(--primary-start);
+  padding: 0;
+  margin-bottom: 18px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--transition-fast);
+}
+
+.back-btn svg {
+  width: 26px;
+  height: 26px;
+}
+
+.back-btn:hover {
+  transform: translateX(-4px);
+}
+
+.back-btn:focus-visible {
+  outline: 2px solid var(--primary-start);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---------- TYPOGRAPHY ---------- */
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 8px;
+  color: var(--ink-900);
+  letter-spacing: -0.01em;
+}
+
+.subtitle {
+  color: var(--ink-600);
+  font-size: 1.02rem;
+  line-height: 1.55;
+  margin: 0 0 36px;
+  max-width: 460px;
+}
+
+/* ---------- LOGIN FORM ---------- */
+.signin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ---------- INPUT FIELDS ---------- */
+.field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 2px solid var(--ink-200);
+  border-radius: var(--radius-lg);
+  padding: 4px 20px;
+  background: var(--white);
+  transition: all var(--transition-normal);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.field:hover {
+  border-color: var(--ink-300);
+}
+
+.field:focus-within {
+  border-color: var(--primary-start);
+  box-shadow: 0 0 0 4px rgba(40, 98, 188, 0.08), 0 4px 20px rgba(40, 98, 188, 0.08);
+  transform: translateY(-2px);
+  background: var(--white);
+}
+
+.field.has-error {
+  border-color: var(--red);
+  background: var(--red-bg);
+  box-shadow: 0 0 0 4px rgba(230, 54, 47, 0.08);
+}
+
+/* ---------- FIELD ICON ---------- */
+.field-icon {
+  color: var(--ink-400);
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  font-size: 1.25rem;
+}
+
+/* ---------- INPUTS ---------- */
+.field input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--ink-900);
+  padding: 18px 0;
+  min-width: 0;
+}
+
+.field input::placeholder {
+  color: var(--ink-400);
+}
+
+/* ---------- PASSWORD VISIBILITY TOGGLE ---------- */
+.toggle-visibility {
+  border: none;
+  background: none;
+  color: var(--ink-400);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  margin-left: 6px;
+  font-size: 1.25rem;
+  transition: color var(--transition-fast);
+}
+
+.toggle-visibility:hover {
+  color: var(--ink-600);
+}
+
+.toggle-visibility:focus-visible {
+  outline: 2px solid var(--primary-start);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---------- ERROR MESSAGE ---------- */
+.form-error {
+  margin: -8px 0 0;
+  color: var(--red);
+  font-size: 0.92rem;
+  min-height: 1.1em;
+  display: none;
+}
+
+.form-error.visible {
+  display: block;
+}
+
+/* ---------- FORGOT PASSWORD LINK ---------- */
+.forgot-password-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -4px;
+}
+
+.forgot-link {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--primary-start);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.forgot-link:hover {
+  color: var(--primary-end);
+  text-decoration: underline;
+}
+
+/* ---------- SUBMIT BUTTON ---------- */
+.submit-btn {
+  position: relative;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--ink-300);
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 600;
+  font-family: inherit;
+  padding: 17px 24px;
+  cursor: not-allowed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all var(--transition-normal);
+  opacity: 0.7;
+  margin-top: 8px;
+}
+
+/* Enabled State */
+.submit-btn:not(:disabled) {
+  background: var(--primary-gradient);
+  cursor: pointer;
+  opacity: 1;
+  box-shadow: 0 4px 16px rgba(40, 98, 188, 0.25);
+}
+
+.submit-btn:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(40, 98, 188, 0.35);
+}
+
+.submit-btn:not(:disabled):active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 8px rgba(40, 98, 188, 0.2);
+}
+
+.submit-btn:not(:disabled):focus-visible {
+  outline: 3px solid var(--primary-start);
+  outline-offset: 3px;
+}
+
+/* Shimmer effect on hover */
+.submit-btn:not(:disabled)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.15) 50%, transparent 100%);
+  background-size: 200% 100%;
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+  pointer-events: none;
+  border-radius: var(--radius-pill);
+}
+
+.submit-btn:not(:disabled):hover::after {
+  opacity: 1;
+  animation: shimmer 2.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* ---------- SPINNER ---------- */
+.btn-spinner {
+  display: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2.5px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  animation: spin 0.7s linear infinite;
+}
+
+.submit-btn.is-loading .btn-spinner {
+  display: inline-block;
+}
+
+.submit-btn.is-loading .btn-label {
+  opacity: 0.85;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- SIGN UP PROMPT ---------- */
+.signup-prompt {
+  text-align: center;
+  font-size: 0.95rem;
+  color: var(--ink-600);
+  margin-top: -4px;
+}
+
+.signup-link {
+  color: var(--primary-start);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.signup-link:hover {
+  color: var(--primary-end);
+  text-decoration: underline;
+}
+
+/* ---------- DIVIDER ---------- */
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: var(--ink-400);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 12px 0;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--ink-200);
+}
+
+.divider::before {
+  margin-right: 16px;
+}
+.divider::after {
+  margin-left: 16px;
+}
+
+/* ---------- SOCIAL BUTTONS ---------- */
+.social-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 14px;
+  background: var(--white);
+  border: 2px solid var(--ink-200);
+  border-radius: var(--radius-lg);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--ink-700);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.btn-social:hover {
+  background: var(--ink-50);
+  border-color: var(--primary-start);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(40, 98, 188, 0.08);
+}
+
+.btn-social:active {
+  transform: translateY(0);
+}
+
+.social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+/* ==========================================================
+   RESPONSIVE DESIGN
+   ========================================================== */
+@media (max-width: 1024px) {
+  .page {
+    grid-template-columns: minmax(300px, 35%) 1fr;
+  }
+  .panel--hero {
+    padding: 32px 40px;
+  }
+  .hero-copy {
+    margin-top: 120px;
+  }
+  .hero-copy h1 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .page {
+    grid-template-columns: 1fr;
+  }
+
+  .panel--hero {
+    min-height: 340px;
+    padding: 32px 28px;
+  }
+
+  .hero-copy {
+    margin-top: 50px;
+  }
+
+  .hero-copy h1 {
+    font-size: 1.8rem;
+  }
+
+  .panel--form {
+    padding: 32px 24px 56px;
+  }
+
+  .form-wrap {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .panel--form {
+    padding: 24px 16px 48px;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
+  }
+
+  .field {
+    padding: 4px 14px;
+    border-radius: var(--radius-md);
+  }
+
+  .field input {
+    font-size: 0.95rem;
+    padding: 14px 0;
+  }
+
+  .submit-btn {
+    font-size: 0.95rem;
+    padding: 14px 20px;
+  }
+
+  .btn-social {
+    padding: 12px;
+    font-size: 0.9rem;
+  }
+
+  .brand__name {
+    font-size: 1.1rem;
+  }
+
+  .hero-copy h1 {
+    font-size: 1.6rem;
+  }
+
+  .hero-copy p {
+    font-size: 0.95rem;
+  }
+
+  .requirements li {
+    font-size: 0.9rem;
+  }
+}
+
+/* ==========================================================
+   DARK MODE - Exact match to role-selection.css
+   ========================================================== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink-900: #F3F4F8;
+    --ink-700: #E2E8F0;
+    --ink-600: #9AA0AB;
+    --ink-400: #5B6270;
+    --ink-300: #3A3F4A;
+    --ink-200: #2A2D36;
+    --ink-100: #1A1D24;
+    --ink-50: #0D0F14;
+    --white: #1A1D24;
+    --red-bg: rgba(239, 68, 68, 0.15);
+    --green-bg: rgba(16, 185, 129, 0.15);
+  }
+
+  body {
+    background: #0D0F14;
+  }
+
+  .panel--form {
+    background: #0D0F14;
+  }
+
+  /* ---------- INPUTS ---------- */
+  .field {
+    background: #1A1D24;
+    border-color: #2A2D36;
+    box-shadow: none;
+  }
+
+  .field:hover {
+    border-color: #3A3F4A;
+  }
+
+  .field:focus-within {
+    background: #22262E;
+    border-color: var(--primary-start);
+    box-shadow: 0 0 0 4px rgba(40, 98, 188, 0.2);
+  }
+
+  .field.has-error {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: #EF4444;
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.2);
+  }
+
+  .field input {
+    color: #F3F4F8;
+  }
+
+  .field input::placeholder {
+    color: #5B6270;
+  }
+
+  .field-icon {
+    color: #5B6270;
+  }
+
+  .toggle-visibility {
+    color: #5B6270;
+  }
+
+  .toggle-visibility:hover {
+    color: #9AA0AB;
+  }
+
+  /* ---------- BUTTON ---------- */
+  .submit-btn:not(:disabled) {
+    background: linear-gradient(135deg, #1E4F9A 0%, #2862BC 100%);
+    box-shadow: 0 4px 16px rgba(40, 98, 188, 0.15);
+  }
+
+  .submit-btn:not(:disabled):hover {
+    box-shadow: 0 8px 32px rgba(40, 98, 188, 0.25);
+  }
+
+  /* ---------- TEXT & ELEMENTS ---------- */
+  .title {
+    color: #F3F4F8;
+  }
+
+  .subtitle {
+    color: #9AA0AB;
+  }
+
+  .form-error {
+    color: #EF4444;
+  }
+
+  .forgot-link {
+    color: #4A7FD4;
+  }
+
+  .forgot-link:hover {
+    color: #6B9AE8;
+  }
+
+  .signup-prompt {
+    color: #9AA0AB;
+  }
+
+  .signup-link {
+    color: #4A7FD4;
+  }
+
+  .signup-link:hover {
+    color: #6B9AE8;
+  }
+
+  .divider {
+    color: #5B6270;
+  }
+
+  .divider::before,
+  .divider::after {
+    border-color: #2A2D36;
+  }
+
+  /* ---------- SOCIAL BUTTONS ---------- */
+  .btn-social {
+    background: #1A1D24;
+    border-color: #2A2D36;
+    color: #E2E8F0;
+    box-shadow: none;
+  }
+
+  .btn-social:hover {
+    background: #22262E;
+    border-color: var(--primary-start);
+    box-shadow: 0 4px 20px rgba(40, 98, 188, 0.12);
+  }
+}
+
+/* ==========================================================
+   REDUCED MOTION ACCESSIBILITY
+   ========================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .submit-btn:not(:disabled):hover::after {
+    animation: none;
+  }
+}

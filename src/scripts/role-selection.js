@@ -1,38 +1,144 @@
-(function() {
-    const findCard = document.getElementById('findCard');
-    const listCard = document.getElementById('listCard');
+// ================================================================
+// SPACESHARE — ROLE SELECTION LOGIC
+// Flow: Landing → Role Selection → Signup → OTP → Dashboard
+// ================================================================
 
-    function clearSelection() {
-        findCard.classList.remove('selected');
-        listCard.classList.remove('selected');
-    }
+document.addEventListener("DOMContentLoaded", () => {
+  // --- DOM ELEMENTS ---
+  const form = document.getElementById("roleForm");
+  const cards = document.querySelectorAll(".role-card");
+  const continueBtn = document.getElementById("continueBtn");
+  const backBtn = document.querySelector(".back-btn");
+  const formAlert = document.getElementById("formAlert");
 
-    function handleCardClick(e) {
-        const card = e.currentTarget;
+  // --- STATE ---
+  let currentSelection = null; // 'seeker' or 'host'
+  let isSubmitting = false;
 
-        if (card.classList.contains('selected')) {
-            clearSelection();
-            return;
-        }
-
-        clearSelection();
-        card.classList.add('selected');
-    }
-
-    findCard.addEventListener('click', handleCardClick);
-    listCard.addEventListener('click', handleCardClick);
-
-    findCard.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            findCard.click();
-        }
+  // ================================================================
+  // 1. SELECTION HANDLER
+  // ================================================================
+  function selectRole(role) {
+    // Reset all cards
+    cards.forEach((card) => {
+      card.classList.remove("selected");
+      card.setAttribute("aria-pressed", "false");
     });
 
-    listCard.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            listCard.click();
-        }
+    // Activate target card
+    const targetCard = document.querySelector(`.role-card[data-role="${role}"]`);
+    if (targetCard) {
+      targetCard.classList.add("selected");
+      targetCard.setAttribute("aria-pressed", "true");
+      
+      const radio = targetCard.querySelector('input[type="radio"]');
+      if (radio) radio.checked = true;
+    }
+
+    // Update state
+    currentSelection = role;
+    continueBtn.disabled = false;
+    hideAlert();
+  }
+
+  // ================================================================
+  // 2. UI HELPER FUNCTIONS
+  // ================================================================
+  function hideAlert() {
+    if (formAlert) {
+      formAlert.hidden = true;
+      formAlert.textContent = "";
+      formAlert.className = "alert-box";
+    }
+  }
+
+  function showAlert(message, type = "error") {
+    if (formAlert) {
+      formAlert.textContent = message;
+      formAlert.className = `alert-box alert-${type}`;
+      formAlert.hidden = false;
+    }
+  }
+
+  function setButtonLoading(isLoading) {
+    if (isLoading) {
+      continueBtn.disabled = true;
+      continueBtn.textContent = "Processing...";
+      continueBtn.classList.add("is-loading");
+    } else {
+      continueBtn.disabled = false;
+      continueBtn.textContent = "Continue";
+      continueBtn.classList.remove("is-loading");
+    }
+  }
+
+  // ================================================================
+  // 3. EVENT LISTENERS (Card Clicks)
+  // ================================================================
+  cards.forEach((card) => {
+    card.addEventListener("click", () => {
+      const role = card.dataset.role;
+      if (role) selectRole(role);
     });
-})();
+
+    // Keyboard support (Enter/Space)
+    card.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        const role = card.dataset.role;
+        if (role) selectRole(role);
+      }
+    });
+  });
+
+  // ================================================================
+  // 4. NAVIGATION (Back Button)
+  // ================================================================
+  if (backBtn) {
+    backBtn.addEventListener("click", () => {
+      window.history.back();
+    });
+  }
+
+  // ================================================================
+  // 5. FORM SUBMISSION — SAVE ROLE & REDIRECT TO SIGNUP
+  // ================================================================
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    // Prevent double-clicks
+    if (isSubmitting) return;
+
+    // Validation: Ensure a role is selected
+    if (!currentSelection) {
+      showAlert("Please select a role to continue.");
+      return;
+    }
+
+    isSubmitting = true;
+    setButtonLoading(true);
+
+    // ------------------------------------------------------------
+    // STEP 1: Save the selected role to localStorage
+    // ------------------------------------------------------------
+    localStorage.setItem("spaceshare_selected_role", currentSelection);
+
+    console.log(`✅ Role saved: ${currentSelection}`);
+
+    // ------------------------------------------------------------
+    // STEP 2: Redirect to the signup page
+    // ------------------------------------------------------------
+    window.location.href = "signup.html";
+  });
+
+  // ================================================================
+  // 6. PRE-SELECTION ON LOAD
+  // ================================================================
+  // If the user refreshes, check if they previously had a role saved
+  const savedRole = localStorage.getItem("spaceshare_selected_role");
+  if (savedRole && (savedRole === "seeker" || savedRole === "host")) {
+    selectRole(savedRole);
+  }
+
+  console.log("🚀 Role Selection UI initialized and ready.");
+});

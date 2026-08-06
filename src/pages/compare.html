@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SpaceShare — Workspace Comparison</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+
+    <!-- PLACEHOLDER: CSS will be linked in the next step -->
+    <link rel="stylesheet" href="../styles/compare.css" />
+</head>
+<body>
+
+    <!-- ============================================================ -->
+    <!-- MAIN WRAPPER (Sidebar + Content)                              -->
+    <!-- ============================================================ -->
+    <div class="compare-page-wrapper">
+
+        <!-- ========================================================== -->
+        <!-- LEFT SIDEBAR (Nav) - Desktop Only                          -->
+        <!-- ========================================================== -->
+        <aside class="sidebar-nav">
+            
+            <!-- Logo -->
+            <div class="sidebar-logo">
+                <img src="../assets/BLUE%20LOGO.png" alt="SpaceShare" class="logo-img" />
+                <span class="logo-text">SpaceShare</span>
+            </div>
+
+            <!-- Nav Items -->
+            <nav class="sidebar-menu">
+                <a href="seeker-dashboard.html" class="nav-item">
+                    <i class="ph ph-house"></i>
+                    <span>Home</span>
+                </a>
+                <a href="booking.html" class="nav-item">
+                    <i class="ph ph-calendar-blank"></i>
+                    <span>Bookings</span>
+                </a>
+                <a href="favorite-spaces.html" class="nav-item active">
+                    <i class="ph-fill ph-heart" style="color: #FF383C;"></i>
+                    <span>Favourite</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ph ph-chat"></i>
+                    <span>Messages</span>
+                </a>
+            </nav>
+
+        </aside>
+
+        <!-- ========================================================== -->
+        <!-- RIGHT MAIN CONTENT                                         -->
+        <!-- ========================================================== -->
+        <main class="main-content">
+
+            <!-- ======================================================== -->
+            <!-- COMPARE HEADER (Back, Title, Selection Pill)            -->
+            <!-- ======================================================== -->
+            <header class="compare-header">
+                
+                <!-- Left: Back Button -->
+                <button class="back-btn" aria-label="Go back">
+                    <i class="ph-bold ph-caret-left"></i>
+                    <span>Back</span>
+                </button>
+
+                <!-- Center: Title -->
+                <div class="compare-title-wrapper">
+                    <span class="compare-mode-label">Compare Mode</span>
+                    <h1 class="compare-title">Workspace Comparison</h1>
+                </div>
+
+                <!-- Right: Selection Pill -->
+                <div class="selection-pill">
+                    <span>3 selected</span>
+                </div>
+
+            </header>
+
+            <!-- ======================================================== -->
+            <!-- COMPARE IMAGE CARDS (Side-by-Side)                      -->
+            <!-- ======================================================== -->
+            <section class="compare-image-cards">
+                
+                <!-- Card 1: Hub One Workspace -->
+                <div class="compare-card-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80" alt="Hub One Workspace" class="compare-card-img" />
+                    <div class="compare-card-name-badge">Hub One Workspace</div>
+                </div>
+
+                <!-- Card 2: Work Nest Hub -->
+                <div class="compare-card-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=600&q=80" alt="Work Nest Hub" class="compare-card-img" />
+                    <div class="compare-card-name-badge">Work Nest Hub</div>
+                </div>
+
+                <!-- Card 3: Discovery Nest -->
+                <div class="compare-card-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=600&q=80" alt="Discovery Nest" class="compare-card-img" />
+                    <div class="compare-card-name-badge">Discovery Nest</div>
+                </div>
+
+            </section>
+
+            <!-- ======================================================== -->
+            <!-- COMPARISON TABLE MATRIX                                 -->
+            <!-- ======================================================== -->
+            <section class="comparison-table-wrapper">
+                <table class="comparison-table">
+                    
+                    <!-- Table Header (Workspace Names) -->
+                    <thead>
+                        <tr>
+                            <th class="feature-column-header">FEATURES</th>
+                            <th>Hub One Workspace</th>
+                            <th>Work Nest Hub</th>
+                            <th>Discovery Nest</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <!-- Row 1: Type -->
+                        <tr>
+                            <td class="feature-name">Type</td>
+                            <td>Co-working Space</td>
+                            <td>Private Office</td>
+                            <td>Meeting Room</td>
+                        </tr>
+
+                        <!-- Row 2: Price -->
+                        <tr>
+                            <td class="feature-name">Price</td>
+                            <td>₦15,000 <small>/hr</small></td>
+                            <td>₦30,000 <small>/hr</small></td>
+                            <td>₦75,000 <small>/day</small></td>
+                        </tr>
+
+                        <!-- Row 3: Reliability Score -->
+                        <tr>
+                            <td class="feature-name">Reliability score</td>
+                            <td>
+                                <span class="reliability-high">98% Uptime</span>
+                            </td>
+                            <td>
+                                <span class="reliability-medium">95% Uptime</span>
+                            </td>
+                            <td>
+                                <span class="reliability-high">97% Uptime</span>
+                            </td>
+                        </tr>
+
+                        <!-- Row 4: Amenities (Chips) -->
+                        <tr>
+                            <td class="feature-name">Amenities</td>
+                            <td>
+                                <div class="amenity-chips-row">
+                                    <span class="amenity-chip"><i class="ph-bold ph-wifi-high"></i> WiFi</span>
+                                    <span class="amenity-chip"><i class="ph-bold ph-snowflake"></i> AC</span>
+                                    <span class="amenity-chip"><i class="ph-fill ph-car-profile"></i> Parking</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="amenity-chips-row">
+                                    <span class="amenity-chip"><i class="ph-bold ph-coffee"></i> Coffee</span>
+                                    <span class="amenity-chip"><i class="ph-bold ph-snowflake"></i> AC</span>
+                                    <span class="amenity-chip"><i class="ph-bold ph-car-battery"></i> Generator</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="amenity-chips-row">
+                                    <span class="amenity-chip"><i class="ph-bold ph-wifi-high"></i> WiFi</span>
+                                    <span class="amenity-chip"><i class="ph-bold ph-projector-screen"></i> Projector</span>
+                                    <span class="amenity-chip"><i class="ph-bold ph-chalkboard-simple"></i> Whiteboard</span>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Row 5: Reviews -->
+                        <tr>
+                            <td class="feature-name">Reviews</td>
+                            <td>
+                                <div class="rating-display">
+                                    <i class="ph-fill ph-star" style="color: #FFC107;"></i>
+                                    <span>4.8 <small>(120)</small></span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="rating-display">
+                                    <i class="ph-fill ph-star" style="color: #FFC107;"></i>
+                                    <span>4.7 <small>(80)</small></span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="rating-display">
+                                    <i class="ph-fill ph-star" style="color: #FFC107;"></i>
+                                    <span>4.9 <small>(96)</small></span>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Row 6: Distance (Location) -->
+                        <tr>
+                            <td class="feature-name">Distance</td>
+                            <td>
+                                <div class="distance-display">
+                                    <i class="ph-fill ph-map-pin"></i>
+                                    <span>2.5 km</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="distance-display">
+                                    <i class="ph-fill ph-map-pin"></i>
+                                    <span>1.7 km</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="distance-display">
+                                    <i class="ph-fill ph-map-pin"></i>
+                                    <span>1.2 km</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <!-- Table Footer (Action Buttons) -->
+                    <tfoot>
+                        <tr>
+                            <td></td> <!-- Empty corner -->
+                            <td>
+                                <button class="btn-book-now">Book Now <i class="ph-bold ph-caret-right"></i></button>
+                            </td>
+                            <td>
+                                <button class="btn-book-now">Book Now <i class="ph-bold ph-caret-right"></i></button>
+                            </td>
+                            <td>
+                                <button class="btn-book-now">Book Now <i class="ph-bold ph-caret-right"></i></button>
+                            </td>
+                        </tr>
+                    </tfoot>
+
+                </table>
+            </section>
+
+            <!-- ======================================================== -->
+            <!-- SWIPE LEFT INDICATOR (Mobile Only)                      -->
+            <!-- ======================================================== -->
+            <div class="swipe-indicator">
+                <span>Swipe left</span>
+                <i class="ph-fill ph-hand-pointing-left"></i>
+            </div>
+
+            <!-- ======================================================== -->
+            <!-- BOTTOM NAVIGATION (Mobile Only)                          -->
+            <!-- ======================================================== -->
+            <nav class="bottom-nav" aria-label="Main navigation">
+                <a href="seeker-dashboard.html" class="nav-item">
+                    <i class="ph ph-house"></i>
+                    <span>Home</span>
+                </a>
+                <a href="booking.html" class="nav-item">
+                    <i class="ph ph-calendar-blank"></i>
+                    <span>Bookings</span>
+                </a>
+                <a href="#" class="nav-item active">
+                    <i class="ph-fill ph-heart" style="color: #2862BC;"></i>
+                    <span>Favorites</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ph ph-chat"></i>
+                    <span>Messages</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ph ph-user"></i>
+                    <span>Profile</span>
+                </a>
+            </nav>
+
+        </main>
+    </div>
+
+    <!-- PLACEHOLDER: JS will be linked in the next step -->
+    <script src="../scripts/compare.js"></script>
+
+</body>
+</html>

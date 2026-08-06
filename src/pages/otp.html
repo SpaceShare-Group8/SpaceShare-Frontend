@@ -1,51 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OTP Verification</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OTP Verification - SpaceShare</title>
     <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
+        rel="stylesheet"
+        type="text/css"
+        href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
     />
     <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"
+        rel="stylesheet"
+        type="text/css"
+        href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"
     />
-    <link rel="stylesheet" href="../styles/auth.css">
+    <link rel="stylesheet" href="../styles/otp.css" />
 </head>
 <body>
-    <div class="login-container">
-        <a href="forgot password.html" class="back-btn"><i class="ph ph-caret-left"></i></a>
-        <div class="header">
-            <h1>Enter OTP</h1>
-            <p class="subtitle">Enter the code we just sent to your email address</p>
-        </div>
+    <div class="otp-page">
+        <div class="otp-container">
 
-        <form id="otpForm">
-            <div class="otp-container">
-                <input type="text" maxlength="1" class="otp-input">
-                <input type="text" maxlength="1" class="otp-input">
-                <input type="text" maxlength="1" class="otp-input">
-                <input type="text" maxlength="1" class="otp-input">
-                <input type="text" maxlength="1" class="otp-input">
+            <!-- Back Button -->
+            <a href="signup.html" class="back-btn" id="backBtn">
+                <i class="ph ph-caret-left"></i>
+            </a>
+
+            <!-- Header -->
+            <div class="otp-header" id="otpHeader">
+                <h1>Verify Your Email</h1>
+                <p class="otp-subtitle">
+                    Enter the 6-digit code sent to<br />
+                    <strong id="emailDisplay">your@email.com</strong>
+                </p>
             </div>
-            <button type="submit" class="login-btn">Verify</button>
-        </form>
 
-        <p class="timer">
-            Resend code in <span id="countdown">45</span>s
-        </p>
+            <!-- OTP Form -->
+            <form id="otpForm" class="otp-form" novalidate>
+                <div class="otp-input-group">
+                    <input type="text" maxlength="1" class="otp-input" id="otp1" required autofocus />
+                    <input type="text" maxlength="1" class="otp-input" id="otp2" required />
+                    <input type="text" maxlength="1" class="otp-input" id="otp3" required />
+                    <input type="text" maxlength="1" class="otp-input" id="otp4" required />
+                    <input type="text" maxlength="1" class="otp-input" id="otp5" required />
+                    <input type="text" maxlength="1" class="otp-input" id="otp6" required />
+                </div>
 
-        <p class="resend">
-            Didn't receive the code?
-            <a href="#" id="resendLink">Resend</a>
-        </p>
+                <!-- Error Message -->
+                <div id="otpError" class="otp-error" hidden></div>
+
+                <!-- Verify Button -->
+                <button type="submit" class="btn-verify" id="verifyBtn">
+                    <span class="btn-label">Verify</span>
+                    <span class="btn-spinner" hidden>
+                        <i class="ph ph-spinner"></i>
+                    </span>
+                </button>
+            </form>
+
+            <!-- Timer & Resend -->
+            <div class="otp-actions" id="otpActions">
+                <p class="timer">
+                    Resend code in <span id="countdown">60</span>s
+                </p>
+                <p class="resend">
+                    Didn't receive the code?
+                    <a href="#" id="resendLink">Resend</a>
+                </p>
+            </div>
+
+            <!-- Footer -->
+            <div class="otp-footer" id="otpFooter">
+                <a href="login.html" class="back-to-login">
+                    <i class="ph ph-arrow-left"></i> Back to Sign In
+                </a>
+            </div>
+
+        </div>
     </div>
 
     <script src="../scripts/otp.js"></script>
-    
 </body>
 </html>

@@ -1,79 +1,304 @@
 /* ================================================================
-   SPACESHARE — SIGNUP PAGE LOGIC
-   Full API Integration with Live Backend
-   Backend: https://spaceshare-backend-cor9.onrender.com
-   Endpoint: POST /api/auth/register
+   SPACESHARE — SIGNUP PAGE LOGIC (`signup.js`)
+   Fully integrated with SpaceShare Backend API
+   Redirects to OTP verification after successful registration
    ================================================================ */
 
 // ================================================================
 // CONFIGURATION
 // ================================================================
 
-const API_BASE_URL = 'https://spaceshare-backend-cor9.onrender.com';
+/**
+ * API Base URL - Automatically detects environment
+ * - Localhost: uses local server (port 5000)
+ * - Production: uses Render backend
+ */
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:5000'
+    : 'https://spaceshare-backend-cor9.onrender.com';
+
+console.log('🔗 API Base URL:', API_BASE_URL);
+
 const STORAGE_KEYS = {
-    ACCESS_TOKEN: 'spaceshare_access_token',
-    REFRESH_TOKEN: 'spaceshare_refresh_token',
-    USER: 'spaceshare_user',
-    SELECTED_ROLE: 'spaceshare:selectedRole'
+    SELECTED_ROLE: 'spaceshare_selected_role', // ✅ Matches role-selection.js
+    VERIFY_EMAIL: 'spaceshare:verifyEmail'
 };
 
 // ================================================================
-// DOM REFS
+// DOM REFERENCES
 // ================================================================
 
 const DOM = {
-    form: document.getElementById('signupForm'),
-    fullName: document.getElementById('full_name'),
-    email: document.getElementById('email'),
-    phone: document.getElementById('phone'),
-    password: document.getElementById('password'),
-    confirmPassword: document.getElementById('confirm_password'),
-    terms: document.getElementById('terms'),
-    submitBtn: document.getElementById('submitBtn'),
-    formAlert: document.getElementById('formAlert'),
+    // Forms & Cards
+    signupForm: document.getElementById('signup-form'),
+    verificationCard: document.getElementById('verification-pending-card'),
+    signupFormContainer: document.getElementById('signup-form-container'),
+    
+    // Header & Indicators
+    roleIndicator: document.getElementById('roleIndicator'),
+    sentEmailDisplay: document.getElementById('sent-email-display'),
+    formAlert: document.getElementById('form-alert'),
+
+    // Input Fields
+    fullNameInput: document.getElementById('fullName'),
+    emailInput: document.getElementById('email'),
+    phoneInput: document.getElementById('phone'),
+    passwordInput: document.getElementById('password'),
+    confirmPasswordInput: document.getElementById('confirmPassword'),
+
+    // Password Toggles
     togglePassword: document.getElementById('togglePassword'),
-    googleBtn: document.getElementById('googleBtn'),
-    appleBtn: document.getElementById('appleBtn'),
-    // Password hint elements
+    toggleConfirmPassword: document.getElementById('toggleConfirmPassword'),
+
+    // Real-time Password Badges
     hintLength: document.getElementById('hintLength'),
     hintUppercase: document.getElementById('hintUppercase'),
     hintNumber: document.getElementById('hintNumber'),
+
+    // Password Match Status Line
+    passwordMatchMessage: document.getElementById('passwordMatchMessage'),
+
+    // Buttons
+    submitBtn: document.getElementById('submitBtn'),
+    resendBtn: document.getElementById('resend-btn'),
+    googleBtn: document.getElementById('googleBtn'),
+    appleBtn: document.getElementById('appleBtn'),
+    termsCheckbox: document.getElementById('terms')
 };
 
 // ================================================================
-// API FUNCTIONS
+// STATE
+// ================================================================
+
+let resendTimer = null;
+let countdownSeconds = 60;
+let userEmailForVerification = '';
+let isSubmitting = false;
+
+// ================================================================
+// UI HELPERS
+// ================================================================
+
+/**
+ * Display alert message
+ */
+function showAlert(message, isSuccess = false) {
+    if (!DOM.formAlert) return;
+    DOM.formAlert.textContent = message;
+    DOM.formAlert.hidden = false;
+    DOM.formAlert.className = `form-alert ${isSuccess ? 'alert-success' : 'alert-error'}`;
+}
+
+/**
+ * Hide alert
+ */
+function hideAlert() {
+    if (!DOM.formAlert) return;
+    DOM.formAlert.hidden = true;
+    DOM.formAlert.textContent = '';
+    DOM.formAlert.className = 'form-alert';
+}
+
+/**
+ * Set loading state on submit button
+ */
+function setLoading(isLoading) {
+    if (!DOM.submitBtn) return;
+    
+    DOM.submitBtn.disabled = isLoading;
+    const label = DOM.submitBtn.querySelector('.btn-label') || DOM.submitBtn;
+    const spinner = DOM.submitBtn.querySelector('.btn-spinner');
+
+    if (isLoading) {
+        label.dataset.originalText = label.textContent;
+        label.textContent = 'Creating account...';
+        if (spinner) spinner.hidden = false;
+    } else {
+        label.textContent = label.dataset.originalText || 'Create Account';
+        if (spinner) spinner.hidden = true;
+    }
+}
+
+/**
+ * Format role name for display
+ */
+function formatRoleName(role) {
+    switch (role?.toLowerCase()) {
+        case 'host': return 'Host';
+        case 'seeker': return 'Workspace Seeker';
+        case 'corporate_admin': return 'Corporate Admin';
+        case 'admin': return 'Platform Admin';
+        default: return 'Workspace Seeker';
+    }
+}
+
+// ================================================================
+// PASSWORD FUNCTIONS
+// ================================================================
+
+/**
+ * Toggle password visibility (exposed globally for inline HTML)
+ */
+window.togglePasswordVisibility = function(inputId, iconId) {
+    const inputEl = document.getElementById(inputId);
+    const iconEl = document.getElementById(iconId);
+    if (!inputEl) return;
+
+    if (inputEl.type === 'password') {
+        inputEl.type = 'text';
+        if (iconEl) iconEl.className = 'ph ph-eye-slash';
+    } else {
+        inputEl.type = 'password';
+        if (iconEl) iconEl.className = 'ph ph-eye';
+    }
+};
+
+/**
+ * Handle password input validation (exposed globally for inline HTML)
+ */
+window.handlePasswordInput = function(password) {
+    const hasLength = password.length >= 8;
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+
+    if (DOM.hintLength) {
+        DOM.hintLength.classList.toggle('valid', hasLength);
+    }
+    if (DOM.hintUppercase) {
+        DOM.hintUppercase.classList.toggle('valid', hasUppercase);
+    }
+    if (DOM.hintNumber) {
+        DOM.hintNumber.classList.toggle('valid', hasNumber);
+    }
+
+    window.handleConfirmPasswordInput();
+};
+
+/**
+ * Handle confirm password validation (exposed globally for inline HTML)
+ */
+window.handleConfirmPasswordInput = function() {
+    if (!DOM.passwordInput || !DOM.confirmPasswordInput || !DOM.passwordMatchMessage) return;
+
+    const password = DOM.passwordInput.value;
+    const confirmPassword = DOM.confirmPasswordInput.value;
+
+    if (!confirmPassword) {
+        DOM.passwordMatchMessage.textContent = '';
+        DOM.passwordMatchMessage.className = 'match-indicator';
+        return;
+    }
+
+    if (password === confirmPassword) {
+        DOM.passwordMatchMessage.textContent = '✓ Passwords match';
+        DOM.passwordMatchMessage.className = 'match-indicator match-success';
+    } else {
+        DOM.passwordMatchMessage.textContent = '✗ Passwords do not match';
+        DOM.passwordMatchMessage.className = 'match-indicator match-error';
+    }
+};
+
+/**
+ * Validate password requirements
+ */
+function validatePasswordRequirements(password) {
+    const hasLength = password.length >= 8;
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+
+    if (DOM.hintLength) {
+        DOM.hintLength.classList.toggle('valid', hasLength);
+    }
+    if (DOM.hintUppercase) {
+        DOM.hintUppercase.classList.toggle('valid', hasUppercase);
+    }
+    if (DOM.hintNumber) {
+        DOM.hintNumber.classList.toggle('valid', hasNumber);
+    }
+
+    return hasLength && hasUppercase && hasNumber;
+}
+
+// ================================================================
+// COUNTDOWN TIMER
+// ================================================================
+
+/**
+ * Start 60-second resend cooldown
+ */
+function startResendCountdown() {
+    if (!DOM.resendBtn) return;
+    
+    clearInterval(resendTimer);
+    countdownSeconds = 60;
+    DOM.resendBtn.disabled = true;
+
+    const label = DOM.resendBtn.querySelector('.resend-label') || DOM.resendBtn;
+    const timerDisplay = DOM.resendBtn.querySelector('#resend-timer');
+
+    resendTimer = setInterval(() => {
+        countdownSeconds--;
+        
+        if (timerDisplay) {
+            timerDisplay.hidden = false;
+            timerDisplay.textContent = `(${countdownSeconds}s)`;
+        } else {
+            label.textContent = `Resend Email (${countdownSeconds}s)`;
+        }
+        
+        if (countdownSeconds <= 0) {
+            clearInterval(resendTimer);
+            DOM.resendBtn.disabled = false;
+            label.textContent = 'Resend Verification Email';
+            if (timerDisplay) timerDisplay.hidden = true;
+        }
+    }, 1000);
+}
+
+// ================================================================
+// REDIRECT TO OTP PAGE
+// ================================================================
+
+/**
+ * Redirect to OTP verification page
+ */
+function redirectToOTP(email) {
+    // Store email for OTP verification
+    localStorage.setItem(STORAGE_KEYS.VERIFY_EMAIL, email);
+    
+    console.log('🔐 Redirecting to OTP verification for:', email);
+    
+    // Redirect to OTP page
+    window.location.href = 'otp.html';
+}
+
+// ================================================================
+// API CALLS
 // ================================================================
 
 /**
  * Register a new user
  * POST /api/auth/register
- * 
- * @param {Object} payload - Registration data
- * @param {string} payload.full_name - User's full name (3-150 chars)
- * @param {string} [payload.email] - User's email (optional if phone provided)
- * @param {string} [payload.phone] - User's phone (optional if email provided)
- * @param {string} payload.password - Password (min 8 chars)
- * @param {string} [payload.role] - User role: "seeker" | "host" | "corporate_admin"
- * @returns {Promise<Object>} API response
+ * This sends the OTP code via email
  */
 async function registerUser(payload) {
+    console.log('📤 Sending registration request to:', `${API_BASE_URL}/api/auth/register`);
+    console.log('📦 Payload:', { ...payload, password: '***' });
+
     const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
         method: 'POST',
-        headers: {
+        headers: { 
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         },
         body: JSON.stringify(payload)
     });
 
-    const data = await response.json().catch(() => ({}));
+    const data = await response.json();
+    console.log('📥 Response status:', response.status);
+    console.log('📥 Response data:', data);
 
     if (!response.ok) {
-        // Handle validation errors from backend
-        if (data.errors && Array.isArray(data.errors)) {
-            const errorMessages = data.errors.map(err => err.message || err).join('. ');
-            throw new Error(errorMessages || data.message || 'Registration failed');
-        }
         throw new Error(data.message || `Registration failed (${response.status})`);
     }
 
@@ -81,515 +306,164 @@ async function registerUser(payload) {
 }
 
 /**
- * Login after successful registration
- * POST /api/auth/login
- * 
- * @param {Object} payload - Login credentials
- * @param {string} [payload.email] - User's email
- * @param {string} [payload.phone] - User's phone
- * @param {string} payload.password - User's password
- * @returns {Promise<Object>} API response with tokens
+ * Resend verification/OTP email
+ * POST /api/auth/resend-otp
  */
-async function loginUser(payload) {
-    const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+async function resendOTPEmail(email) {
+    console.log('📤 Sending resend OTP request to:', `${API_BASE_URL}/api/auth/resend-otp`);
+
+    const response = await fetch(`${API_BASE_URL}/api/auth/resend-otp`, {
         method: 'POST',
-        headers: {
+        headers: { 
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({ email })
     });
 
-    const data = await response.json().catch(() => ({}));
+    const data = await response.json();
+    console.log('📥 Resend OTP response:', data);
 
     if (!response.ok) {
-        throw new Error(data.message || `Login failed (${response.status})`);
+        throw new Error(data.message || `Failed to resend OTP (${response.status})`);
     }
 
     return data;
 }
 
 // ================================================================
-// AUTH HELPERS
+// EVENT HANDLERS
 // ================================================================
 
 /**
- * Extract authentication data from response
- * Supports multiple response formats from backend
+ * Handle form submission
  */
-function extractAuthData(response) {
-    const accessToken = 
-        response.accessToken ??
-        response.token ??
-        response.data?.accessToken ??
-        response.data?.token ??
-        response.data?.tokens?.accessToken ??
-        null;
-
-    const refreshToken = 
-        response.refreshToken ??
-        response.data?.refreshToken ??
-        response.data?.tokens?.refreshToken ??
-        null;
-
-    const user = 
-        response.user ??
-        response.data?.user ??
-        response.data ??
-        null;
-
-    return { accessToken, refreshToken, user };
-}
-
-/**
- * Store session data in localStorage
- */
-function storeSession({ accessToken, refreshToken, user }) {
-    if (accessToken) {
-        localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, accessToken);
-    }
-    if (refreshToken) {
-        localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, refreshToken);
-    }
-    if (user) {
-        localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
-    }
-}
-
-/**
- * Save selected role for later use
- */
-function saveSelectedRole(role) {
-    if (!['seeker', 'host', 'corporate_admin'].includes(role)) {
-        throw new Error(`Invalid role: ${role}`);
-    }
-    localStorage.setItem(STORAGE_KEYS.SELECTED_ROLE, role);
-}
-
-// ================================================================
-// UI HELPERS
-// ================================================================
-
-/**
- * Set field error message
- */
-function setFieldError(fieldId, message) {
-    const input = document.getElementById(fieldId);
-    const errorEl = document.getElementById(`${fieldId}Error`);
-    const wrapper = input?.closest('.input-wrapper');
-    
-    if (input) {
-        input.setAttribute('aria-invalid', message ? 'true' : 'false');
-    }
-    
-    if (wrapper) {
-        wrapper.classList.toggle('has-error', !!message);
-    }
-    
-    if (errorEl) {
-        errorEl.textContent = message || '';
-        errorEl.style.display = message ? 'block' : 'none';
-    }
-}
-
-/**
- * Clear all form errors
- */
-function clearErrors() {
-    ['full_name', 'email', 'phone', 'password', 'confirm_password', 'terms'].forEach((id) => {
-        setFieldError(id, '');
-    });
-    hideFormAlert();
-}
-
-/**
- * Show form alert message
- */
-function showFormAlert(message, isSuccess = false) {
-    DOM.formAlert.textContent = message;
-    DOM.formAlert.hidden = false;
-    DOM.formAlert.className = isSuccess ? 'alert-success' : 'alert-error';
-}
-
-/**
- * Hide form alert
- */
-function hideFormAlert() {
-    DOM.formAlert.hidden = true;
-    DOM.formAlert.textContent = '';
-    DOM.formAlert.className = '';
-}
-
-/**
- * Set loading state on submit button
- */
-function setLoading(isLoading) {
-    DOM.submitBtn.disabled = isLoading;
-    DOM.submitBtn.dataset.loading = String(isLoading);
-    
-    const label = DOM.submitBtn.querySelector('.btn-label');
-    const spinner = DOM.submitBtn.querySelector('.btn-spinner');
-    
-    if (label) {
-        label.textContent = isLoading ? 'Creating account...' : 'Create Account';
-    }
-    
-    if (spinner) {
-        spinner.hidden = !isLoading;
-    }
-    
-    DOM.submitBtn.style.opacity = isLoading ? '0.7' : '1';
-}
-
-/**
- * Validate email format
- */
-function looksLikeEmail(value) {
-    return /\S+@\S+\.\S+/.test(value);
-}
-
-/**
- * Validate Nigerian phone number
- * Formats: 08012345678, +2348012345678, 2348012345678
- */
-function isValidPhone(value) {
-    const cleaned = value.replace(/\s/g, '');
-    return /^(\+?234|0)[789][01]\d{8}$/.test(cleaned);
-}
-
-// ================================================================
-// PASSWORD STRENGTH INDICATORS
-// ================================================================
-
-/**
- * Update password strength indicators
- */
-function updatePasswordStrength(password) {
-    const hasLength = password.length >= 8;
-    const hasUppercase = /[A-Z]/.test(password);
-    const hasNumber = /[0-9]/.test(password);
-
-    // Update hint dots
-    if (DOM.hintLength) {
-        DOM.hintLength.classList.toggle('is-valid', hasLength);
-    }
-    if (DOM.hintUppercase) {
-        DOM.hintUppercase.classList.toggle('is-valid', hasUppercase);
-    }
-    if (DOM.hintNumber) {
-        DOM.hintNumber.classList.toggle('is-valid', hasNumber);
-    }
-
-    return { hasLength, hasUppercase, hasNumber };
-}
-
-// ================================================================
-// REAL-TIME VALIDATION
-// ================================================================
-
-/**
- * Validate email on blur
- */
-DOM.email.addEventListener('blur', () => {
-    const email = DOM.email.value.trim();
-    if (email && !looksLikeEmail(email)) {
-        setFieldError('email', 'Enter a valid email address.');
-    } else {
-        setFieldError('email', '');
-    }
-});
-
-/**
- * Validate phone on blur
- */
-DOM.phone.addEventListener('blur', () => {
-    const phone = DOM.phone.value.trim();
-    if (phone && !isValidPhone(phone)) {
-        setFieldError('phone', 'Enter a valid Nigerian phone number (e.g., 08012345678).');
-    } else {
-        setFieldError('phone', '');
-    }
-});
-
-/**
- * Validate password on input (real-time)
- */
-DOM.password.addEventListener('input', () => {
-    const password = DOM.password.value;
-    updatePasswordStrength(password);
-    
-    if (password && password.length < 8) {
-        setFieldError('password', 'Password must be at least 8 characters.');
-    } else {
-        setFieldError('password', '');
-    }
-});
-
-DOM.password.addEventListener('blur', () => {
-    const password = DOM.password.value;
-    if (password && password.length < 8) {
-        setFieldError('password', 'Password must be at least 8 characters.');
-    } else {
-        setFieldError('password', '');
-    }
-});
-
-/**
- * Validate confirm password on input
- */
-DOM.confirmPassword.addEventListener('input', () => {
-    const password = DOM.password.value;
-    const confirm = DOM.confirmPassword.value;
-    if (confirm && confirm !== password) {
-        setFieldError('confirm_password', "Passwords don't match.");
-    } else {
-        setFieldError('confirm_password', '');
-    }
-});
-
-// ================================================================
-// PASSWORD VISIBILITY TOGGLE
-// ================================================================
-
-DOM.togglePassword.addEventListener('click', () => {
-    const isHidden = DOM.password.type === 'password';
-    DOM.password.type = isHidden ? 'text' : 'password';
-    DOM.togglePassword.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
-    
-    const icon = DOM.togglePassword.querySelector('i');
-    if (icon) {
-        icon.className = isHidden ? 'ph-fill ph-eye-slash' : 'ph-fill ph-eye';
-    }
-});
-
-// ================================================================
-// SOCIAL BUTTONS (Placeholder)
-// ================================================================
-
-DOM.googleBtn.addEventListener('click', () => {
-    showFormAlert('Google sign-in coming soon! 🚀', false);
-});
-
-DOM.appleBtn.addEventListener('click', () => {
-    showFormAlert('Apple sign-in coming soon! 🚀', false);
-});
-
-// ================================================================
-// FORM SUBMISSION
-// ================================================================
-
-DOM.form.addEventListener('submit', async (event) => {
+async function handleFormSubmit(event) {
     event.preventDefault();
-    clearErrors();
+    
+    // Prevent double submission
+    if (isSubmitting) return;
+    
+    hideAlert();
 
-    // --- Get Values ---
-    const fullName = DOM.fullName.value.trim();
-    const email = DOM.email.value.trim();
-    const phone = DOM.phone.value.trim();
-    const password = DOM.password.value;
-    const confirmPassword = DOM.confirmPassword.value;
-    const termsChecked = DOM.terms.checked;
-    const role = 'seeker'; // Default role, can be changed by role selection later
+    // Get form values
+    const fullName = DOM.fullNameInput?.value.trim() || '';
+    const email = DOM.emailInput?.value.trim() || '';
+    const phone = DOM.phoneInput?.value.trim() || '';
+    const password = DOM.passwordInput?.value || '';
+    const confirmPassword = DOM.confirmPasswordInput?.value || '';
+    const selectedRole = localStorage.getItem(STORAGE_KEYS.SELECTED_ROLE) || 'seeker';
+    const termsAccepted = DOM.termsCheckbox?.checked || false;
 
-    // --- Validation ---
-    let hasError = false;
+    // ================================================================
+    // VALIDATION
+    // ================================================================
 
-    // Full name validation
-    if (!fullName) {
-        setFieldError('full_name', 'Enter your full name.');
-        hasError = true;
-    } else if (fullName.length < 3) {
-        setFieldError('full_name', 'Name must be at least 3 characters.');
-        hasError = true;
-    } else if (fullName.length > 150) {
-        setFieldError('full_name', 'Name must be less than 150 characters.');
-        hasError = true;
-    }
-
-    // Email or phone validation (at least one required)
-    if (!email && !phone) {
-        setFieldError('email', 'Enter an email or a phone number.');
-        hasError = true;
-    } else if (email && !looksLikeEmail(email)) {
-        setFieldError('email', 'Enter a valid email address.');
-        hasError = true;
-    } else if (phone && !isValidPhone(phone)) {
-        setFieldError('phone', 'Enter a valid Nigerian phone number.');
-        hasError = true;
-    }
-
-    // Password validation
-    if (!password) {
-        setFieldError('password', 'Create a password.');
-        hasError = true;
-    } else if (password.length < 8) {
-        setFieldError('password', 'Password must be at least 8 characters.');
-        hasError = true;
-    }
-
-    // Confirm password validation
-    if (confirmPassword !== password) {
-        setFieldError('confirm_password', "Passwords don't match.");
-        hasError = true;
-    }
-
-    // Terms validation
-    if (!termsChecked) {
-        setFieldError('terms', 'You need to accept the terms to continue.');
-        hasError = true;
-    }
-
-    if (hasError) {
-        // Scroll to first error
-        const firstError = document.querySelector('[aria-invalid="true"]');
-        if (firstError) {
-            firstError.focus();
-            firstError.closest('.form-group')?.scrollIntoView({ 
-                behavior: 'smooth', 
-                block: 'center' 
-            });
-        }
+    // Validate: Full Name
+    if (!fullName || fullName.length < 2) {
+        showAlert('Please enter your full name.');
+        DOM.fullNameInput?.focus();
         return;
     }
 
-    // --- Build Payload ---
-    const payload = {
-        full_name: fullName,
-        password: password,
-        role: role
-    };
+    // Validate: Email or Phone
+    if (!email && !phone) {
+        showAlert('Please provide either an email address or phone number.');
+        return;
+    }
 
-    if (email) payload.email = email;
-    if (phone) payload.phone = phone;
+    // Validate: Email format
+    if (email && !email.includes('@')) {
+        showAlert('Please enter a valid email address.');
+        DOM.emailInput?.focus();
+        return;
+    }
 
-    console.log('📝 Registration payload:', { ...payload, password: '***' });
-    console.log(`🔗 API Endpoint: ${API_BASE_URL}/api/auth/register`);
+    // Validate: Phone format (basic)
+    if (phone && !/^[0-9+\-\s()]{7,15}$/.test(phone)) {
+        showAlert('Please enter a valid phone number.');
+        DOM.phoneInput?.focus();
+        return;
+    }
 
-    // --- Submit ---
+    // Validate: Password
+    if (!validatePasswordRequirements(password)) {
+        showAlert('Password must have 8+ characters, 1 uppercase letter, and 1 number.');
+        DOM.passwordInput?.focus();
+        return;
+    }
+
+    // Validate: Password Match
+    if (password !== confirmPassword) {
+        showAlert('Passwords do not match.');
+        DOM.confirmPasswordInput?.focus();
+        return;
+    }
+
+    // Validate: Terms
+    if (!termsAccepted) {
+        showAlert('Please agree to the Terms of Service and Privacy Policy.');
+        return;
+    }
+
+    // ================================================================
+    // SUBMIT
+    // ================================================================
+
+    isSubmitting = true;
     setLoading(true);
-    hideFormAlert();
 
     try {
-        // Step 1: Register the user
-        const registerResponse = await registerUser(payload);
-        console.log('✅ Registration successful:', registerResponse);
+        const payload = {
+            full_name: fullName,
+            email: email || undefined,
+            phone: phone || undefined,
+            password: password,
+            role: selectedRole
+        };
 
-        // Step 2: Save role for role selection screen
-        try {
-            saveSelectedRole(role);
-            console.log(`💾 Role saved: ${role}`);
-        } catch (roleError) {
-            console.warn('Role save warning:', roleError);
-        }
+        const result = await registerUser(payload);
+        
+        // Save email for OTP verification
+        userEmailForVerification = email;
 
-        // Step 3: Check if we got tokens back (auto-login)
-        const authData = extractAuthData(registerResponse);
+        console.log('✅ Registration successful! Redirecting to OTP...');
 
-        if (authData.accessToken) {
-            // Auto-login successful
-            storeSession(authData);
-            showFormAlert('Account created successfully! 🎉', true);
-            
-            // Redirect to role selection (per PRD flow)
-            setTimeout(() => {
-                window.location.href = 'role_main_selection.html';
-            }, 1500);
-            return;
-        }
+        // Show success message briefly before redirect
+        showAlert('Account created! Sending verification code...', true);
 
-        // Step 4: Try auto-login with email/phone
-        const loginIdentifier = email || phone;
-        if (loginIdentifier) {
-            try {
-                console.log('🔄 Attempting auto-login...');
-                const loginResponse = await loginUser({
-                    [email ? 'email' : 'phone']: loginIdentifier,
-                    password: password
-                });
-
-                const loginAuthData = extractAuthData(loginResponse);
-                if (loginAuthData.accessToken) {
-                    storeSession(loginAuthData);
-                    showFormAlert('Account created and logged in! 🎉', true);
-                    
-                    setTimeout(() => {
-                        window.location.href = 'role_main_selection.html';
-                    }, 1500);
-                    return;
-                }
-            } catch (loginError) {
-                console.warn('Auto-login failed, proceeding to role selection:', loginError);
-            }
-        }
-
-        // Step 5: Redirect to role selection (per PRD flow)
-        showFormAlert('Account created! Choose your role to continue. ✅', true);
+        // Redirect to OTP page after a short delay
         setTimeout(() => {
-            window.location.href = 'role_main_selection.html';
-        }, 2000);
+            redirectToOTP(email);
+        }, 1500);
 
     } catch (error) {
         console.error('❌ Registration error:', error);
-        
-        // Handle specific error messages
-        let errorMessage = error.message || 'Something went wrong. Please try again.';
-        
-        // Check for duplicate email/phone
-        if (errorMessage.toLowerCase().includes('email') && 
-            (errorMessage.toLowerCase().includes('exist') || errorMessage.toLowerCase().includes('already'))) {
-            errorMessage = 'This email is already registered. Please use a different email or login.';
-        } else if (errorMessage.toLowerCase().includes('phone') && 
-                   (errorMessage.toLowerCase().includes('exist') || errorMessage.toLowerCase().includes('already'))) {
-            errorMessage = 'This phone number is already registered. Please use a different number or login.';
-        } else if (errorMessage.toLowerCase().includes('validation')) {
-            errorMessage = 'Please check your information and try again.';
-        } else if (errorMessage.toLowerCase().includes('network')) {
-            errorMessage = 'Network error. Please check your connection and try again.';
-        }
-        
-        showFormAlert(errorMessage);
-    } finally {
-        // Only reset if not already redirecting
-        if (!DOM.submitBtn.disabled) {
-            setLoading(false);
-        }
+        showAlert(error.message || 'Registration failed. Please try again.');
+        isSubmitting = false;
+        setLoading(false);
     }
-});
-
-// ================================================================
-// KEYBOARD SHORTCUTS
-// ================================================================
-
-// Enter key on terms checkbox triggers form submission
-DOM.terms.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-        DOM.form.dispatchEvent(new Event('submit'));
-    }
-});
-
-// ================================================================
-// URL PARAMETER HANDLING
-// ================================================================
+}
 
 /**
- * Pre-fill fields from URL parameters
+ * Handle resend verification - now sends OTP
  */
-function handleUrlParams() {
-    const urlParams = new URLSearchParams(window.location.search);
-    
-    const emailParam = urlParams.get('email');
-    if (emailParam) {
-        DOM.email.value = emailParam;
+async function handleResendVerification() {
+    if (!userEmailForVerification) {
+        showAlert('No email address found. Please try registering again.');
+        return;
     }
     
-    const roleParam = urlParams.get('role');
-    if (roleParam && ['seeker', 'host', 'corporate_admin'].includes(roleParam)) {
-        try {
-            saveSelectedRole(roleParam);
-        } catch (e) {
-            // Ignore
-        }
+    hideAlert();
+
+    try {
+        await resendOTPEmail(userEmailForVerification);
+        showAlert('New OTP code sent! Please check your email.', true);
+        startResendCountdown();
+
+    } catch (error) {
+        console.error('❌ Resend error:', error);
+        showAlert(error.message || 'Unable to resend OTP. Please try again later.');
     }
 }
 
@@ -597,64 +471,75 @@ function handleUrlParams() {
 // INITIALIZATION
 // ================================================================
 
-/**
- * Initialize the signup page
- */
-function init() {
-    console.log('🚀 SpaceShare — Sign Up page initializing...');
-    console.log(`📍 API Base URL: ${API_BASE_URL}`);
-    console.log('📋 Endpoint: POST /api/auth/register');
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('🚀 SpaceShare Signup Page Loaded');
+    console.log(`🌐 API URL: ${API_BASE_URL}`);
+    console.log(`📦 Environment: ${window.location.hostname === 'localhost' ? 'Local Development' : 'Production'}`);
 
-    // Handle URL parameters
-    handleUrlParams();
-
-    // Update password strength on initial load (if password has value)
-    if (DOM.password.value) {
-        updatePasswordStrength(DOM.password.value);
+    // ================================================================
+    // 1. Set role badge from localStorage
+    // ================================================================
+    const selectedRole = localStorage.getItem(STORAGE_KEYS.SELECTED_ROLE) || 'seeker';
+    if (DOM.roleIndicator) {
+        DOM.roleIndicator.textContent = formatRoleName(selectedRole);
     }
 
-    // Log for debugging
-    console.log('✅ Sign Up page ready');
-    console.log('🔑 Role: seeker (default, can be changed in role selection)');
-}
+    // ================================================================
+    // 2. Setup real-time password validation
+    // ================================================================
+    if (DOM.passwordInput) {
+        DOM.passwordInput.addEventListener('input', (e) => {
+            validatePasswordRequirements(e.target.value);
+            window.handleConfirmPasswordInput();
+        });
+    }
 
-// Run initialization when DOM is ready
-document.addEventListener('DOMContentLoaded', init);
+    if (DOM.confirmPasswordInput) {
+        DOM.confirmPasswordInput.addEventListener('input', () => {
+            window.handleConfirmPasswordInput();
+        });
+    }
+
+    // ================================================================
+    // 3. Social login buttons (Coming soon)
+    // ================================================================
+    if (DOM.googleBtn) {
+        DOM.googleBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            showAlert('Sign up with Google is coming soon! 🚀');
+        });
+    }
+
+    if (DOM.appleBtn) {
+        DOM.appleBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            showAlert('Sign up with Apple is coming soon! 🚀');
+        });
+    }
+
+    // ================================================================
+    // 4. Form submission
+    // ================================================================
+    if (DOM.signupForm) {
+        DOM.signupForm.addEventListener('submit', handleFormSubmit);
+    }
+
+    // ================================================================
+    // 5. Resend button - now sends OTP
+    // ================================================================
+    if (DOM.resendBtn) {
+        DOM.resendBtn.addEventListener('click', handleResendVerification);
+    }
+
+    console.log('✅ Signup page initialized successfully');
+});
 
 // ================================================================
-// EXPOSE FOR TESTING (Development Only)
+// EXPOSE FUNCTIONS FOR INLINE HTML
 // ================================================================
 
-if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    window.__signup = {
-        API_BASE_URL,
-        registerUser,
-        loginUser,
-        saveSelectedRole,
-        getSelectedRole: () => localStorage.getItem(STORAGE_KEYS.SELECTED_ROLE),
-        DOM: {
-            form: DOM.form,
-            fullName: DOM.fullName,
-            email: DOM.email,
-            phone: DOM.phone,
-            password: DOM.password,
-            confirmPassword: DOM.confirmPassword,
-        },
-        getPayload: () => ({
-            full_name: DOM.fullName.value.trim(),
-            email: DOM.email.value.trim(),
-            phone: DOM.phone.value.trim(),
-            password: DOM.password.value,
-            role: 'seeker'
-        }),
-        validateForm: () => {
-            const errors = [];
-            if (!DOM.fullName.value.trim()) errors.push('Full name required');
-            if (!DOM.email.value.trim() && !DOM.phone.value.trim()) errors.push('Email or phone required');
-            if (DOM.password.value.length < 8) errors.push('Password must be 8+ chars');
-            if (DOM.confirmPassword.value !== DOM.password.value) errors.push('Passwords do not match');
-            return errors;
-        }
-    };
-    console.log('💻 Debug: window.__signup available for testing');
-}
+window.togglePasswordVisibility = window.togglePasswordVisibility;
+window.handlePasswordInput = window.handlePasswordInput;
+window.handleConfirmPasswordInput = window.handleConfirmPasswordInput;
+
+console.log('✅ signup.js loaded successfully');

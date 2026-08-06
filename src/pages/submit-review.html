@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SpaceShare — Submit Review</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+
+    <!-- PLACEHOLDER: CSS will be linked in the next step -->
+    <link rel="stylesheet" href="../styles/submit-review.css" />
+</head>
+<body>
+
+    <!-- ============================================================ -->
+    <!-- MAIN WRAPPER                                                  -->
+    <!-- ============================================================ -->
+    <div class="review-page-wrapper">
+
+        <!-- ========================================================== -->
+        <!-- LEFT SIDEBAR (Navigation) - Desktop Only                   -->
+        <!-- ========================================================== -->
+        <aside class="sidebar-nav">
+            <div class="sidebar-logo">
+                <img src="../assets/BLUE%20LOGO.png" alt="SpaceShare" class="logo-img" />
+                <span class="logo-text">SpaceShare</span>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="seeker-dashboard.html" class="nav-item">
+                    <i class="ph ph-house"></i>
+                    <span>Home</span>
+                </a>
+                <a href="my-bookings.html" class="nav-item active">
+                    <i class="ph-fill ph-calendar-blank" style="color: #2862BC;"></i>
+                    <span>Bookings</span>
+                </a>
+                <a href="favorite-spaces.html" class="nav-item">
+                    <i class="ph-fill ph-heart" style="color: #FF383C;"></i>
+                    <span>Favourites</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ph ph-chat"></i>
+                    <span>Messages</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- ========================================================== -->
+        <!-- RIGHT MAIN CONTENT                                         -->
+        <!-- ========================================================== -->
+        <main class="main-content">
+
+            <!-- ======================================================== -->
+            <!-- PAGE HEADER                                             -->
+            <!-- ======================================================== -->
+            <header class="page-header">
+                <button class="back-btn" aria-label="Go back">
+                    <i class="ph-bold ph-caret-left"></i>
+                    <span>Back</span>
+                </button>
+                <h1 class="page-title">Submit Review</h1>
+            </header>
+
+            <!-- ======================================================== -->
+            <!-- WORKSPACE SUMMARY CARD                                  -->
+            <!-- ======================================================== -->
+            <div class="workspace-summary-card">
+                <div class="workspace-summary-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=200&q=80" alt="Hub One Workspace" class="workspace-summary-img" />
+                </div>
+                <div class="workspace-summary-info">
+                    <h3 class="workspace-summary-title" id="workspaceName">Hub One Workspace</h3>
+                    <p class="workspace-summary-location" id="workspaceLocation">
+                        <i class="ph-bold ph-map-pin"></i> Lekki phase 1, Lagos.
+                    </p>
+                    <div class="workspace-summary-meta">
+                        <span class="meta-date" id="bookingDate">Friday, 3rd July 2026</span>
+                        <span class="meta-time" id="bookingTime">08:00 AM – 09:00 AM</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================================================== -->
+            <!-- RATING SECTION (5 Stars)                                -->
+            <!-- ======================================================== -->
+            <section class="rating-section">
+                <h2 class="section-title">Rate your experience</h2>
+                <div class="star-rating-container">
+                    <div class="star-rating" id="starRating">
+                        <i class="ph-fill ph-star" data-value="1"></i>
+                        <i class="ph-fill ph-star" data-value="2"></i>
+                        <i class="ph-fill ph-star" data-value="3"></i>
+                        <i class="ph-fill ph-star" data-value="4"></i>
+                        <i class="ph-fill ph-star" data-value="5"></i>
+                    </div>
+                    <p class="rating-label" id="ratingLabel">Tap a star to rate</p>
+                </div>
+            </section>
+
+            <!-- ======================================================== -->
+            <!-- TRUST ENGINE QUESTIONS                                  -->
+            <!-- ======================================================== -->
+            <section class="trust-engine-section">
+                <h2 class="section-title">Help us improve reliability</h2>
+                
+                <div class="trust-question">
+                    <p class="question-text">Was the power stable throughout your session?</p>
+                    <div class="question-options">
+                        <label class="option-label">
+                            <input type="radio" name="powerStable" value="true" />
+                            <span class="option-box">Yes</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="powerStable" value="false" />
+                            <span class="option-box">No</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="trust-question">
+                    <p class="question-text">Was the internet speed as described?</p>
+                    <div class="question-options">
+                        <label class="option-label">
+                            <input type="radio" name="internetAsDescribed" value="true" />
+                            <span class="option-box">Yes</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="internetAsDescribed" value="false" />
+                            <span class="option-box">No</span>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ======================================================== -->
+            <!-- WRITTEN REVIEW SECTION                                  -->
+            <!-- ======================================================== -->
+            <section class="review-text-section">
+                <h2 class="section-title">Write your review</h2>
+                <div class="form-group">
+                    <label for="reviewComment" class="form-label">Share your experience (Optional)</label>
+                    <textarea 
+                        id="reviewComment" 
+                        class="form-textarea" 
+                        placeholder="Tell us about your experience. What did you like? What could be improved?"
+                        rows="4"
+                    ></textarea>
+                </div>
+            </section>
+
+            <!-- ======================================================== -->
+            <!-- SUBMIT BUTTON                                            -->
+            <!-- ======================================================== -->
+            <div class="submit-section">
+                <button class="btn-submit-review" id="submitReviewBtn">
+                    Submit Review <i class="ph-bold ph-paper-plane-right"></i>
+                </button>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- PLACEHOLDER: JS will be linked in the next step -->
+    <script src="../scripts/submit-review.js"></script>
+
+</body>
+</html>
