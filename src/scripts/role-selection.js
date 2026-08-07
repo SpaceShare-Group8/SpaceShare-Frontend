@@ -1,6 +1,7 @@
 // ================================================================
 // SPACESHARE — ROLE SELECTION LOGIC
 // Flow: Landing → Role Selection → Signup → OTP → Dashboard
+// Fully aligns with API spec: POST /api/auth/register expects "role": "seeker" | "host"
 // ================================================================
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -12,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const formAlert = document.getElementById("formAlert");
 
   // --- STATE ---
-  let currentSelection = null; // 'seeker' or 'host'
+  let currentSelection = null; // 'seeker' or 'host' (matches API spec)
   let isSubmitting = false;
 
   // ================================================================
@@ -39,6 +40,8 @@ document.addEventListener("DOMContentLoaded", () => {
     currentSelection = role;
     continueBtn.disabled = false;
     hideAlert();
+    
+    console.log(`✅ Role selected: ${role} (matches API spec)`);
   }
 
   // ================================================================
@@ -120,10 +123,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ------------------------------------------------------------
     // STEP 1: Save the selected role to localStorage
+    // This will be used by signup.js in the API payload
+    // API expects: "role": "seeker" or "role": "host"
     // ------------------------------------------------------------
     localStorage.setItem("spaceshare_selected_role", currentSelection);
 
     console.log(`✅ Role saved: ${currentSelection}`);
+    console.log(`📌 API will receive: { "role": "${currentSelection}" }`);
 
     // ------------------------------------------------------------
     // STEP 2: Redirect to the signup page
@@ -141,4 +147,5 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   console.log("🚀 Role Selection UI initialized and ready.");
+  console.log("📌 API Spec: POST /api/auth/register expects 'role': 'seeker' | 'host'");
 });

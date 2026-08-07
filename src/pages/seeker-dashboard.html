@@ -15,6 +15,144 @@
 
     <!-- CSS (separate file) -->
     <link rel="stylesheet" href="../styles/seeker-dashboard.css" />
+    
+    <!-- Additional inline styles for the host toggle -->
+    <style>
+        /* Host Toggle Button Styles */
+        .host-toggle-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #1A4A8A 0%, #2862BC 100%);
+            border-radius: 50px;
+            box-shadow: 0 2px 8px rgba(40, 98, 188, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .host-toggle-wrapper:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(40, 98, 188, 0.4);
+        }
+
+        .host-toggle-wrapper:active {
+            transform: translateY(0);
+        }
+
+        .host-toggle-wrapper i {
+            font-size: 18px;
+            color: #FFD700;
+        }
+
+        .host-toggle-wrapper .toggle-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            line-height: 1.2;
+        }
+
+        .host-toggle-wrapper .toggle-text .main-text {
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .host-toggle-wrapper .toggle-text .sub-text {
+            font-size: 10px;
+            opacity: 0.8;
+            font-weight: 400;
+        }
+
+        .host-toggle-badge {
+            background: #FFD700;
+            color: #1A4A8A;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 50px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .host-toggle-wrapper {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+            .host-toggle-wrapper i {
+                font-size: 15px;
+            }
+            .host-toggle-wrapper .toggle-text .main-text {
+                font-size: 11px;
+            }
+            .host-toggle-wrapper .toggle-text .sub-text {
+                font-size: 9px;
+            }
+            .host-toggle-badge {
+                font-size: 7px;
+                padding: 1px 6px;
+            }
+        }
+
+        /* Sidebar host toggle */
+        .sidebar-host-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            margin: 8px 12px;
+            background: linear-gradient(135deg, #1A4A8A 0%, #2862BC 100%);
+            border-radius: 12px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            width: calc(100% - 24px);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .sidebar-host-toggle:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(40, 98, 188, 0.3);
+        }
+
+        .sidebar-host-toggle i {
+            font-size: 20px;
+            color: #FFD700;
+        }
+
+        .sidebar-host-toggle .toggle-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            line-height: 1.2;
+            flex: 1;
+        }
+
+        .sidebar-host-toggle .toggle-text .main-text {
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .sidebar-host-toggle .toggle-text .sub-text {
+            font-size: 10px;
+            opacity: 0.8;
+        }
+
+        /* Hide host toggle in sidebar on mobile when sidebar is closed */
+        @media (max-width: 1024px) {
+            .sidebar-host-toggle {
+                margin: 8px 16px;
+                width: calc(100% - 32px);
+            }
+        }
+    </style>
 </head>
 <body class="app-layout">
 
@@ -60,6 +198,16 @@
                     <span>Messages</span>
                 </a>
             </nav>
+
+            <!-- Sidebar Host Toggle Button -->
+            <button class="sidebar-host-toggle" id="sidebarHostToggle" onclick="switchToHost()">
+                <i class="ph-fill ph-switch"></i>
+                <div class="toggle-text">
+                    <span class="main-text">Switch to Host</span>
+                    <span class="sub-text">Manage your spaces</span>
+                </div>
+                <span class="host-toggle-badge">Host</span>
+            </button>
         </div>
 
         <!-- Sidebar User Profile Info -->
@@ -93,12 +241,23 @@
                 </nav>
             </div>
 
-            <!-- Right Side: Notifications & User Avatar -->
+            <!-- Right Side: Notifications & User Avatar & Host Toggle -->
             <div class="top-bar-right">
                 <button class="icon-btn notification-btn" aria-label="Notifications">
                     <i class="ph ph-bell"></i>
                     <span class="notification-dot"></span>
                 </button>
+                
+                <!-- Host Toggle Button in Top Bar -->
+                <button class="host-toggle-wrapper" id="topBarHostToggle" onclick="switchToHost()">
+                    <i class="ph-fill ph-switch"></i>
+                    <div class="toggle-text">
+                        <span class="main-text">Switch to Host</span>
+                        <span class="sub-text">Manage your spaces</span>
+                    </div>
+                    <span class="host-toggle-badge">Host</span>
+                </button>
+
                 <div class="user-avatar-wrapper" tabindex="0" role="button" aria-label="User profile">
                     <span class="avatar-initials">ZD</span>
                 </div>
@@ -338,5 +497,32 @@
 
     <!-- JS (separate file) -->
     <script type="module" src="../scripts/seeker-dashboard.js"></script>
+    
+    <!-- Inline script for host toggle functionality -->
+    <script>
+        // Host toggle function
+        function switchToHost() {
+            // Navigate to host dashboard
+            window.location.href = '/pages/host-dashboard.html';
+        }
+
+        // Also make it available globally for onclick handlers
+        window.switchToHost = switchToHost;
+
+        // Add keyboard support for the toggle buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const hostToggles = document.querySelectorAll('.host-toggle-wrapper, .sidebar-host-toggle');
+            hostToggles.forEach(btn => {
+                btn.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        switchToHost();
+                    }
+                });
+                btn.setAttribute('role', 'button');
+                btn.setAttribute('tabindex', '0');
+            });
+        });
+    </script>
 </body>
 </html>

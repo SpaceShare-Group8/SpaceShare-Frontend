@@ -2,6 +2,7 @@
    SPACESHARE — SIGN IN PAGE LOGIC (login.js)
    Fully integrated with SpaceShare Backend API
    Handles dynamic environments, token storage, and error states.
+   Redirects to the appropriate dashboard based on user role.
    ========================================================================== */
 
 (function() {
@@ -19,7 +20,18 @@
     const LOGIN_ENDPOINT = `${API_BASE_URL}/api/auth/login`;
     
     // ================================================================
-    // 2. DOM REFERENCES
+    // 2. STORAGE KEYS
+    // ================================================================
+    
+    const STORAGE_KEYS = {
+        ACCESS_TOKEN: 'spaceshare:accessToken',
+        REFRESH_TOKEN: 'spaceshare:refreshToken',
+        USER_DATA: 'spaceshare:user',
+        USER_ROLE: 'spaceshare:userRole'
+    };
+    
+    // ================================================================
+    // 3. DOM REFERENCES
     // ================================================================
     
     const DOM = {
@@ -33,13 +45,13 @@
     };
 
     // ================================================================
-    // 3. STATE MANAGEMENT
+    // 4. STATE MANAGEMENT
     // ================================================================
     
     let isSubmitting = false;
 
     // ================================================================
-    // 4. UI HELPER FUNCTIONS
+    // 5. UI HELPER FUNCTIONS
     // ================================================================
 
     /**
@@ -99,7 +111,7 @@
     }
 
     // ================================================================
-    // 5. VALIDATION ENGINE
+    // 6. VALIDATION ENGINE
     // ================================================================
 
     /**
@@ -140,7 +152,41 @@
     }
 
     // ================================================================
-    // 6. API INTERACTION
+    // 7. GET DASHBOARD URL BASED ON ROLE
+    // ================================================================
+
+    /**
+     * Get the dashboard URL based on user role
+     */
+    function getDashboardUrl(role) {
+        switch (role?.toLowerCase()) {
+            case 'host':
+                return 'host-dashboard.html';
+            case 'corporate_admin':
+                return 'corporate-dashboard.html';
+            case 'admin':
+                return 'admin-dashboard.html';
+            case 'seeker':
+            default:
+                return 'seeker-dashboard.html';
+        }
+    }
+
+    /**
+     * Get display name for role
+     */
+    function getRoleDisplayName(role) {
+        switch (role?.toLowerCase()) {
+            case 'host': return 'Host';
+            case 'corporate_admin': return 'Corporate Admin';
+            case 'admin': return 'Platform Admin';
+            case 'seeker': return 'Workspace Seeker';
+            default: return 'User';
+        }
+    }
+
+    // ================================================================
+    // 8. API INTERACTION
     // ================================================================
 
     /**
@@ -167,27 +213,39 @@
         // Extract tokens from backend response
         const accessToken = data.accessToken || data.access_token || data.token;
         const refreshToken = data.refreshToken || data.refresh_token;
+        const user = data.user || data.data?.user || {};
 
         if (!accessToken) {
             throw new Error('Authentication failed: No access token received.');
         }
 
+        // Determine user role
+        const userRole = user.role || user.roles?.[0] || 'seeker';
+        
+        console.log('✅ Login successful!');
+        console.log('📌 User role:', userRole);
+        console.log('📌 Dashboard:', getDashboardUrl(userRole));
+
         // Store tokens securely in localStorage
-        localStorage.setItem('access_token', accessToken);
+        localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, accessToken);
         if (refreshToken) {
-            localStorage.setItem('refresh_token', refreshToken);
+            localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, refreshToken);
         }
 
-        // Store user data if available
-        if (data.user) {
-            localStorage.setItem('user', JSON.stringify(data.user));
+        // Store user data
+        if (user) {
+            localStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(user));
         }
 
-        console.log('✅ Login successful. Tokens stored.');
+        // Store user role for dashboard redirection
+        localStorage.setItem(STORAGE_KEYS.USER_ROLE, userRole);
+
+        // Return the dashboard URL for redirection
+        return getDashboardUrl(userRole);
     }
 
     // ================================================================
-    // 7. FORM SUBMISSION HANDLER
+    // 9. FORM SUBMISSION HANDLER
     // ================================================================
 
     async function handleSubmit(event) {
@@ -232,11 +290,12 @@
                 return;
             }
 
-            // Success!
-            handleLoginSuccess(result.data);
+            // Success! Handle login and get dashboard URL
+            const dashboardUrl = handleLoginSuccess(result.data);
             
-            // Redirect to the dashboard/home page
-            window.location.href = 'seeker-dashboard.html';
+            // Redirect to the appropriate dashboard based on role
+            console.log(`🔄 Redirecting to: ${dashboardUrl}`);
+            window.location.href = dashboardUrl;
 
         } catch (error) {
             // Handle network errors (offline, DNS failure, etc.)
@@ -255,7 +314,7 @@
     }
 
     // ================================================================
-    // 8. EVENT LISTENERS
+    // 10. EVENT LISTENERS
     // ================================================================
 
     // Form submission
@@ -295,7 +354,7 @@
     }
 
     // ================================================================
-    // 9. INITIALIZATION
+    // 11. INITIALIZATION
     // ================================================================
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -307,6 +366,16 @@
 
         // Ensure button starts disabled
         DOM.submitBtn.disabled = true;
+
+        // Check if user is already logged in
+        const existingToken = localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
+        const existingRole = localStorage.getItem(STORAGE_KEYS.USER_ROLE);
+        
+        if (existingToken && existingRole) {
+            console.log('🔐 User already has a session. Redirecting to dashboard...');
+            const dashboardUrl = getDashboardUrl(existingRole);
+            window.location.href = dashboardUrl;
+        }
     });
 
 })();

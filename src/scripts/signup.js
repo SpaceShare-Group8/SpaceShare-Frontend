@@ -21,7 +21,8 @@ console.log('🔗 API Base URL:', API_BASE_URL);
 
 const STORAGE_KEYS = {
     SELECTED_ROLE: 'spaceshare_selected_role', // ✅ Matches role-selection.js
-    VERIFY_EMAIL: 'spaceshare:verifyEmail'
+    VERIFY_EMAIL: 'spaceshare:verifyEmail',
+    USER_ROLE: 'spaceshare:userRole' // ✅ Store role for dashboard redirection
 };
 
 // ================================================================
@@ -74,6 +75,7 @@ let resendTimer = null;
 let countdownSeconds = 60;
 let userEmailForVerification = '';
 let isSubmitting = false;
+let selectedRole = 'seeker'; // Default to seeker
 
 // ================================================================
 // UI HELPERS
@@ -129,6 +131,23 @@ function formatRoleName(role) {
         case 'corporate_admin': return 'Corporate Admin';
         case 'admin': return 'Platform Admin';
         default: return 'Workspace Seeker';
+    }
+}
+
+/**
+ * Get the dashboard URL based on user role
+ */
+function getDashboardUrl(role) {
+    switch (role?.toLowerCase()) {
+        case 'host':
+            return 'host-dashboard.html';
+        case 'corporate_admin':
+            return 'corporate-dashboard.html';
+        case 'admin':
+            return 'admin-dashboard.html';
+        case 'seeker':
+        default:
+            return 'seeker-dashboard.html';
     }
 }
 
@@ -261,12 +280,16 @@ function startResendCountdown() {
 
 /**
  * Redirect to OTP verification page
+ * Stores the user's role so OTP page knows where to redirect after verification
  */
-function redirectToOTP(email) {
+function redirectToOTP(email, role) {
     // Store email for OTP verification
     localStorage.setItem(STORAGE_KEYS.VERIFY_EMAIL, email);
+    // Store role for dashboard redirection after OTP
+    localStorage.setItem(STORAGE_KEYS.USER_ROLE, role);
     
     console.log('🔐 Redirecting to OTP verification for:', email);
+    console.log('📌 Role:', role);
     
     // Redirect to OTP page
     window.location.href = 'otp.html';
@@ -352,8 +375,10 @@ async function handleFormSubmit(event) {
     const phone = DOM.phoneInput?.value.trim() || '';
     const password = DOM.passwordInput?.value || '';
     const confirmPassword = DOM.confirmPasswordInput?.value || '';
-    const selectedRole = localStorage.getItem(STORAGE_KEYS.SELECTED_ROLE) || 'seeker';
     const termsAccepted = DOM.termsCheckbox?.checked || false;
+
+    // Get selected role from localStorage (set during role selection)
+    selectedRole = localStorage.getItem(STORAGE_KEYS.SELECTED_ROLE) || 'seeker';
 
     // ================================================================
     // VALIDATION
@@ -428,13 +453,17 @@ async function handleFormSubmit(event) {
         userEmailForVerification = email;
 
         console.log('✅ Registration successful! Redirecting to OTP...');
+        console.log('📌 User role:', selectedRole);
 
         // Show success message briefly before redirect
         showAlert('Account created! Sending verification code...', true);
 
+        // Store role for dashboard redirection
+        localStorage.setItem(STORAGE_KEYS.USER_ROLE, selectedRole);
+
         // Redirect to OTP page after a short delay
         setTimeout(() => {
-            redirectToOTP(email);
+            redirectToOTP(email, selectedRole);
         }, 1500);
 
     } catch (error) {

@@ -1,94 +1,252 @@
 /**
  * ==========================================================================
- * SpaceShare - Host Dashboard JavaScript File
- * Complete Multi-Step Navigation & Live Backend API Integration
- * Base URL: https://spaceshare-backend-cor9.onrender.com
- *
- * This is the ONLY script the page loads. Previously the page pulled in
- * this file twice (once as a <script type="module">, once inlined at the
- * bottom of the HTML), which double-attached every click listener and is
- * why amenities, working days, and the map behaved inconsistently.
+ * SpaceShare - Host Add Workspace
+ * Complete Functional Implementation - AUTHENTICATED VERSION
+ * Uses the logged-in host's token to create workspaces
+ * API Base: https://spaceshare-backend-cor9.onrender.com
  * ==========================================================================
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    const API_BASE_URL = 'https://spaceshare-backend-cor9.onrender.com';
+    'use strict';
+
+    // ============================================================
+    // CONFIGURATION
+    // ============================================================
+    const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? 'http://localhost:5000'
+        : 'https://spaceshare-backend-cor9.onrender.com';
+    
     const MAX_GALLERY_PHOTOS = 10;
 
-    let currentStep = 1;
-    const totalSteps = 3;
+    const STORAGE_KEYS = {
+        ACCESS_TOKEN: 'spaceshare:accessToken',
+        REFRESH_TOKEN: 'spaceshare:refreshToken',
+        USER_DATA: 'spaceshare:user',
+        USER_ROLE: 'spaceshare:userRole'
+    };
 
-    // Tracks the uploaded verification document files, keyed by doc type
-    const verificationDocs = {};
-
-    // ------------------------------------------------------------------
-    // Core DOM references
-    // ------------------------------------------------------------------
+    // ============================================================
+    // DOM REFERENCES
+    // ============================================================
+    const form = document.getElementById('workspaceForm');
     const nextBtn = document.getElementById('nextBtn');
     const prevBtn = document.getElementById('prevBtn');
     const saveDraftBtn = document.getElementById('saveDraftBtn');
-    const workspaceForm = document.getElementById('workspaceForm');
+    
+    // Step containers
+    const step1Content = document.getElementById('step1Content');
+    const step2Content = document.getElementById('step2Content');
+    const step3Content = document.getElementById('step3Content');
+    
+    // Step indicators
+    const stepIndicator1 = document.getElementById('stepIndicator1');
+    const stepIndicator2 = document.getElementById('stepIndicator2');
+    const stepIndicator3 = document.getElementById('stepIndicator3');
+    const stepLabel1 = document.getElementById('stepLabel1');
+    const stepLabel2 = document.getElementById('stepLabel2');
+    const stepLabel3 = document.getElementById('stepLabel3');
+    const progressBar = document.getElementById('stepProgressBar');
 
-    // ==================================================================
-    // MOBILE NAVIGATION DRAWER
-    // ==================================================================
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const closeMobileSidebarBtn = document.getElementById('closeMobileSidebarBtn');
-    const mobileSidebarDrawer = document.getElementById('mobileSidebarDrawer');
-    const mobileSidebarBackdrop = document.getElementById('mobileSidebarBackdrop');
+    // Form fields
+    const titleInput = document.getElementById('title');
+    const descriptionInput = document.getElementById('description');
+    const workspaceTypeSelect = document.getElementById('workspace_type');
+    const addressInput = document.getElementById('address-input');
+    const citySelect = document.getElementById('city');
+    const stateSelect = document.getElementById('state');
+    const latitudeInput = document.getElementById('latitude');
+    const longitudeInput = document.getElementById('longitude');
+    const capacityInput = document.getElementById('capacity');
+    const pricePerHourInput = document.getElementById('price_per_hour');
+    const pricePerDayInput = document.getElementById('price_per_day');
+    const openingTimeInput = document.getElementById('opening_time');
+    const closingTimeInput = document.getElementById('closing_time');
+    const internetProviderSelect = document.getElementById('internet_provider');
+    const powerSourceSelect = document.getElementById('power_source');
+    const termsCheck = document.getElementById('termsCheck');
+    const coverPhotoInput = document.getElementById('coverPhotoInput');
+    const galleryInput = document.getElementById('galleryInput');
+    const galleryGrid = document.getElementById('galleryGrid');
+    const galleryAddTile = document.getElementById('galleryAddTile');
 
-    function openMobileSidebar() {
-        mobileSidebarDrawer.classList.add('is-open');
-        mobileSidebarBackdrop.classList.add('is-open');
-        mobileSidebarDrawer.setAttribute('aria-hidden', 'false');
-        mobileMenuBtn.setAttribute('aria-expanded', 'true');
-        document.body.style.overflow = 'hidden';
+    // ============================================================
+    // STATE
+    // ============================================================
+    let currentStep = 1;
+    const totalSteps = 3;
+    let uploadedGalleryFiles = [];
+    let verificationDocs = {};
+    let currentUser = null;
+
+    // ============================================================
+    // AUTHENTICATION HELPERS
+    // ============================================================
+    
+    function getAccessToken() {
+        return localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
     }
 
-    function closeMobileSidebar() {
-        mobileSidebarDrawer.classList.remove('is-open');
-        mobileSidebarBackdrop.classList.remove('is-open');
-        mobileSidebarDrawer.setAttribute('aria-hidden', 'true');
-        mobileMenuBtn.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
+    function getUserRole() {
+        return localStorage.getItem(STORAGE_KEYS.USER_ROLE) || 'seeker';
     }
 
-    if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openMobileSidebar);
-    if (closeMobileSidebarBtn) closeMobileSidebarBtn.addEventListener('click', closeMobileSidebar);
-    if (mobileSidebarBackdrop) mobileSidebarBackdrop.addEventListener('click', closeMobileSidebar);
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeMobileSidebar();
-    });
+    function isAuthenticated() {
+        return !!getAccessToken();
+    }
 
-    // ==================================================================
-    // STEPPER / MULTI-STEP FORM NAVIGATION
-    // ==================================================================
-    function updateStepView() {
-        for (let i = 1; i <= totalSteps; i++) {
-            const stepContent = document.getElementById(`step${i}Content`);
-            if (stepContent) stepContent.classList.add('hidden');
+    function redirectToLogin() {
+        console.warn('🔒 Not authenticated. Redirecting to login...');
+        window.location.href = 'login.html';
+    }
+
+    function redirectToSeekerDashboard() {
+        console.warn('⚠️ User is not a host. Redirecting to seeker dashboard...');
+        window.location.href = 'seeker-dashboard.html';
+    }
+
+    // ============================================================
+    // API HELPERS
+    // ============================================================
+    
+    async function apiRequest(endpoint, options = {}) {
+        const token = getAccessToken();
+        
+        if (!token) {
+            throw new Error('No access token found');
         }
 
-        const activeContent = document.getElementById(`step${currentStep}Content`);
-        if (activeContent) {
-            activeContent.classList.remove('hidden');
-            // Leaflet renders incorrectly if initialised/resized while its
-            // container is display:none, so re-measure it once step 1 (the
-            // step containing the map) becomes visible again.
+        const defaultOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        };
+
+        const mergedOptions = {
+            ...defaultOptions,
+            ...options,
+            headers: {
+                ...defaultOptions.headers,
+                ...(options.headers || {})
+            }
+        };
+
+        const response = await fetch(`${API_BASE_URL}${endpoint}`, mergedOptions);
+
+        if (response.status === 401) {
+            // Token expired or invalid
+            localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+            localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
+            localStorage.removeItem(STORAGE_KEYS.USER_DATA);
+            localStorage.removeItem(STORAGE_KEYS.USER_ROLE);
+            redirectToLogin();
+            throw new Error('Session expired. Please login again.');
+        }
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || `API Error: ${response.status}`);
+        }
+
+        return data;
+    }
+
+    // ============================================================
+    // FETCH CURRENT USER
+    // ============================================================
+    
+    async function fetchCurrentUser() {
+        try {
+            const result = await apiRequest('/api/auth/me');
+            return result.data || result;
+        } catch (error) {
+            console.error('❌ Failed to fetch user:', error);
+            throw error;
+        }
+    }
+
+    // ============================================================
+    // TOAST NOTIFICATION
+    // ============================================================
+    
+    function showToast(message, type = 'success') {
+        // Remove existing toast
+        const existing = document.querySelector('.toast-notification');
+        if (existing) existing.remove();
+
+        const toast = document.createElement('div');
+        toast.className = 'toast-notification';
+        toast.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+            z-index: 9999;
+            max-width: 400px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            background: ${type === 'success' ? '#10B981' : type === 'error' ? '#EF4444' : '#F59E0B'};
+            animation: slideIn 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            transform: translateX(100px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        `;
+        toast.innerHTML = `
+            <i class="fa-solid ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}" style="margin-right: 10px;"></i>
+            ${message}
+        `;
+        document.body.appendChild(toast);
+
+        // Trigger animation
+        requestAnimationFrame(() => {
+            toast.style.transform = 'translateX(0)';
+            toast.style.opacity = '1';
+        });
+        
+        setTimeout(() => {
+            toast.style.transform = 'translateX(100px)';
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 300);
+        }, 5000);
+    }
+
+    // ============================================================
+    // STEPPER NAVIGATION
+    // ============================================================
+    
+    function updateStepView() {
+        // Hide all steps
+        [step1Content, step2Content, step3Content].forEach(el => {
+            if (el) el.classList.add('hidden');
+        });
+
+        // Show current step
+        const activeStep = document.getElementById(`step${currentStep}Content`);
+        if (activeStep) {
+            activeStep.classList.remove('hidden');
+            
+            // Re-initialize map if on step 1
             if (currentStep === 1 && window.leafletMap) {
-                setTimeout(() => window.leafletMap.invalidateSize(), 200);
+                setTimeout(() => window.leafletMap.invalidateSize(), 300);
             }
         }
 
+        // Update indicators
         for (let i = 1; i <= totalSteps; i++) {
             const indicator = document.getElementById(`stepIndicator${i}`);
             const label = document.getElementById(`stepLabel${i}`);
+            
             if (!indicator) continue;
 
             if (i < currentStep) {
-                indicator.className = 'w-10 h-10 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-sm shadow-md ring-4 ring-white transition-all';
+                indicator.className = 'w-10 h-10 rounded-full bg-green-600 text-white font-bold flex items-center justify-center text-sm shadow-md ring-4 ring-white transition-all';
                 indicator.innerHTML = '<i class="fa-solid fa-check text-xs"></i>';
-                if (label) label.className = 'text-xs font-semibold text-blue-600 mt-2';
+                if (label) label.className = 'text-xs font-semibold text-green-600 mt-2';
             } else if (i === currentStep) {
                 indicator.className = 'w-10 h-10 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-sm shadow-md ring-4 ring-white transition-all';
                 indicator.textContent = i;
@@ -100,66 +258,104 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        const progressBar = document.getElementById('stepProgressBar');
+        // Update progress bar
         if (progressBar) {
-            const progressPercent = ((currentStep - 1) / (totalSteps - 1)) * 100;
-            progressBar.style.width = `${progressPercent}%`;
+            const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            progressBar.style.width = `${progress}%`;
         }
 
-        if (currentStep === totalSteps) {
-            nextBtn.innerHTML = '<span>Submit Listing</span> <i class="fa-solid fa-check text-xs"></i>';
-            nextBtn.classList.remove('bg-blue-700', 'hover:bg-blue-800');
-            nextBtn.classList.add('bg-green-700', 'hover:bg-green-800');
-        } else {
-            nextBtn.innerHTML = '<span>Continue</span> <i class="fa-solid fa-arrow-right text-xs"></i>';
-            nextBtn.classList.remove('bg-green-700', 'hover:bg-green-800');
-            nextBtn.classList.add('bg-blue-700', 'hover:bg-blue-800');
-        }
-
-        prevBtn.style.visibility = currentStep === 1 ? 'hidden' : 'visible';
-    }
-
-    /** Validates only the fields belonging to the currently visible step. */
-    function validateCurrentStep() {
-        const activeContent = document.getElementById(`step${currentStep}Content`);
-        if (!activeContent) return true;
-
-        const requiredFields = activeContent.querySelectorAll('[required]');
-        let firstInvalid = null;
-        requiredFields.forEach((field) => {
-            const isValid = field.checkValidity();
-            field.classList.toggle('border-red-500', !isValid);
-            field.classList.toggle('border-gray-300', isValid);
-            if (!isValid && !firstInvalid) firstInvalid = field;
-        });
-
-        if (currentStep === 2) {
-            const anyDaySelected = document.querySelectorAll('.day-btn[aria-pressed="true"]').length > 0;
-            const workingDaysError = document.getElementById('workingDaysError');
-            if (workingDaysError) workingDaysError.classList.toggle('hidden', anyDaySelected);
-            if (!anyDaySelected && !firstInvalid) {
-                firstInvalid = document.getElementById('workingDaysGroup');
+        // Update buttons
+        if (nextBtn) {
+            if (currentStep === totalSteps) {
+                nextBtn.innerHTML = '<i class="fa-solid fa-check-circle mr-2"></i> Publish Workspace';
+                nextBtn.className = 'px-8 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl font-medium text-sm transition shadow-sm flex items-center space-x-2';
+            } else {
+                nextBtn.innerHTML = '<span>Continue</span> <i class="fa-solid fa-arrow-right text-xs"></i>';
+                nextBtn.className = 'px-8 py-3 bg-blue-700 hover:bg-blue-800 text-white rounded-xl font-medium text-sm transition shadow-sm flex items-center space-x-2';
             }
         }
 
-        if (firstInvalid) {
-            firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            if (typeof firstInvalid.focus === 'function') firstInvalid.focus({ preventScroll: true });
-            return false;
+        if (prevBtn) {
+            prevBtn.style.visibility = currentStep === 1 ? 'hidden' : 'visible';
         }
-        return true;
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    function validateStep(step) {
+        const stepContent = document.getElementById(`step${step}Content`);
+        if (!stepContent) return true;
+
+        const requiredFields = stepContent.querySelectorAll('[required]');
+        let isValid = true;
+        let firstInvalid = null;
+
+        requiredFields.forEach(field => {
+            const fieldIsValid = field.checkValidity();
+            field.classList.toggle('border-red-500', !fieldIsValid);
+            field.classList.toggle('border-gray-300', fieldIsValid);
+            
+            if (!fieldIsValid && !firstInvalid) {
+                firstInvalid = field;
+            }
+            isValid = isValid && fieldIsValid;
+        });
+
+        // Step 2: Check working days
+        if (step === 2) {
+            const selectedDays = document.querySelectorAll('.day-btn[aria-pressed="true"]');
+            const workingDaysError = document.getElementById('workingDaysError');
+            
+            if (selectedDays.length === 0) {
+                if (workingDaysError) workingDaysError.classList.remove('hidden');
+                isValid = false;
+                if (!firstInvalid) firstInvalid = document.getElementById('workingDaysGroup');
+            } else {
+                if (workingDaysError) workingDaysError.classList.add('hidden');
+            }
+        }
+
+        // Step 3: Check cover photo
+        if (step === 3) {
+            const coverPhotoWrapper = document.getElementById('coverPhotoPreviewWrapper');
+            if (coverPhotoWrapper && coverPhotoWrapper.classList.contains('hidden')) {
+                showToast('Please upload a cover photo for your workspace', 'error');
+                isValid = false;
+                if (!firstInvalid) firstInvalid = document.getElementById('coverPhotoContainer');
+            }
+
+            if (!termsCheck || !termsCheck.checked) {
+                showToast('Please agree to the Terms & Conditions', 'error');
+                isValid = false;
+                if (!firstInvalid) firstInvalid = termsCheck;
+            }
+        }
+
+        if (!isValid && firstInvalid) {
+            firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            if (typeof firstInvalid.focus === 'function') {
+                firstInvalid.focus({ preventScroll: true });
+            }
+        }
+
+        return isValid;
+    }
+
+    // ============================================================
+    // NEXT / PREVIOUS BUTTONS
+    // ============================================================
+    
     if (nextBtn) {
-        nextBtn.addEventListener('click', async () => {
-            if (!validateCurrentStep()) return;
+        nextBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            
+            if (!validateStep(currentStep)) return;
 
             if (currentStep < totalSteps) {
                 currentStep++;
                 updateStepView();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
-                await submitWorkspaceToBackend();
+                await submitWorkspace();
             }
         });
     }
@@ -169,46 +365,247 @@ document.addEventListener('DOMContentLoaded', () => {
             if (currentStep > 1) {
                 currentStep--;
                 updateStepView();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         });
     }
 
-    // Allow clicking directly on step indicators to jump backwards to a
-    // step already completed (never skip ahead of unvalidated steps).
-    document.querySelectorAll('.step-indicator').forEach((item) => {
-        item.addEventListener('click', () => {
-            const targetStep = parseInt(item.getAttribute('data-step'), 10);
-            if (targetStep <= currentStep) {
-                currentStep = targetStep;
+    // Click on step indicators
+    document.querySelectorAll('.step-indicator').forEach(el => {
+        el.addEventListener('click', () => {
+            const target = parseInt(el.dataset.step, 10);
+            if (target <= currentStep) {
+                currentStep = target;
                 updateStepView();
             }
         });
     });
 
-    // ==================================================================
-    // AMENITIES: single source of truth is the checkbox's native
-    // 'change' event, not a click handler on the wrapping <label>.
-    // Because these inputs are nested inside <label> elements, clicking
-    // anywhere in the card already toggles the checkbox natively - adding
-    // a second manual toggle on 'click' is what caused the double-flip
-    // (select then instantly un-select) bug.
-    // ==================================================================
-    document.querySelectorAll('.amenity-card').forEach((card) => {
+    // ============================================================
+    // COLLECT FORM DATA
+    // ============================================================
+    
+    function getSelectedAmenities() {
+        return Array.from(document.querySelectorAll('input[name="amenities"]:checked'))
+            .map(el => el.value);
+    }
+
+    function getSelectedWorkingDays() {
+        return Array.from(document.querySelectorAll('.day-btn[aria-pressed="true"]'))
+            .map(btn => btn.dataset.day);
+    }
+
+    function collectFormData() {
+        return {
+            title: titleInput?.value?.trim() || '',
+            description: descriptionInput?.value?.trim() || '',
+            workspace_type: workspaceTypeSelect?.value || 'private_office',
+            capacity: parseInt(capacityInput?.value) || 1,
+            address: addressInput?.value?.trim() || '',
+            city: citySelect?.value || 'Lagos',
+            state: stateSelect?.value || 'Lagos',
+            latitude: parseFloat(latitudeInput?.value) || 6.5244,
+            longitude: parseFloat(longitudeInput?.value) || 3.3792,
+            amenities: getSelectedAmenities(),
+            working_days: getSelectedWorkingDays(),
+            price_per_hour: parseFloat(pricePerHourInput?.value) || 0,
+            price_per_day: parseFloat(pricePerDayInput?.value) || 0,
+            opening_time: openingTimeInput?.value || '08:00',
+            closing_time: closingTimeInput?.value || '20:00',
+            internet_provider: internetProviderSelect?.value || '',
+            power_source: powerSourceSelect?.value || ''
+        };
+    }
+
+    // ============================================================
+    // SUBMIT WORKSPACE TO BACKEND
+    // ============================================================
+    
+    async function submitWorkspace() {
+        const token = getAccessToken();
+        
+        if (!token) {
+            showToast('Please login to create a workspace', 'error');
+            redirectToLogin();
+            return;
+        }
+
+        const workspaceData = collectFormData();
+
+        // Validate required fields
+        if (!workspaceData.title) {
+            showToast('Please enter a workspace name', 'error');
+            currentStep = 1;
+            updateStepView();
+            return;
+        }
+
+        if (!workspaceData.address) {
+            showToast('Please enter an address', 'error');
+            currentStep = 1;
+            updateStepView();
+            return;
+        }
+
+        if (!workspaceData.description) {
+            showToast('Please enter a description', 'error');
+            currentStep = 1;
+            updateStepView();
+            return;
+        }
+
+        if (workspaceData.working_days.length === 0) {
+            showToast('Please select at least one working day', 'error');
+            currentStep = 2;
+            updateStepView();
+            return;
+        }
+
+        // Disable submit button
+        if (nextBtn) {
+            nextBtn.disabled = true;
+            nextBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Creating Workspace...';
+        }
+
+        try {
+            console.log('📤 Submitting workspace data:', workspaceData);
+            console.log('🔑 Using token:', token.substring(0, 20) + '...');
+
+            // 1. Create workspace
+            const response = await fetch(`${API_BASE_URL}/api/workspaces`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(workspaceData)
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.message || 'Failed to create workspace');
+            }
+
+            const workspaceId = result.data?.id || result.id;
+            console.log('✅ Workspace created with ID:', workspaceId);
+            showToast('Workspace created! Uploading photos...', 'success');
+
+            // 2. Upload cover photo
+            if (coverPhotoInput?.files?.[0]) {
+                await uploadPhoto(workspaceId, coverPhotoInput.files[0], token);
+            }
+
+            // 3. Upload gallery photos
+            if (uploadedGalleryFiles.length > 0) {
+                for (const file of uploadedGalleryFiles) {
+                    await uploadPhoto(workspaceId, file, token);
+                }
+            }
+
+            // 4. Upload verification documents
+            for (const [docType, file] of Object.entries(verificationDocs)) {
+                if (file) {
+                    await uploadDocument(workspaceId, file, docType, token);
+                }
+            }
+
+            showToast('🎉 Workspace created successfully! It will appear in the frontend.', 'success');
+            
+            // Reset form or redirect to host dashboard
+            setTimeout(() => {
+                window.location.href = 'host-dashboard.html';
+            }, 3000);
+
+        } catch (error) {
+            console.error('❌ Error creating workspace:', error);
+            showToast(error.message || 'Failed to create workspace. Please try again.', 'error');
+            
+            if (nextBtn) {
+                nextBtn.disabled = false;
+                nextBtn.innerHTML = '<span>Submit Listing</span> <i class="fa-solid fa-check text-xs"></i>';
+            }
+        }
+    }
+
+    // ============================================================
+    // PHOTO UPLOAD HELPERS
+    // ============================================================
+    
+    async function uploadPhoto(workspaceId, file, token) {
+        const formData = new FormData();
+        formData.append('photo', file);
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/workspaces/${workspaceId}/photos`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: formData
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message || 'Photo upload failed');
+            }
+
+            console.log('📸 Photo uploaded successfully');
+            return await response.json();
+        } catch (error) {
+            console.error('Photo upload error:', error);
+            throw error;
+        }
+    }
+
+    async function uploadDocument(workspaceId, file, docType, token) {
+        const formData = new FormData();
+        formData.append('document', file);
+        formData.append('document_type', docType);
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/workspaces/${workspaceId}/documents`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: formData
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message || 'Document upload failed');
+            }
+
+            console.log(`📄 ${docType} uploaded successfully`);
+            return await response.json();
+        } catch (error) {
+            console.error('Document upload error:', error);
+            throw error;
+        }
+    }
+
+    // ============================================================
+    // AMENITY CARDS - TOGGLE
+    // ============================================================
+    
+    document.querySelectorAll('.amenity-card').forEach(card => {
         const checkbox = card.querySelector('input[type="checkbox"]');
         if (!checkbox) return;
+
         checkbox.addEventListener('change', () => {
             card.classList.toggle('selected', checkbox.checked);
         });
     });
 
-    // ==================================================================
+    // ============================================================
     // WORKING DAYS TOGGLE
-    // ==================================================================
-    document.querySelectorAll('.day-btn').forEach((btn) => {
+    // ============================================================
+    
+    document.querySelectorAll('.day-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const isSelected = btn.getAttribute('aria-pressed') === 'true';
             btn.setAttribute('aria-pressed', String(!isSelected));
+            
             if (isSelected) {
                 btn.classList.remove('bg-blue-600', 'text-white', 'shadow-sm');
                 btn.classList.add('bg-gray-100', 'text-gray-700');
@@ -216,175 +613,211 @@ document.addEventListener('DOMContentLoaded', () => {
                 btn.classList.remove('bg-gray-100', 'text-gray-700');
                 btn.classList.add('bg-blue-600', 'text-white', 'shadow-sm');
             }
-            const anyDaySelected = document.querySelectorAll('.day-btn[aria-pressed="true"]').length > 0;
+            
+            // Update error state
             const workingDaysError = document.getElementById('workingDaysError');
-            if (anyDaySelected && workingDaysError) workingDaysError.classList.add('hidden');
+            const selectedDays = document.querySelectorAll('.day-btn[aria-pressed="true"]');
+            if (workingDaysError) {
+                workingDaysError.classList.toggle('hidden', selectedDays.length > 0);
+            }
         });
     });
 
-    // ==================================================================
-    // CAPACITY STEPPER (+ / − buttons next to the capacity input)
-    // ==================================================================
-    const capacityInput = document.getElementById('capacity');
+    // ============================================================
+    // CAPACITY STEPPER
+    // ============================================================
+    
     const capacityMinusBtn = document.getElementById('capacityMinusBtn');
     const capacityPlusBtn = document.getElementById('capacityPlusBtn');
 
-    if (capacityInput && capacityMinusBtn && capacityPlusBtn) {
+    if (capacityMinusBtn) {
         capacityMinusBtn.addEventListener('click', () => {
-            const current = parseInt(capacityInput.value, 10) || 1;
-            capacityInput.value = Math.max(1, current - 1);
-        });
-        capacityPlusBtn.addEventListener('click', () => {
-            const current = parseInt(capacityInput.value, 10) || 0;
-            capacityInput.value = current + 1;
-        });
-    }
-
-    // ==================================================================
-    // SAVE DRAFT
-    // ==================================================================
-    if (saveDraftBtn) {
-        saveDraftBtn.addEventListener('click', () => {
-            const formData = collectFormPayload();
-            try {
-                localStorage.setItem('workspace_draft', JSON.stringify(formData));
-                alert('Workspace draft successfully saved locally!');
-            } catch (err) {
-                console.error('Could not save draft:', err);
-                alert('Could not save draft on this device/browser.');
+            const val = parseInt(capacityInput?.value) || 1;
+            if (val > 1) {
+                capacityInput.value = val - 1;
             }
         });
     }
 
-    function getSelectedAmenities() {
-        return Array.from(document.querySelectorAll('input[name="amenities"]:checked')).map((el) => el.value);
+    if (capacityPlusBtn) {
+        capacityPlusBtn.addEventListener('click', () => {
+            const val = parseInt(capacityInput?.value) || 0;
+            capacityInput.value = val + 1;
+        });
     }
 
-    function getSelectedWorkingDays() {
-        return Array.from(document.querySelectorAll('.day-btn[aria-pressed="true"]')).map((btn) => btn.getAttribute('data-day'));
+    // ============================================================
+    // COVER PHOTO UPLOAD
+    // ============================================================
+    
+    const coverPhotoPreviewWrapper = document.getElementById('coverPhotoPreviewWrapper');
+    const coverPhotoPreviewImg = document.getElementById('coverPhotoPreviewImg');
+    const removeCoverPhotoBtn = document.getElementById('removeCoverPhotoBtn');
+
+    if (coverPhotoInput) {
+        coverPhotoInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                coverPhotoPreviewImg.src = event.target.result;
+                coverPhotoPreviewWrapper.classList.remove('hidden');
+                showToast('Cover photo uploaded successfully', 'success');
+            };
+            reader.readAsDataURL(file);
+        });
     }
 
-    function collectFormPayload() {
-        return {
-            title: document.getElementById('title')?.value || '',
-            description: document.getElementById('description')?.value || '',
-            workspace_type: document.getElementById('workspace_type')?.value || 'private_office',
-            business_category: document.getElementById('business_category')?.value || '',
-            capacity: parseInt(document.getElementById('capacity')?.value, 10) || 4,
-            address: document.getElementById('address-input')?.value || '',
-            city: document.getElementById('city')?.value || 'Lagos',
-            state: document.getElementById('state')?.value || 'Lagos',
-            latitude: parseFloat(document.getElementById('latitude')?.value) || 6.5244,
-            longitude: parseFloat(document.getElementById('longitude')?.value) || 3.3792,
-            price_per_hour: parseFloat(document.getElementById('price_per_hour')?.value) || 1500,
-            price_per_day: parseFloat(document.getElementById('price_per_day')?.value) || 12000,
-            minimum_booking_duration: document.getElementById('minimum_booking_duration')?.value || '1 hour',
-            opening_time: document.getElementById('opening_time')?.value || '08:00',
-            closing_time: document.getElementById('closing_time')?.value || '20:00',
-            working_days: getSelectedWorkingDays(),
-            amenities: getSelectedAmenities(),
-            internet_provider: document.getElementById('internet_provider')?.value || '',
-            power_source: document.getElementById('power_source')?.value || ''
-        };
+    if (removeCoverPhotoBtn) {
+        removeCoverPhotoBtn.addEventListener('click', () => {
+            coverPhotoInput.value = '';
+            coverPhotoPreviewImg.src = '';
+            coverPhotoPreviewWrapper.classList.add('hidden');
+        });
     }
 
-    // ==================================================================
-    // BACKEND SUBMISSION
-    // ==================================================================
-    async function submitWorkspaceToBackend() {
-        const token = localStorage.getItem('token') || '';
-        const workspacePayload = collectFormPayload();
+    // ============================================================
+    // GALLERY PHOTOS UPLOAD
+    // ============================================================
+    
+    if (galleryInput) {
+        galleryInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            const remainingSlots = MAX_GALLERY_PHOTOS - uploadedGalleryFiles.length;
+            
+            if (remainingSlots <= 0) {
+                showToast('Maximum 10 gallery photos allowed', 'error');
+                galleryInput.value = '';
+                return;
+            }
 
-        if (!workspacePayload.title || !workspacePayload.address || !workspacePayload.description) {
-            alert('Please fill out all required fields in Basic Information.');
-            currentStep = 1;
-            updateStepView();
-            return;
-        }
+            const filesToUpload = files.slice(0, remainingSlots);
+            
+            filesToUpload.forEach(file => {
+                uploadedGalleryFiles.push(file);
+                
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'relative rounded-xl overflow-hidden border border-gray-200 h-28 group';
+                    itemDiv.innerHTML = `
+                        <img src="${event.target.result}" class="w-full h-full object-cover" alt="Gallery photo">
+                        <button type="button" class="absolute top-2 right-2 w-6 h-6 bg-red-600 text-white rounded-full flex items-center justify-center shadow hover:bg-red-700 transition remove-gallery-item">
+                            <i class="fa-solid fa-xmark text-xs"></i>
+                        </button>
+                    `;
 
-        nextBtn.disabled = true;
-        nextBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Submitting Listing...';
+                    const removeBtn = itemDiv.querySelector('.remove-gallery-item');
+                    removeBtn.addEventListener('click', () => {
+                        const index = uploadedGalleryFiles.indexOf(file);
+                        if (index > -1) {
+                            uploadedGalleryFiles.splice(index, 1);
+                        }
+                        itemDiv.remove();
+                        updateGalleryUI();
+                    });
 
-        try {
-            const response = await fetch(`${API_BASE_URL}/api/workspaces`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
-                },
-                body: JSON.stringify(workspacePayload)
+                    galleryGrid.insertBefore(itemDiv, galleryAddTile);
+                    updateGalleryUI();
+                };
+                reader.readAsDataURL(file);
             });
 
-            const result = await response.json().catch(() => ({}));
+            galleryInput.value = '';
+        });
+    }
 
-            if (response.ok || result.success) {
-                const workspaceId = result.data?.id || result.id || 'workspace-uuid-sample';
-
-                const coverPhotoInput = document.getElementById('coverPhotoInput');
-                if (coverPhotoInput?.files?.[0]) {
-                    const photoFormData = new FormData();
-                    photoFormData.append('photo', coverPhotoInput.files[0]);
-                    await fetch(`${API_BASE_URL}/api/workspaces/${workspaceId}/photos`, {
-                        method: 'POST',
-                        headers: { Authorization: `Bearer ${token}` },
-                        body: photoFormData
-                    }).catch((err) => console.error('Cover photo upload failed:', err));
-                }
-
-                // Gallery photos
-                const galleryFiles = Array.from(document.querySelectorAll('#galleryGrid [data-file-ref]'))
-                    .map((el) => el._file)
-                    .filter(Boolean);
-                for (const file of galleryFiles) {
-                    const galleryFormData = new FormData();
-                    galleryFormData.append('photo', file);
-                    await fetch(`${API_BASE_URL}/api/workspaces/${workspaceId}/photos`, {
-                        method: 'POST',
-                        headers: { Authorization: `Bearer ${token}` },
-                        body: galleryFormData
-                    }).catch((err) => console.error('Gallery photo upload failed:', err));
-                }
-
-                // Verification documents
-                for (const [docType, file] of Object.entries(verificationDocs)) {
-                    if (!file) continue;
-                    const docFormData = new FormData();
-                    docFormData.append('document', file);
-                    docFormData.append('document_type', docType);
-                    await fetch(`${API_BASE_URL}/api/workspaces/${workspaceId}/documents`, {
-                        method: 'POST',
-                        headers: { Authorization: `Bearer ${token}` },
-                        body: docFormData
-                    }).catch((err) => console.error('Document upload failed:', err));
-                }
-
-                alert('Success! Workspace listing and documents created and submitted for review.');
-                window.location.href = '#success-view';
-            } else {
-                throw new Error(result.message || 'Failed to submit workspace listing.');
-            }
-        } catch (error) {
-            console.error('Backend Integration Error:', error);
-            alert('Workspace successfully submitted to SpaceShare live backend!');
-        } finally {
-            nextBtn.disabled = false;
-            nextBtn.innerHTML = '<span>Submit Listing</span> <i class="fa-solid fa-check text-xs"></i>';
+    function updateGalleryUI() {
+        const atLimit = uploadedGalleryFiles.length >= MAX_GALLERY_PHOTOS;
+        if (galleryAddTile) {
+            galleryAddTile.style.display = atLimit ? 'none' : 'flex';
+        }
+        const limitNote = document.getElementById('galleryLimitNote');
+        if (limitNote) {
+            limitNote.classList.toggle('hidden', !atLimit);
         }
     }
 
-    // ==================================================================
-    // LEAFLET MAP: click-to-pin, drag-to-pin, address search, geolocate
-    // ==================================================================
+    // ============================================================
+    // VERIFICATION DOCUMENTS
+    // ============================================================
+    
+    document.querySelectorAll('.doc-file-input').forEach(input => {
+        const card = input.closest('.doc-upload-card');
+        const docType = input.dataset.doc;
+        const filenameEl = card.querySelector('.doc-filename');
+        const removeBtn = card.querySelector('.doc-remove-btn');
+        const iconEl = card.querySelector('.doc-icon');
+
+        input.addEventListener('change', () => {
+            const file = input.files[0];
+            if (!file) return;
+
+            if (file.size > 5 * 1024 * 1024) {
+                showToast('File size must be less than 5MB', 'error');
+                input.value = '';
+                return;
+            }
+
+            verificationDocs[docType] = file;
+            
+            if (filenameEl) {
+                filenameEl.textContent = file.name;
+                filenameEl.classList.remove('hidden');
+            }
+            if (removeBtn) removeBtn.classList.remove('hidden');
+            if (iconEl) {
+                iconEl.classList.remove('text-gray-400');
+                iconEl.classList.add('text-green-600');
+            }
+            
+            showToast(`${docType.replace('_', ' ')} uploaded successfully`, 'success');
+        });
+
+        if (removeBtn) {
+            removeBtn.addEventListener('click', () => {
+                delete verificationDocs[docType];
+                input.value = '';
+                
+                if (filenameEl) {
+                    filenameEl.textContent = '';
+                    filenameEl.classList.add('hidden');
+                }
+                if (removeBtn) removeBtn.classList.add('hidden');
+                if (iconEl) {
+                    iconEl.classList.add('text-gray-400');
+                    iconEl.classList.remove('text-green-600');
+                }
+            });
+        }
+    });
+
+    // ============================================================
+    // SAVE DRAFT (Local Storage)
+    // ============================================================
+    
+    if (saveDraftBtn) {
+        saveDraftBtn.addEventListener('click', () => {
+            const data = collectFormData();
+            try {
+                localStorage.setItem('workspace_draft', JSON.stringify(data));
+                showToast('Draft saved successfully!', 'success');
+            } catch (error) {
+                showToast('Could not save draft', 'error');
+            }
+        });
+    }
+
+    // ============================================================
+    // LEAFLET MAP
+    // ============================================================
+    
     function initLeafletMap() {
         const mapElement = document.getElementById('map');
         if (!mapElement || typeof L === 'undefined' || window.leafletMap) return;
 
-        // Leaflet's default marker icon is normally resolved relative to
-        // leaflet.js's own URL. When leaflet.js is pulled from a CDN this
-        // path resolution frequently breaks, leaving a blank/broken pin
-        // image. Point the default icon straight at the CDN's asset URLs
-        // so the marker always renders correctly regardless of where this
-        // page is hosted.
+        // Fix Leaflet marker icons
         delete L.Icon.Default.prototype._getIconUrl;
         L.Icon.Default.mergeOptions({
             iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
@@ -400,36 +833,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
 
         const marker = L.marker([defaultLat, defaultLng], { draggable: true }).addTo(map);
 
         marker.on('dragend', () => {
-            const position = marker.getLatLng();
-            updateCoordinatesForm(position.lat, position.lng);
-            reverseGeocode(position.lat, position.lng);
+            const pos = marker.getLatLng();
+            updateCoordinates(pos.lat, pos.lng);
+            reverseGeocode(pos.lat, pos.lng);
         });
 
-        // Let hosts click anywhere on the map to drop the pin there too,
-        // not just drag the existing marker.
         map.on('click', (e) => {
             marker.setLatLng(e.latlng);
-            updateCoordinatesForm(e.latlng.lat, e.latlng.lng);
+            updateCoordinates(e.latlng.lat, e.latlng.lng);
             reverseGeocode(e.latlng.lat, e.latlng.lng);
         });
 
-        updateCoordinatesForm(defaultLat, defaultLng);
+        updateCoordinates(defaultLat, defaultLng);
 
-        // ---- Address autocomplete (Nominatim search-as-you-type) ----
-        const addressInput = document.getElementById('address-input');
+        // Address autocomplete
         if (addressInput) {
+            let debounceTimer;
             const suggestionsContainer = document.createElement('div');
             suggestionsContainer.className = 'absolute z-50 bg-white border border-gray-200 w-full rounded-md shadow-lg hidden mt-1 max-h-48 overflow-y-auto';
             addressInput.parentNode.style.position = 'relative';
             addressInput.parentNode.appendChild(suggestionsContainer);
 
-            let debounceTimer;
             addressInput.addEventListener('input', () => {
                 const query = addressInput.value.trim();
                 if (query.length < 3) {
@@ -448,7 +878,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         suggestionsContainer.innerHTML = '';
                         if (results.length > 0) {
                             suggestionsContainer.classList.remove('hidden');
-                            results.forEach((place) => {
+                            results.forEach(place => {
                                 const item = document.createElement('div');
                                 item.className = 'p-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-b-0';
                                 item.textContent = place.display_name;
@@ -459,10 +889,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                                     const lat = parseFloat(place.lat);
                                     const lon = parseFloat(place.lon);
-
                                     map.setView([lat, lon], 16);
                                     marker.setLatLng([lat, lon]);
-                                    updateCoordinatesForm(lat, lon);
+                                    updateCoordinates(lat, lon);
                                 });
 
                                 suggestionsContainer.appendChild(item);
@@ -470,10 +899,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         } else {
                             suggestionsContainer.classList.add('hidden');
                         }
-                    } catch (err) {
-                        console.error('Geocoding search error:', err);
+                    } catch (error) {
+                        console.error('Geocoding error:', error);
                     }
-                }, 350);
+                }, 400);
             });
 
             document.addEventListener('click', (e) => {
@@ -483,49 +912,51 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // ---- "Use my location" button (optional, gracefully degrades) ----
+        // Use my location
         const useMyLocationBtn = document.getElementById('useMyLocationBtn');
         if (useMyLocationBtn) {
             useMyLocationBtn.addEventListener('click', () => {
                 if (!navigator.geolocation) {
-                    alert('Geolocation is not supported by this browser.');
+                    showToast('Geolocation is not supported by your browser', 'error');
                     return;
                 }
+
                 useMyLocationBtn.disabled = true;
+                useMyLocationBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
                         const { latitude, longitude } = position.coords;
                         map.setView([latitude, longitude], 16);
                         marker.setLatLng([latitude, longitude]);
-                        updateCoordinatesForm(latitude, longitude);
+                        updateCoordinates(latitude, longitude);
                         reverseGeocode(latitude, longitude);
                         useMyLocationBtn.disabled = false;
+                        useMyLocationBtn.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i> Use my location';
                     },
-                    (err) => {
-                        console.error('Geolocation error:', err);
-                        alert('Could not access your location. You can still search for an address or click the map to place the pin.');
+                    (error) => {
+                        console.error('Geolocation error:', error);
+                        showToast('Could not get your location. Please enter an address.', 'error');
                         useMyLocationBtn.disabled = false;
+                        useMyLocationBtn.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i> Use my location';
                     },
-                    { enableHighAccuracy: true, timeout: 8000 }
+                    { enableHighAccuracy: true, timeout: 10000 }
                 );
             });
         }
     }
 
-    function updateCoordinatesForm(lat, lng) {
-        const latField = document.getElementById('latitude');
-        const lngField = document.getElementById('longitude');
-        if (latField) latField.value = lat;
-        if (lngField) lngField.value = lng;
-
+    function updateCoordinates(lat, lng) {
+        if (latitudeInput) latitudeInput.value = lat;
+        if (longitudeInput) longitudeInput.value = lng;
+        
         const coordsHint = document.getElementById('coordsHint');
         if (coordsHint) {
-            coordsHint.textContent = `Pin set · Lat ${lat.toFixed(4)}, Lng ${lng.toFixed(4)}`;
+            coordsHint.textContent = `📍 Pin set · Lat ${lat.toFixed(4)}, Lng ${lng.toFixed(4)}`;
         }
     }
 
     async function reverseGeocode(lat, lng) {
-        const addressInput = document.getElementById('address-input');
         if (!addressInput) return;
         try {
             const response = await fetch(
@@ -535,157 +966,57 @@ document.addEventListener('DOMContentLoaded', () => {
             if (result?.display_name) {
                 addressInput.value = result.display_name;
             }
-        } catch (err) {
-            console.error('Reverse geocoding error:', err);
+        } catch (error) {
+            console.error('Reverse geocoding error:', error);
         }
     }
 
-    initLeafletMap();
+    // ============================================================
+    // MOBILE SIDEBAR
+    // ============================================================
+    
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const closeMobileSidebarBtn = document.getElementById('closeMobileSidebarBtn');
+    const mobileSidebarDrawer = document.getElementById('mobileSidebarDrawer');
+    const mobileSidebarBackdrop = document.getElementById('mobileSidebarBackdrop');
 
-    // ==================================================================
-    // COVER PHOTO UPLOAD
-    // ==================================================================
-    const coverPhotoInput = document.getElementById('coverPhotoInput');
-    const coverPhotoPreviewWrapper = document.getElementById('coverPhotoPreviewWrapper');
-    const coverPhotoPreviewImg = document.getElementById('coverPhotoPreviewImg');
-    const removeCoverPhotoBtn = document.getElementById('removeCoverPhotoBtn');
-
-    if (coverPhotoInput) {
-        coverPhotoInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (uploadEvent) => {
-                coverPhotoPreviewImg.src = uploadEvent.target.result;
-                coverPhotoPreviewWrapper.classList.remove('hidden');
-            };
-            reader.readAsDataURL(file);
-        });
+    function openMobileSidebar() {
+        if (mobileSidebarDrawer) mobileSidebarDrawer.classList.add('is-open');
+        if (mobileSidebarBackdrop) mobileSidebarBackdrop.classList.add('is-open');
+        if (mobileMenuBtn) mobileMenuBtn.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
     }
 
-    if (removeCoverPhotoBtn) {
-        removeCoverPhotoBtn.addEventListener('click', () => {
-            coverPhotoInput.value = '';
-            coverPhotoPreviewImg.src = '';
-            coverPhotoPreviewWrapper.classList.add('hidden');
-        });
+    function closeMobileSidebar() {
+        if (mobileSidebarDrawer) mobileSidebarDrawer.classList.remove('is-open');
+        if (mobileSidebarBackdrop) mobileSidebarBackdrop.classList.remove('is-open');
+        if (mobileMenuBtn) mobileMenuBtn.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
     }
 
-    // ==================================================================
-    // WORKSPACE GALLERY (dynamic, starts empty, capped at 10 photos)
-    // ==================================================================
-    const galleryInput = document.getElementById('galleryInput');
-    const galleryGrid = document.getElementById('galleryGrid');
-    const galleryAddTile = document.getElementById('galleryAddTile');
-    const galleryLimitNote = document.getElementById('galleryLimitNote');
+    if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openMobileSidebar);
+    if (closeMobileSidebarBtn) closeMobileSidebarBtn.addEventListener('click', closeMobileSidebar);
+    if (mobileSidebarBackdrop) mobileSidebarBackdrop.addEventListener('click', closeMobileSidebar);
 
-    function currentGalleryCount() {
-        return galleryGrid.querySelectorAll('[data-file-ref]').length;
-    }
-
-    function refreshGalleryLimitState() {
-        const atLimit = currentGalleryCount() >= MAX_GALLERY_PHOTOS;
-        if (galleryAddTile) galleryAddTile.classList.toggle('hidden', atLimit);
-        if (galleryLimitNote) galleryLimitNote.classList.toggle('hidden', !atLimit);
-    }
-
-    if (galleryInput) {
-        galleryInput.addEventListener('change', (e) => {
-            const remainingSlots = MAX_GALLERY_PHOTOS - currentGalleryCount();
-            const files = Array.from(e.target.files).slice(0, Math.max(0, remainingSlots));
-
-            files.forEach((file) => {
-                const reader = new FileReader();
-                reader.onload = (uploadEvent) => {
-                    const itemDiv = document.createElement('div');
-                    itemDiv.className = 'relative rounded-xl overflow-hidden border border-gray-200 h-28 group';
-                    itemDiv.setAttribute('data-file-ref', 'true');
-                    itemDiv._file = file;
-                    itemDiv.innerHTML = `
-                        <img src="${uploadEvent.target.result}" class="w-full h-full object-cover" alt="Workspace gallery photo">
-                        <button type="button" class="absolute top-2 right-2 w-6 h-6 bg-red-600 text-white rounded-full flex items-center justify-center shadow hover:bg-red-700 transition remove-gallery-item">
-                            <i class="fa-solid fa-xmark text-xs"></i>
-                        </button>
-                    `;
-
-                    itemDiv.querySelector('.remove-gallery-item').addEventListener('click', () => {
-                        itemDiv.remove();
-                        refreshGalleryLimitState();
-                    });
-
-                    galleryGrid.insertBefore(itemDiv, galleryAddTile);
-                    refreshGalleryLimitState();
-                };
-                reader.readAsDataURL(file);
-            });
-
-            galleryInput.value = '';
-        });
-    }
-
-    // ==================================================================
-    // VERIFICATION DOCUMENT UPLOADS (Business Reg / Utility Bill / Gov ID)
-    // ==================================================================
-    const MAX_DOC_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
-
-    document.querySelectorAll('.doc-file-input').forEach((input) => {
-        const card = input.closest('.doc-upload-card');
-        const filenameEl = card.querySelector('.doc-filename');
-        const removeBtn = card.querySelector('.doc-remove-btn');
-        const uploadLabel = card.querySelector('.doc-upload-label');
-        const hintEl = card.querySelector('.doc-hint');
-        const iconEl = card.querySelector('.doc-icon');
-        const docType = input.getAttribute('data-doc');
-
-        input.addEventListener('change', () => {
-            const file = input.files[0];
-            if (!file) return;
-
-            if (file.size > MAX_DOC_SIZE_BYTES) {
-                alert(`"${file.name}" is larger than 5MB. Please choose a smaller file.`);
-                input.value = '';
-                return;
-            }
-
-            verificationDocs[docType] = file;
-            card.classList.add('doc-uploaded');
-            if (iconEl) {
-                iconEl.classList.remove('text-gray-400');
-                iconEl.classList.add('text-green-600');
-            }
-            if (filenameEl) {
-                filenameEl.textContent = file.name;
-                filenameEl.classList.remove('hidden');
-            }
-            if (hintEl) hintEl.classList.add('hidden');
-            if (uploadLabel) {
-                uploadLabel.firstChild.textContent = 'Replace Document';
-            }
-            if (removeBtn) removeBtn.classList.remove('hidden');
-        });
-
-        if (removeBtn) {
-            removeBtn.addEventListener('click', () => {
-                delete verificationDocs[docType];
-                input.value = '';
-                card.classList.remove('doc-uploaded');
-                if (iconEl) {
-                    iconEl.classList.add('text-gray-400');
-                    iconEl.classList.remove('text-green-600');
-                }
-                if (filenameEl) {
-                    filenameEl.textContent = '';
-                    filenameEl.classList.add('hidden');
-                }
-                if (hintEl) hintEl.classList.remove('hidden');
-                if (uploadLabel) {
-                    uploadLabel.firstChild.textContent = 'Upload Document';
-                }
-                removeBtn.classList.add('hidden');
-            });
-        }
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeMobileSidebar();
     });
 
-    // Kick off the initial render
-    updateStepView();
-});
+    // ============================================================
+    // INITIALIZATION
+    // ============================================================
+    
+    async function init() {
+        console.log('🚀 SpaceShare Host Add Workspace (Authenticated)');
+        console.log(`📍 API Base: ${API_BASE_URL}`);
+
+        // Check authentication
+        if (!isAuthenticated()) {
+            showToast('Please login to create a workspace', 'error');
+            redirectToLogin();
+            return;
+        }
+
+        // Check role
+        const role = getUserRole();
+        if (role !== 'host

@@ -1,6 +1,7 @@
 /* ================================================================
    SPACESHARE — OTP VERIFICATION PAGE LOGIC (otp.js)
    Fully integrated with SpaceShare Backend API
+   Redirects to the appropriate dashboard based on user role
    ================================================================ */
 
 // ================================================================
@@ -12,6 +13,18 @@ const API_BASE_URL = window.location.hostname === 'localhost' || window.location
     : 'https://spaceshare-backend-cor9.onrender.com';
 
 console.log('🔗 OTP API Base URL:', API_BASE_URL);
+
+// ================================================================
+// STORAGE KEYS
+// ================================================================
+
+const STORAGE_KEYS = {
+    VERIFY_EMAIL: 'spaceshare:verifyEmail',
+    USER_ROLE: 'spaceshare:userRole',
+    ACCESS_TOKEN: 'spaceshare:accessToken',
+    REFRESH_TOKEN: 'spaceshare:refreshToken',
+    USER_DATA: 'spaceshare:user'
+};
 
 // ================================================================
 // DOM REFERENCES
@@ -38,9 +51,27 @@ const DOM = {
 let timer = null;
 let timeLeft = 60;
 let isVerifying = false;
-let userEmail = localStorage.getItem('spaceshare:verifyEmail') || '';
+let userEmail = localStorage.getItem(STORAGE_KEYS.VERIFY_EMAIL) || '';
+let userRole = localStorage.getItem(STORAGE_KEYS.USER_ROLE) || 'seeker';
 let userData = null;
 let redirectTimer = null;
+
+/**
+ * Get the dashboard URL based on user role
+ */
+function getDashboardUrl(role) {
+    switch (role?.toLowerCase()) {
+        case 'host':
+            return 'host-dashboard.html';
+        case 'corporate_admin':
+            return 'corporate-dashboard.html';
+        case 'admin':
+            return 'admin-dashboard.html';
+        case 'seeker':
+        default:
+            return 'seeker-dashboard.html';
+    }
+}
 
 // ================================================================
 // UI HELPERS
@@ -114,6 +145,10 @@ function showSuccessScreen() {
     if (DOM.otpHeader) DOM.otpHeader.style.display = 'none';
     if (DOM.backBtn) DOM.backBtn.style.display = 'none';
 
+    // Determine role for display
+    const roleDisplay = userRole === 'host' ? 'Host' : 'Workspace Seeker';
+    const dashboardUrl = getDashboardUrl(userRole);
+
     // Create success content
     const successHTML = `
         <div class="verification-success" id="verificationSuccess">
@@ -123,9 +158,9 @@ function showSuccessScreen() {
                 </div>
             </div>
             <h2 class="success-title">Verification Successful! 🎉</h2>
-            <p class="success-message">Your email has been verified. You are now logged in.</p>
+            <p class="success-message">Your email has been verified. You are now logged in as a <strong>${roleDisplay}</strong>.</p>
             <p class="success-submessage">
-                Redirecting to dashboard in <span id="redirectCountdown">3</span> seconds...
+                Redirecting to ${roleDisplay} Dashboard in <span id="redirectCountdown">3</span> seconds...
             </p>
             <button class="btn-verify success-btn" id="goToDashboardBtn">
                 Go to Dashboard Now
@@ -136,7 +171,6 @@ function showSuccessScreen() {
     // Insert success content after the header
     const container = document.querySelector('.otp-container');
     if (container) {
-        // Find the position to insert (after back button or header)
         const insertPosition = DOM.backBtn ? DOM.backBtn.nextSibling : container.firstChild;
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = successHTML;
@@ -180,6 +214,9 @@ function showSuccessScreen() {
                 line-height: 1.6;
                 margin-bottom: 0.5rem;
             }
+            .success-message strong {
+                color: #0F172A;
+            }
             .success-submessage {
                 color: #94A3B8;
                 font-size: 0.85rem;
@@ -216,12 +253,12 @@ function showSuccessScreen() {
         // Store user data in localStorage for dashboard
         if (userData) {
             try {
-                localStorage.setItem('spaceshare:user', JSON.stringify(userData));
+                localStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(userData));
                 if (userData.accessToken) {
-                    localStorage.setItem('spaceshare:accessToken', userData.accessToken);
+                    localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, userData.accessToken);
                 }
                 if (userData.refreshToken) {
-                    localStorage.setItem('spaceshare:refreshToken', userData.refreshToken);
+                    localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, userData.refreshToken);
                 }
             } catch (e) {
                 console.warn('Could not store user data:', e);
@@ -238,7 +275,8 @@ function showSuccessScreen() {
             if (countdownEl) countdownEl.textContent = countdown;
             if (countdown <= 0) {
                 clearInterval(redirectTimer);
-                window.location.href = 'dashboard.html';
+                // Redirect to the appropriate dashboard based on role
+                window.location.href = dashboardUrl;
             }
         }, 1000);
 
@@ -247,7 +285,7 @@ function showSuccessScreen() {
         if (goToBtn) {
             goToBtn.addEventListener('click', () => {
                 clearInterval(redirectTimer);
-                window.location.href = 'dashboard.html';
+                window.location.href = dashboardUrl;
             });
         }
     }
@@ -354,6 +392,7 @@ async function verifyOTP() {
 
     try {
         console.log('📤 Verifying OTP for:', userEmail);
+        console.log('📌 User role:', userRole);
 
         const response = await fetch(`${API_BASE_URL}/api/auth/verify-otp`, {
             method: 'POST',
@@ -378,9 +417,9 @@ async function verifyOTP() {
         userData = data.data || {};
         
         // Clear email from storage
-        localStorage.removeItem('spaceshare:verifyEmail');
+        localStorage.removeItem(STORAGE_KEYS.VERIFY_EMAIL);
 
-        // Show success screen
+        // Show success screen with role-specific redirect
         showSuccessScreen();
 
     } catch (error) {
@@ -486,7 +525,11 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('🌐 API URL:', API_BASE_URL);
 
     // Get email from localStorage
-    userEmail = localStorage.getItem('spaceshare:verifyEmail') || '';
+    userEmail = localStorage.getItem(STORAGE_KEYS.VERIFY_EMAIL) || '';
+    userRole = localStorage.getItem(STORAGE_KEYS.USER_ROLE) || 'seeker';
+    
+    console.log('📌 User role:', userRole);
+    console.log('📌 Dashboard target:', getDashboardUrl(userRole));
     
     if (DOM.emailDisplay) {
         DOM.emailDisplay.textContent = userEmail || 'your@email.com';
