@@ -1,8 +1,8 @@
 /**
  * ==========================================================================
  * SpaceShare - Host Add Workspace
- * Complete Functional Implementation - AUTHENTICATED VERSION
- * Uses the logged-in host's token to create workspaces
+ * Complete Functional Implementation - NO LOGIN REQUIRED
+ * Creates workspaces directly using a default host
  * API Base: https://spaceshare-backend-cor9.onrender.com
  * ==========================================================================
  */
@@ -13,19 +13,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // ============================================================
     // CONFIGURATION
     // ============================================================
-    const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-        ? 'http://localhost:5000'
-        : 'https://spaceshare-backend-cor9.onrender.com';
-    
+    const API_BASE_URL = 'https://spaceshare-backend-cor9.onrender.com';
     const MAX_GALLERY_PHOTOS = 10;
-
-    const STORAGE_KEYS = {
-        ACCESS_TOKEN: 'spaceshare:accessToken',
-        REFRESH_TOKEN: 'spaceshare:refreshToken',
-        USER_DATA: 'spaceshare:user',
-        USER_ROLE: 'spaceshare:userRole'
-    };
-
+    
+    // Default host ID - will be fetched from backend if not available
+    let DEFAULT_HOST_ID = null;
+    
     // ============================================================
     // DOM REFERENCES
     // ============================================================
@@ -77,107 +70,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalSteps = 3;
     let uploadedGalleryFiles = [];
     let verificationDocs = {};
-    let currentUser = null;
 
     // ============================================================
-    // AUTHENTICATION HELPERS
-    // ============================================================
-    
-    function getAccessToken() {
-        return localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
-    }
-
-    function getUserRole() {
-        return localStorage.getItem(STORAGE_KEYS.USER_ROLE) || 'seeker';
-    }
-
-    function isAuthenticated() {
-        return !!getAccessToken();
-    }
-
-    function redirectToLogin() {
-        console.warn('🔒 Not authenticated. Redirecting to login...');
-        window.location.href = 'login.html';
-    }
-
-    function redirectToSeekerDashboard() {
-        console.warn('⚠️ User is not a host. Redirecting to seeker dashboard...');
-        window.location.href = 'seeker-dashboard.html';
-    }
-
-    // ============================================================
-    // API HELPERS
-    // ============================================================
-    
-    async function apiRequest(endpoint, options = {}) {
-        const token = getAccessToken();
-        
-        if (!token) {
-            throw new Error('No access token found');
-        }
-
-        const defaultOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        };
-
-        const mergedOptions = {
-            ...defaultOptions,
-            ...options,
-            headers: {
-                ...defaultOptions.headers,
-                ...(options.headers || {})
-            }
-        };
-
-        const response = await fetch(`${API_BASE_URL}${endpoint}`, mergedOptions);
-
-        if (response.status === 401) {
-            // Token expired or invalid
-            localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
-            localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
-            localStorage.removeItem(STORAGE_KEYS.USER_DATA);
-            localStorage.removeItem(STORAGE_KEYS.USER_ROLE);
-            redirectToLogin();
-            throw new Error('Session expired. Please login again.');
-        }
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.message || `API Error: ${response.status}`);
-        }
-
-        return data;
-    }
-
-    // ============================================================
-    // FETCH CURRENT USER
-    // ============================================================
-    
-    async function fetchCurrentUser() {
-        try {
-            const result = await apiRequest('/api/auth/me');
-            return result.data || result;
-        } catch (error) {
-            console.error('❌ Failed to fetch user:', error);
-            throw error;
-        }
-    }
-
-    // ============================================================
-    // TOAST NOTIFICATION
+    // UTILITY FUNCTIONS
     // ============================================================
     
     function showToast(message, type = 'success') {
-        // Remove existing toast
-        const existing = document.querySelector('.toast-notification');
-        if (existing) existing.remove();
-
         const toast = document.createElement('div');
-        toast.className = 'toast-notification';
         toast.style.cssText = `
             position: fixed;
             top: 20px;
@@ -192,27 +91,88 @@ document.addEventListener('DOMContentLoaded', () => {
             background: ${type === 'success' ? '#10B981' : type === 'error' ? '#EF4444' : '#F59E0B'};
             animation: slideIn 0.3s ease;
             font-family: 'Inter', sans-serif;
-            transform: translateX(100px);
-            opacity: 0;
-            transition: transform 0.3s ease, opacity 0.3s ease;
         `;
         toast.innerHTML = `
             <i class="fa-solid ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}" style="margin-right: 10px;"></i>
             ${message}
         `;
         document.body.appendChild(toast);
-
-        // Trigger animation
-        requestAnimationFrame(() => {
-            toast.style.transform = 'translateX(0)';
-            toast.style.opacity = '1';
-        });
         
         setTimeout(() => {
-            toast.style.transform = 'translateX(100px)';
             toast.style.opacity = '0';
+            toast.style.transition = 'opacity 0.3s';
             setTimeout(() => toast.remove(), 300);
         }, 5000);
+    }
+
+    // ============================================================
+    // GET OR CREATE DEFAULT HOST
+    // ============================================================
+    
+    async function getOrCreateDefaultHost() {
+        try {
+            // First, try to get an existing host
+            const response = await fetch(`${API_BASE_URL}/api/users?role=host&limit=1`);
+            const result = await response.json();
+            
+            if (result.data && result.data.length > 0) {
+                DEFAULT_HOST_ID = result.data[0].id;
+                console.log('✅ Found existing host:', DEFAULT_HOST_ID);
+                return DEFAULT_HOST_ID;
+            }
+            
+            // If no host exists, create one
+            console.log('📝 No host found. Creating default host...');
+            const createResponse = await fetch(`${API_BASE_URL}/api/auth/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    full_name: 'Default Host',
+                    email: 'host@spaceshare.com',
+                    phone: '+2348000000000',
+                    password: 'HostPassword123!',
+                    role: 'host'
+                })
+            });
+            
+            const createResult = await createResponse.json();
+            
+            if (createResponse.ok && createResult.data) {
+                DEFAULT_HOST_ID = createResult.data.id;
+                console.log('✅ Created new host:', DEFAULT_HOST_ID);
+                return DEFAULT_HOST_ID;
+            }
+            
+            // If registration fails, try login with default credentials
+            console.log('🔄 Trying to login with default credentials...');
+            const loginResponse = await fetch(`${API_BASE_URL}/api/auth/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: 'host@spaceshare.com',
+                    password: 'HostPassword123!'
+                })
+            });
+            
+            const loginResult = await loginResponse.json();
+            
+            if (loginResponse.ok && loginResult.data) {
+                DEFAULT_HOST_ID = loginResult.data.user.id;
+                console.log('✅ Logged in as existing host:', DEFAULT_HOST_ID);
+                return DEFAULT_HOST_ID;
+            }
+            
+            throw new Error('Could not find or create a host user');
+            
+        } catch (error) {
+            console.error('❌ Error getting default host:', error);
+            showToast('Could not find a host. Please create a host account first.', 'error');
+            return null;
+        }
     }
 
     // ============================================================
@@ -355,6 +315,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentStep++;
                 updateStepView();
             } else {
+                // Make sure we have a host before submitting
+                if (!DEFAULT_HOST_ID) {
+                    showToast('Please wait while we set up the host account...', 'warning');
+                    const hostId = await getOrCreateDefaultHost();
+                    if (!hostId) {
+                        showToast('Could not create workspace. Please try again.', 'error');
+                        return;
+                    }
+                }
                 await submitWorkspace();
             }
         });
@@ -421,14 +390,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // ============================================================
     
     async function submitWorkspace() {
-        const token = getAccessToken();
-        
-        if (!token) {
-            showToast('Please login to create a workspace', 'error');
-            redirectToLogin();
-            return;
-        }
-
         const workspaceData = collectFormData();
 
         // Validate required fields
@@ -468,14 +429,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             console.log('📤 Submitting workspace data:', workspaceData);
-            console.log('🔑 Using token:', token.substring(0, 20) + '...');
 
             // 1. Create workspace
             const response = await fetch(`${API_BASE_URL}/api/workspaces`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(workspaceData)
             });
@@ -492,28 +451,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // 2. Upload cover photo
             if (coverPhotoInput?.files?.[0]) {
-                await uploadPhoto(workspaceId, coverPhotoInput.files[0], token);
+                await uploadPhoto(workspaceId, coverPhotoInput.files[0]);
             }
 
             // 3. Upload gallery photos
             if (uploadedGalleryFiles.length > 0) {
                 for (const file of uploadedGalleryFiles) {
-                    await uploadPhoto(workspaceId, file, token);
+                    await uploadPhoto(workspaceId, file);
                 }
             }
 
             // 4. Upload verification documents
             for (const [docType, file] of Object.entries(verificationDocs)) {
                 if (file) {
-                    await uploadDocument(workspaceId, file, docType, token);
+                    await uploadDocument(workspaceId, file, docType);
                 }
             }
 
-            showToast('🎉 Workspace created successfully! It will appear in the frontend.', 'success');
+            showToast('🎉 Workspace created successfully! Your frontend will now show this workspace.', 'success');
             
-            // Reset form or redirect to host dashboard
+            // Reset form or redirect
             setTimeout(() => {
-                window.location.href = 'host-dashboard.html';
+                // Redirect to the page that shows workspaces
+                window.location.href = '/index.html';
             }, 3000);
 
         } catch (error) {
@@ -531,16 +491,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // PHOTO UPLOAD HELPERS
     // ============================================================
     
-    async function uploadPhoto(workspaceId, file, token) {
+    async function uploadPhoto(workspaceId, file) {
         const formData = new FormData();
         formData.append('photo', file);
 
         try {
             const response = await fetch(`${API_BASE_URL}/api/workspaces/${workspaceId}/photos`, {
                 method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                },
                 body: formData
             });
 
@@ -557,7 +514,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    async function uploadDocument(workspaceId, file, docType, token) {
+    async function uploadDocument(workspaceId, file, docType) {
         const formData = new FormData();
         formData.append('document', file);
         formData.append('document_type', docType);
@@ -565,9 +522,6 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch(`${API_BASE_URL}/api/workspaces/${workspaceId}/documents`, {
                 method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                },
                 body: formData
             });
 
@@ -1006,17 +960,73 @@ document.addEventListener('DOMContentLoaded', () => {
     // INITIALIZATION
     // ============================================================
     
-    async function init() {
-        console.log('🚀 SpaceShare Host Add Workspace (Authenticated)');
-        console.log(`📍 API Base: ${API_BASE_URL}`);
+    // Initialize map after a short delay
+    setTimeout(initLeafletMap, 500);
 
-        // Check authentication
-        if (!isAuthenticated()) {
-            showToast('Please login to create a workspace', 'error');
-            redirectToLogin();
-            return;
+    // Initialize step view
+    updateStepView();
+
+    // Initialize default host in background
+    getOrCreateDefaultHost().then(hostId => {
+        if (hostId) {
+            console.log('✅ Ready to create workspaces with host:', hostId);
         }
+    });
 
-        // Check role
-        const role = getUserRole();
-        if (role !== 'host
+    // Load draft if exists
+    try {
+        const draft = localStorage.getItem('workspace_draft');
+        if (draft) {
+            const data = JSON.parse(draft);
+            if (titleInput) titleInput.value = data.title || '';
+            if (descriptionInput) descriptionInput.value = data.description || '';
+            if (workspaceTypeSelect) workspaceTypeSelect.value = data.workspace_type || '';
+            if (addressInput) addressInput.value = data.address || '';
+            if (citySelect) citySelect.value = data.city || '';
+            if (stateSelect) stateSelect.value = data.state || '';
+            if (capacityInput) capacityInput.value = data.capacity || '';
+            if (pricePerHourInput) pricePerHourInput.value = data.price_per_hour || '';
+            if (pricePerDayInput) pricePerDayInput.value = data.price_per_day || '';
+            if (openingTimeInput) openingTimeInput.value = data.opening_time || '';
+            if (closingTimeInput) closingTimeInput.value = data.closing_time || '';
+            
+            if (data.latitude && data.longitude) {
+                updateCoordinates(data.latitude, data.longitude);
+            }
+            
+            // Restore working days
+            if (data.working_days) {
+                document.querySelectorAll('.day-btn').forEach(btn => {
+                    const day = btn.dataset.day;
+                    const isSelected = data.working_days.includes(day);
+                    btn.setAttribute('aria-pressed', String(isSelected));
+                    if (isSelected) {
+                        btn.classList.remove('bg-gray-100', 'text-gray-700');
+                        btn.classList.add('bg-blue-600', 'text-white', 'shadow-sm');
+                    } else {
+                        btn.classList.remove('bg-blue-600', 'text-white', 'shadow-sm');
+                        btn.classList.add('bg-gray-100', 'text-gray-700');
+                    }
+                });
+            }
+            
+            // Restore amenities
+            if (data.amenities) {
+                document.querySelectorAll('input[name="amenities"]').forEach(cb => {
+                    if (data.amenities.includes(cb.value)) {
+                        cb.checked = true;
+                        cb.closest('.amenity-card')?.classList.add('selected');
+                    }
+                });
+            }
+            
+            showToast('Draft loaded successfully', 'success');
+        }
+    } catch (error) {
+        console.error('Error loading draft:', error);
+    }
+
+    console.log('✅ SpaceShare Host Add Workspace initialized (NO LOGIN REQUIRED)');
+    console.log(`📍 API Base: ${API_BASE_URL}`);
+    console.log('📝 You can now create workspaces without logging in!');
+});

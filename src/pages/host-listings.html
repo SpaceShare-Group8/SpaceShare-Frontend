@@ -410,11 +410,6 @@
             color: #DC2626;
         }
 
-        .status-pending {
-            background: #FEF3C7;
-            color: #D97706;
-        }
-
         .btn-view-listing {
             font-size: 0.75rem;
             font-weight: 500;
@@ -461,33 +456,6 @@
             color: var(--ink-400);
         }
 
-        /* Toast Notification */
-        .toast-notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 14px 24px;
-            border-radius: 12px;
-            color: white;
-            font-weight: 500;
-            z-index: 9999;
-            max-width: 400px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-            font-family: 'Inter', sans-serif;
-            transform: translateX(100px);
-            opacity: 0;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-        }
-
-        .toast-notification.show {
-            transform: translateX(0);
-            opacity: 1;
-        }
-
-        .toast-success { background: #10B981; }
-        .toast-error { background: #EF4444; }
-        .toast-warning { background: #F59E0B; }
-
         /* Bottom Nav */
         .bottom-nav {
             display: flex;
@@ -531,25 +499,6 @@
 
         .bottom-nav .nav-item.active i {
             color: var(--primary-start);
-        }
-
-        /* Loading State */
-        .loading-spinner {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--ink-400);
-        }
-
-        .loading-spinner i {
-            font-size: 32px;
-            animation: spin 1s linear infinite;
-            display: block;
-            margin-bottom: 12px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
         }
 
         /* Responsive */
@@ -675,10 +624,6 @@
                     <i class="ph-fill ph-x-circle" style="color: #EF4444;"></i>
                     Inactive: <strong id="inactiveListings">0</strong>
                 </div>
-                <div class="stat-item">
-                    <i class="ph-fill ph-clock" style="color: #F59E0B;"></i>
-                    Pending: <strong id="pendingListings">0</strong>
-                </div>
             </div>
 
             <!-- Listings Grid -->
@@ -718,135 +663,72 @@
         (function() {
             'use strict';
 
-            // ============================================================
-            // CONFIGURATION
-            // ============================================================
+            // Mock Data
+            const MOCK_LISTINGS = [
+                {
+                    id: 'ls-001',
+                    title: 'Hub One Workspace',
+                    address: 'Lekki Phase 1, Lagos',
+                    hourly_rate: 15000,
+                    status: 'active',
+                    images: ['https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80']
+                },
+                {
+                    id: 'ls-002',
+                    title: 'WorkNest Hub',
+                    address: 'Ikeja GRA, Lagos',
+                    hourly_rate: 30000,
+                    status: 'active',
+                    images: ['https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=600&q=80']
+                },
+                {
+                    id: 'ls-003',
+                    title: 'Creative Space',
+                    address: 'Ikorodu, Lagos',
+                    hourly_rate: 50000,
+                    status: 'inactive',
+                    images: ['https://images.unsplash.com/photo-1527192491265-7e15c55b1ed2?auto=format&fit=crop&w=600&q=80']
+                },
+                {
+                    id: 'ls-004',
+                    title: 'Executive Boardroom',
+                    address: 'Victoria Island, Lagos',
+                    hourly_rate: 75000,
+                    status: 'active',
+                    images: ['https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80']
+                },
+                {
+                    id: 'ls-005',
+                    title: 'Podcast Studio Pro',
+                    address: 'Yaba, Lagos',
+                    hourly_rate: 45000,
+                    status: 'active',
+                    images: ['https://images.unsplash.com/photo-1527192491265-7e15c55b1ed2?auto=format&fit=crop&w=600&q=80']
+                },
+                {
+                    id: 'ls-006',
+                    title: 'Co-working Haven',
+                    address: 'Surulere, Lagos',
+                    hourly_rate: 12000,
+                    status: 'inactive',
+                    images: ['https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=600&q=80']
+                }
+            ];
 
-            const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-                ? 'http://localhost:5000'
-                : 'https://spaceshare-backend-cor9.onrender.com';
-
-            const STORAGE_KEYS = {
-                ACCESS_TOKEN: 'spaceshare:accessToken',
-                USER_ROLE: 'spaceshare:userRole'
-            };
-
-            // ============================================================
-            // DOM REFERENCES
-            // ============================================================
-
+            // DOM
             const DOM = {
                 grid: document.getElementById('listingsGrid'),
                 total: document.getElementById('totalListings'),
                 active: document.getElementById('activeListings'),
-                inactive: document.getElementById('inactiveListings'),
-                pending: document.getElementById('pendingListings')
+                inactive: document.getElementById('inactiveListings')
             };
 
-            // ============================================================
-            // STATE
-            // ============================================================
+            // State
+            let listings = MOCK_LISTINGS;
 
-            let listings = [];
-            let isLoading = true;
-
-            // ============================================================
-            // AUTHENTICATION HELPERS
-            // ============================================================
-
-            function getAccessToken() {
-                return localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
-            }
-
-            function getUserRole() {
-                return localStorage.getItem(STORAGE_KEYS.USER_ROLE) || 'seeker';
-            }
-
-            function isAuthenticated() {
-                return !!getAccessToken();
-            }
-
-            function redirectToLogin() {
-                window.location.href = 'login.html';
-            }
-
-            function redirectToSeekerDashboard() {
-                window.location.href = 'seeker-dashboard.html';
-            }
-
-            // ============================================================
-            // TOAST NOTIFICATION
-            // ============================================================
-
-            function showToast(message, type = 'success') {
-                const existing = document.querySelector('.toast-notification');
-                if (existing) existing.remove();
-
-                const toast = document.createElement('div');
-                toast.className = `toast-notification toast-${type}`;
-                toast.textContent = message;
-                document.body.appendChild(toast);
-
-                requestAnimationFrame(() => {
-                    toast.classList.add('show');
-                });
-
-                setTimeout(() => {
-                    toast.classList.remove('show');
-                    setTimeout(() => toast.remove(), 300);
-                }, 4000);
-            }
-
-            // ============================================================
-            // API HELPERS
-            // ============================================================
-
-            async function fetchListings() {
-                const token = getAccessToken();
-                
-                if (!token) {
-                    throw new Error('No access token found');
-                }
-
-                const response = await fetch(`${API_BASE_URL}/api/workspaces`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (response.status === 401) {
-                    localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
-                    localStorage.removeItem(STORAGE_KEYS.USER_ROLE);
-                    redirectToLogin();
-                    throw new Error('Session expired');
-                }
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(data.message || 'Failed to fetch listings');
-                }
-
-                return data.data || data || [];
-            }
-
-            // ============================================================
-            // RENDER FUNCTIONS
-            // ============================================================
-
+            // Render
             function renderListings() {
                 if (!DOM.grid) return;
-
-                if (isLoading) {
-                    DOM.grid.innerHTML = `
-                        <div class="loading-spinner">
-                            <i class="ph-bold ph-spinner"></i>
-                            <p>Loading your listings...</p>
-                        </div>
-                    `;
-                    return;
-                }
 
                 if (listings.length === 0) {
                     DOM.grid.innerHTML = `
@@ -854,11 +736,6 @@
                             <i class="ph-fill ph-buildings"></i>
                             <h3>No listings yet</h3>
                             <p>Create your first workspace listing and start earning.</p>
-                            <br>
-                            <button class="btn-create" onclick="window.location.href='host-add-space.html'">
-                                <i class="ph-bold ph-plus"></i>
-                                Create Listing
-                            </button>
                         </div>
                     `;
                     updateStats();
@@ -866,23 +743,12 @@
                 }
 
                 DOM.grid.innerHTML = listings.map(listing => {
-                    const status = listing.status || 'pending';
-                    const statusClass = status === 'active' || status === 'approved' 
-                        ? 'status-active' 
-                        : status === 'pending' 
-                            ? 'status-pending' 
-                            : 'status-inactive';
-                    const statusLabel = status === 'active' || status === 'approved' 
-                        ? 'Active' 
-                        : status === 'pending' 
-                            ? 'Pending' 
-                            : 'Inactive';
-                    
+                    const statusClass = listing.status === 'active' ? 'status-active' : 'status-inactive';
+                    const statusLabel = listing.status === 'active' ? 'Active' : 'Inactive';
                     const price = typeof listing.hourly_rate === 'number'
                         ? listing.hourly_rate.toLocaleString('en-NG')
-                        : listing.hourly_rate || 0;
-                    
-                    const image = listing.images && listing.images.length > 0
+                        : listing.hourly_rate;
+                    const image = listing.images && listing.images[0]
                         ? listing.images[0]
                         : 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80';
 
@@ -894,12 +760,12 @@
                             </div>
                             <div class="listing-card-body">
                                 <div class="listing-card-top">
-                                    <h4 class="listing-card-title">${listing.title || 'Untitled'}</h4>
+                                    <h4 class="listing-card-title">${listing.title}</h4>
                                     <span class="listing-card-price">₦${price}<small>/hr</small></span>
                                 </div>
                                 <div class="listing-card-location">
                                     <i class="ph-bold ph-map-pin"></i>
-                                    <span>${listing.address || listing.city || 'Location not specified'}</span>
+                                    <span>${listing.address}</span>
                                 </div>
                                 <div class="listing-card-bottom">
                                     <span class="listing-card-status ${statusClass}">${statusLabel}</span>
@@ -925,70 +791,19 @@
 
             function updateStats() {
                 const total = listings.length;
-                const active = listings.filter(l => 
-                    l.status === 'active' || l.status === 'approved'
-                ).length;
-                const pending = listings.filter(l => 
-                    l.status === 'pending'
-                ).length;
-                const inactive = listings.filter(l => 
-                    l.status === 'inactive' || l.status === 'rejected' || l.status === 'suspended'
-                ).length;
+                const active = listings.filter(l => l.status === 'active').length;
+                const inactive = listings.filter(l => l.status === 'inactive').length;
 
                 if (DOM.total) DOM.total.textContent = total;
                 if (DOM.active) DOM.active.textContent = active;
                 if (DOM.inactive) DOM.inactive.textContent = inactive;
-                if (DOM.pending) DOM.pending.textContent = pending;
             }
 
-            // ============================================================
-            // INITIALIZATION
-            // ============================================================
-
-            async function init() {
-                console.log('🚀 Host Listings Page');
-
-                // Check authentication
-                if (!isAuthenticated()) {
-                    showToast('Please login to view your listings', 'error');
-                    setTimeout(redirectToLogin, 1000);
-                    return;
-                }
-
-                // Check role
-                const role = getUserRole();
-                if (role !== 'host') {
-                    showToast('This page is for hosts only', 'error');
-                    setTimeout(redirectToSeekerDashboard, 1000);
-                    return;
-                }
-
-                // Show loading state
-                isLoading = true;
+            // Init
+            document.addEventListener('DOMContentLoaded', () => {
                 renderListings();
-
-                try {
-                    // Fetch listings from API
-                    const data = await fetchListings();
-                    listings = Array.isArray(data) ? data : [];
-                    isLoading = false;
-                    renderListings();
-                    
-                    if (listings.length === 0) {
-                        showToast('No listings found. Create your first one!', 'warning');
-                    } else {
-                        console.log(`✅ Loaded ${listings.length} listings`);
-                    }
-                } catch (error) {
-                    console.error('❌ Failed to load listings:', error);
-                    isLoading = false;
-                    renderListings();
-                    showToast(error.message || 'Failed to load listings', 'error');
-                }
-            }
-
-            // Start
-            document.addEventListener('DOMContentLoaded', init);
+                console.log('✅ Host Listings ready');
+            });
 
         })();
     </script>
