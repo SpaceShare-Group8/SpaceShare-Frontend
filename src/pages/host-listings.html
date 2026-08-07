@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SpaceShare — My Listings</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+
+    <style>
+        /* ================================================================
+           SPACESHARE — HOST LISTINGS STYLES (ALL IN ONE)
+           ================================================================ */
+
+        :root {
+            --primary-start: #2862BC;
+            --primary-end: #4A7FD4;
+            --primary-gradient: linear-gradient(135deg, #2862BC 0%, #4A7FD4 100%);
+            --primary-blue: #2862BC;
+            --primary-light: #DDE8F5;
+            --ink-900: #14161A;
+            --ink-700: #2A2D36;
+            --ink-600: #5B6270;
+            --ink-400: #9AA0AB;
+            --ink-300: #C5C9D2;
+            --ink-200: #E5E7EC;
+            --ink-100: #F3F4F8;
+            --ink-50: #FAFAFC;
+            --green: #10B981;
+            --yellow: #F59E0B;
+            --red: #EF4444;
+            --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-lg: 0 12px 48px rgba(40,98,188,0.15);
+            --radius-md: 12px;
+            --radius-full: 9999px;
+            --transition-fast: 150ms ease;
+            --transition-normal: 250ms ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--ink-900);
+            background: var(--ink-50);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .dashboard-wrapper {
+            display: flex;
+            min-height: 100vh;
+            background: var(--ink-50);
+        }
+
+        /* Desktop Sidebar */
+        .desktop-sidebar {
+            display: none;
+            width: 240px;
+            min-height: 100vh;
+            background: #FFFFFF;
+            border-right: 1px solid var(--ink-200);
+            padding: 24px 20px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            flex-direction: column;
+        }
+
+        @media (min-width: 1024px) {
+            .desktop-sidebar { display: flex; }
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            padding: 0 8px;
+        }
+
+        .logo-img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--ink-900);
+            font-family: 'Poppins', 'Inter', sans-serif;
+            letter-spacing: -0.01em;
+        }
+
+        .sidebar-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .sidebar-menu .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            color: var(--ink-600);
+            font-size: 0.925rem;
+            font-weight: 500;
+            transition: all var(--transition-fast);
+        }
+
+        .sidebar-menu .nav-item i {
+            font-size: 1.25rem;
+            color: var(--ink-400);
+            transition: color var(--transition-fast);
+        }
+
+        .sidebar-menu .nav-item:hover {
+            background: var(--ink-100);
+            color: var(--ink-900);
+        }
+
+        .sidebar-menu .nav-item:hover i {
+            color: var(--primary-start);
+        }
+
+        .sidebar-menu .nav-item.active {
+            background: var(--primary-light);
+            color: var(--primary-start);
+        }
+
+        .sidebar-menu .nav-item.active i {
+            color: var(--primary-start);
+        }
+
+        .sidebar-help {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid var(--ink-200);
+        }
+
+        .help-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            padding: 12px 16px;
+            border: none;
+            background: var(--ink-100);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .help-btn:hover {
+            background: var(--ink-200);
+        }
+
+        .help-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            flex: 1;
+        }
+
+        .help-text strong {
+            font-size: 0.875rem;
+            color: var(--ink-900);
+        }
+
+        .help-text span {
+            font-size: 0.75rem;
+            color: var(--ink-400);
+        }
+
+        /* Main Content */
+        .main-content-area {
+            flex: 1;
+            padding: 0 16px 80px;
+            max-width: 100%;
+        }
+
+        @media (min-width: 1024px) {
+            .main-content-area {
+                padding: 0 40px 40px;
+                max-width: calc(100% - 240px);
+            }
+        }
+
+        /* Header */
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0 24px;
+            border-bottom: 1px solid var(--ink-200);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-left .back-btn {
+            background: transparent;
+            border: none;
+            font-size: 1.25rem;
+            color: var(--ink-600);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            transition: all var(--transition-fast);
+        }
+
+        .header-left .back-btn:hover {
+            color: var(--primary-start);
+            gap: 10px;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'Poppins', 'Inter', sans-serif;
+            color: var(--ink-900);
+            margin: 0;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-right .btn-create {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--primary-gradient);
+            color: #FFFFFF;
+            border: none;
+            border-radius: var(--radius-full);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .header-right .btn-create:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            gap: 24px;
+            padding: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .stats-bar .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.875rem;
+            color: var(--ink-600);
+        }
+
+        .stats-bar .stat-item strong {
+            color: var(--ink-900);
+            font-size: 1.125rem;
+        }
+
+        /* Listings Grid */
+        .listings-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        @media (min-width: 768px) {
+            .listings-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (min-width: 1024px) {
+            .listings-grid { grid-template-columns: 1fr 1fr 1fr; }
+        }
+
+        .listing-card {
+            background: #FFFFFF;
+            border: 1px solid var(--ink-200);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: all var(--transition-normal);
+        }
+
+        .listing-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .listing-card-image-wrapper {
+            position: relative;
+            height: 160px;
+            overflow: hidden;
+        }
+
+        .listing-card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .listing-card-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: rgba(255,255,255,0.95);
+            color: var(--ink-900);
+        }
+
+        .listing-card-body {
+            padding: 16px;
+        }
+
+        .listing-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .listing-card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--ink-900);
+            margin: 0;
+        }
+
+        .listing-card-price {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--primary-start);
+            white-space: nowrap;
+        }
+
+        .listing-card-price small {
+            font-weight: 400;
+            color: var(--ink-400);
+        }
+
+        .listing-card-location {
+            font-size: 0.875rem;
+            color: var(--ink-400);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+
+        .listing-card-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .listing-card-status {
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+        }
+
+        .status-active {
+            background: #D1FAE5;
+            color: #059669;
+        }
+
+        .status-inactive {
+            background: #FEE2E2;
+            color: #DC2626;
+        }
+
+        .btn-view-listing {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--primary-start);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-view-listing:hover {
+            gap: 8px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            grid-column: 1 / -1;
+            background: #FFFFFF;
+            border: 1px solid var(--ink-200);
+            border-radius: var(--radius-md);
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            color: var(--ink-300);
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--ink-900);
+            margin-bottom: 4px;
+        }
+
+        .empty-state p {
+            font-size: 0.875rem;
+            color: var(--ink-400);
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            display: flex;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #FFFFFF;
+            border-top: 1px solid var(--ink-200);
+            padding: 8px 0 env(safe-area-inset-bottom, 8px);
+            justify-content: space-around;
+            z-index: 100;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.06);
+        }
+
+        @media (min-width: 1024px) {
+            .bottom-nav { display: none; }
+        }
+
+        .bottom-nav .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            text-decoration: none;
+            color: var(--ink-400);
+            font-size: 0.625rem;
+            font-weight: 500;
+            padding: 4px 12px;
+            transition: all var(--transition-fast);
+        }
+
+        .bottom-nav .nav-item i {
+            font-size: 1.25rem;
+            color: var(--ink-400);
+        }
+
+        .bottom-nav .nav-item.active {
+            color: var(--primary-start);
+        }
+
+        .bottom-nav .nav-item.active i {
+            color: var(--primary-start);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .page-title { font-size: 1.25rem; }
+            .header-right .btn-create {
+                padding: 8px 16px;
+                font-size: 0.8rem;
+            }
+            .stats-bar { gap: 12px; }
+            .stats-bar .stat-item { font-size: 0.8rem; }
+        }
+
+        /* Dark Mode */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --ink-900: #F3F4F8;
+                --ink-700: #E5E7EC;
+                --ink-600: #C5C9D2;
+                --ink-400: #9AA0AB;
+                --ink-300: #5B6270;
+                --ink-200: #2A2D36;
+                --ink-100: #1A1D24;
+                --ink-50: #0D0F14;
+            }
+            body { background: var(--ink-50); }
+            .dashboard-wrapper { background: var(--ink-50); }
+            .desktop-sidebar {
+                background: var(--ink-100);
+                border-right-color: var(--ink-200);
+            }
+            .listing-card,
+            .empty-state {
+                background: var(--ink-100);
+                border-color: var(--ink-200);
+            }
+            .bottom-nav {
+                background: var(--ink-100);
+                border-top-color: var(--ink-200);
+            }
+            .listing-card-badge {
+                background: rgba(26,29,36,0.95);
+                color: var(--ink-900);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-wrapper">
+
+        <!-- Sidebar -->
+        <aside class="desktop-sidebar">
+            <div class="sidebar-logo">
+                <img src="../assets/BLUE%20LOGO.png" alt="SpaceShare" class="logo-img" />
+                <span class="logo-text">SpaceShare</span>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="host-dashboard.html" class="nav-item">
+                    <i class="ph ph-house"></i>
+                    <span>Home</span>
+                </a>
+                <a href="host-listings.html" class="nav-item active">
+                    <i class="ph-fill ph-buildings"></i>
+                    <span>My Listings</span>
+                </a>
+                <a href="host-bookings.html" class="nav-item">
+                    <i class="ph ph-calendar-check"></i>
+                    <span>Bookings</span>
+                </a>
+                <a href="host-earnings.html" class="nav-item">
+                    <i class="ph ph-currency-ngn"></i>
+                    <span>Earnings</span>
+                </a>
+                <a href="host-reviews.html" class="nav-item">
+                    <i class="ph ph-star"></i>
+                    <span>Reviews</span>
+                </a>
+            </nav>
+            <div class="sidebar-help">
+                <button class="help-btn" onclick="window.location.href='support.html'">
+                    <i class="ph-fill ph-headset" style="color: #2862BC;"></i>
+                    <div class="help-text">
+                        <strong>Need Help?</strong>
+                        <span>Contact our support team for assistance.</span>
+                    </div>
+                    <i class="ph-bold ph-caret-right" style="color: #2862BC;"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content-area">
+
+            <!-- Page Header -->
+            <header class="page-header">
+                <div class="header-left">
+                    <button class="back-btn" onclick="window.location.href='host-dashboard.html'">
+                        <i class="ph-bold ph-caret-left"></i>
+                        <span>Back</span>
+                    </button>
+                    <h1 class="page-title">My Listings</h1>
+                </div>
+                <div class="header-right">
+                    <button class="btn-create" onclick="window.location.href='host-create-listing.html'">
+                        <i class="ph-bold ph-plus"></i>
+                        Create Listing
+                    </button>
+                </div>
+            </header>
+
+            <!-- Stats Bar -->
+            <div class="stats-bar" id="statsBar">
+                <div class="stat-item">
+                    <i class="ph ph-buildings"></i>
+                    Total: <strong id="totalListings">0</strong>
+                </div>
+                <div class="stat-item">
+                    <i class="ph-fill ph-check-circle" style="color: #10B981;"></i>
+                    Active: <strong id="activeListings">0</strong>
+                </div>
+                <div class="stat-item">
+                    <i class="ph-fill ph-x-circle" style="color: #EF4444;"></i>
+                    Inactive: <strong id="inactiveListings">0</strong>
+                </div>
+            </div>
+
+            <!-- Listings Grid -->
+            <div class="listings-grid" id="listingsGrid">
+                <!-- Rendered by JS -->
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+        <a href="host-dashboard.html" class="nav-item">
+            <i class="ph ph-house"></i>
+            <span>Home</span>
+        </a>
+        <a href="host-listings.html" class="nav-item active">
+            <i class="ph-fill ph-buildings"></i>
+            <span>Listings</span>
+        </a>
+        <a href="host-bookings.html" class="nav-item">
+            <i class="ph ph-calendar-check"></i>
+            <span>Bookings</span>
+        </a>
+        <a href="host-earnings.html" class="nav-item">
+            <i class="ph ph-currency-ngn"></i>
+            <span>Earnings</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="ph ph-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- JavaScript -->
+    <script>
+        (function() {
+            'use strict';
+
+            // Mock Data
+            const MOCK_LISTINGS = [
+                {
+                    id: 'ls-001',
+                    title: 'Hub One Workspace',
+                    address: 'Lekki Phase 1, Lagos',
+                    hourly_rate: 15000,
+                    status: 'active',
+                    images: ['https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80']
+                },
+                {
+                    id: 'ls-002',
+                    title: 'WorkNest Hub',
+                    address: 'Ikeja GRA, Lagos',
+                    hourly_rate: 30000,
+                    status: 'active',
+                    images: ['https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=600&q=80']
+                },
+                {
+                    id: 'ls-003',
+                    title: 'Creative Space',
+                    address: 'Ikorodu, Lagos',
+                    hourly_rate: 50000,
+                    status: 'inactive',
+                    images: ['https://images.unsplash.com/photo-1527192491265-7e15c55b1ed2?auto=format&fit=crop&w=600&q=80']
+                },
+                {
+                    id: 'ls-004',
+                    title: 'Executive Boardroom',
+                    address: 'Victoria Island, Lagos',
+                    hourly_rate: 75000,
+                    status: 'active',
+                    images: ['https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80']
+                },
+                {
+                    id: 'ls-005',
+                    title: 'Podcast Studio Pro',
+                    address: 'Yaba, Lagos',
+                    hourly_rate: 45000,
+                    status: 'active',
+                    images: ['https://images.unsplash.com/photo-1527192491265-7e15c55b1ed2?auto=format&fit=crop&w=600&q=80']
+                },
+                {
+                    id: 'ls-006',
+                    title: 'Co-working Haven',
+                    address: 'Surulere, Lagos',
+                    hourly_rate: 12000,
+                    status: 'inactive',
+                    images: ['https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=600&q=80']
+                }
+            ];
+
+            // DOM
+            const DOM = {
+                grid: document.getElementById('listingsGrid'),
+                total: document.getElementById('totalListings'),
+                active: document.getElementById('activeListings'),
+                inactive: document.getElementById('inactiveListings')
+            };
+
+            // State
+            let listings = MOCK_LISTINGS;
+
+            // Render
+            function renderListings() {
+                if (!DOM.grid) return;
+
+                if (listings.length === 0) {
+                    DOM.grid.innerHTML = `
+                        <div class="empty-state">
+                            <i class="ph-fill ph-buildings"></i>
+                            <h3>No listings yet</h3>
+                            <p>Create your first workspace listing and start earning.</p>
+                        </div>
+                    `;
+                    updateStats();
+                    return;
+                }
+
+                DOM.grid.innerHTML = listings.map(listing => {
+                    const statusClass = listing.status === 'active' ? 'status-active' : 'status-inactive';
+                    const statusLabel = listing.status === 'active' ? 'Active' : 'Inactive';
+                    const price = typeof listing.hourly_rate === 'number'
+                        ? listing.hourly_rate.toLocaleString('en-NG')
+                        : listing.hourly_rate;
+                    const image = listing.images && listing.images[0]
+                        ? listing.images[0]
+                        : 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80';
+
+                    return `
+                        <div class="listing-card" data-id="${listing.id}">
+                            <div class="listing-card-image-wrapper">
+                                <img src="${image}" alt="${listing.title}" class="listing-card-img" loading="lazy" />
+                                <span class="listing-card-badge">${statusLabel}</span>
+                            </div>
+                            <div class="listing-card-body">
+                                <div class="listing-card-top">
+                                    <h4 class="listing-card-title">${listing.title}</h4>
+                                    <span class="listing-card-price">₦${price}<small>/hr</small></span>
+                                </div>
+                                <div class="listing-card-location">
+                                    <i class="ph-bold ph-map-pin"></i>
+                                    <span>${listing.address}</span>
+                                </div>
+                                <div class="listing-card-bottom">
+                                    <span class="listing-card-status ${statusClass}">${statusLabel}</span>
+                                    <button class="btn-view-listing" data-id="${listing.id}">
+                                        View Details <i class="ph-bold ph-caret-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                // Attach events
+                document.querySelectorAll('.btn-view-listing').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = this.dataset.id;
+                        window.location.href = `host-listing-details.html?id=${id}`;
+                    });
+                });
+
+                updateStats();
+            }
+
+            function updateStats() {
+                const total = listings.length;
+                const active = listings.filter(l => l.status === 'active').length;
+                const inactive = listings.filter(l => l.status === 'inactive').length;
+
+                if (DOM.total) DOM.total.textContent = total;
+                if (DOM.active) DOM.active.textContent = active;
+                if (DOM.inactive) DOM.inactive.textContent = inactive;
+            }
+
+            // Init
+            document.addEventListener('DOMContentLoaded', () => {
+                renderListings();
+                console.log('✅ Host Listings ready');
+            });
+
+        })();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SpaceShare — Host Dashboard</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../styles/host-dashboard.css" />
+</head>
+<body>
+
+    <!-- ============================================================ -->
+    <!-- MAIN DASHBOARD WRAPPER                                        -->
+    <!-- ============================================================ -->
+    <div class="dashboard-wrapper">
+
+        <!-- ========================================================== -->
+        <!-- DESKTOP SIDEBAR (Visible on Large Screens)                  -->
+        <!-- ========================================================== -->
+        <aside class="desktop-sidebar">
+            
+            <!-- Logo -->
+            <div class="sidebar-logo">
+                <img src="../assets/BLUE%20LOGO.png" alt="SpaceShare" class="logo-img" />
+                <span class="logo-text">SpaceShare</span>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="sidebar-menu">
+                <a href="host-dashboard.html" class="nav-item active">
+                    <i class="ph-fill ph-house"></i>
+                    <span>Home</span>
+                </a>
+                <a href="host-listings.html" class="nav-item">
+                    <i class="ph ph-buildings"></i>
+                    <span>My Listings</span>
+                </a>
+                <a href="host-bookings.html" class="nav-item">
+                    <i class="ph ph-calendar-check"></i>
+                    <span>Bookings</span>
+                </a>
+                <a href="host-earnings.html" class="nav-item">
+                    <i class="ph ph-currency-ngn"></i>
+                    <span>Earnings</span>
+                </a>
+                <a href="host-reviews.html" class="nav-item">
+                    <i class="ph ph-star"></i>
+                    <span>Reviews</span>
+                </a>
+            </nav>
+
+            <!-- Help Button (Bottom of Sidebar) -->
+            <div class="sidebar-help">
+                <button class="help-btn" onclick="window.location.href='support.html'">
+                    <i class="ph-fill ph-headset" style="color: #2862BC;"></i>
+                    <div class="help-text">
+                        <strong>Need Help?</strong>
+                        <span>Contact our support team for assistance.</span>
+                    </div>
+                    <i class="ph-bold ph-caret-right" style="color: #2862BC;"></i>
+                </button>
+            </div>
+
+        </aside>
+
+        <!-- ========================================================== -->
+        <!-- MAIN CONTENT AREA                                           -->
+        <!-- ========================================================== -->
+        <div class="main-content-area">
+
+            <!-- ======================================================== -->
+            <!-- TOP HEADER (Logo, Search, Avatar)                        -->
+            <!-- ======================================================== -->
+            <header class="dashboard-header">
+                
+                <!-- Left: Logo & Brand -->
+                <div class="header-left">
+                    <a href="#" class="brand-link">
+                        <img src="../assets/BLUE%20LOGO.png" alt="SpaceShare" class="brand-logo" />
+                        <span class="brand-name">SpaceShare</span>
+                    </a>
+                </div>
+
+                <!-- Center: Search Input -->
+                <div class="header-center">
+                    <div class="search-bar-wrapper">
+                        <i class="ph ph-magnifying-glass search-icon"></i>
+                        <input type="text" placeholder="Search bookings, guests, listings..." class="search-input" id="mainSearchInput" />
+                    </div>
+                </div>
+
+                <!-- Right: Notifications & User Profile -->
+                <div class="header-right">
+                    <button class="icon-btn notification-btn" aria-label="Notifications">
+                        <i class="ph ph-bell"></i>
+                        <span class="notification-dot"></span>
+                    </button>
+                    <div class="user-avatar-wrapper" tabindex="0" role="button" aria-label="User profile">
+                        <span class="avatar-initials">HD</span>
+                    </div>
+                </div>
+
+            </header>
+
+            <!-- ======================================================== -->
+            <!-- GREETING SECTION                                         -->
+            <!-- ======================================================== -->
+            <section class="greeting-section">
+                <div class="greeting-wrapper">
+                    <div class="greeting-text-block">
+                        <span class="greeting-label">Good Morning</span>
+                        <h1 class="greeting-name" id="userNameDisplay">Host Dashboard</h1>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ======================================================== -->
+            <!-- QUICK STATS CARDS                                        -->
+            <!-- ======================================================== -->
+            <section class="stats-cards-section">
+                <div class="stats-cards-grid">
+                    
+                    <!-- Card 1: Total Bookings -->
+                    <div class="stat-card">
+                        <div class="stat-card-icon-wrapper">
+                            <i class="ph-fill ph-calendar-check stat-card-icon" style="color: #2862BC;"></i>
+                        </div>
+                        <div class="stat-card-content">
+                            <h3 class="stat-card-title">Total Bookings</h3>
+                            <p class="stat-card-number" id="totalBookings">0</p>
+                            <p class="stat-card-subtitle">This month</p>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Total Earnings -->
+                    <div class="stat-card">
+                        <div class="stat-card-icon-wrapper">
+                            <i class="ph-fill ph-currency-ngn stat-card-icon" style="color: #10B981;"></i>
+                        </div>
+                        <div class="stat-card-content">
+                            <h3 class="stat-card-title">Total Earnings</h3>
+                            <p class="stat-card-number" id="totalEarnings">₦0</p>
+                            <p class="stat-card-subtitle">This month</p>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Active Listings -->
+                    <div class="stat-card">
+                        <div class="stat-card-icon-wrapper">
+                            <i class="ph-fill ph-buildings stat-card-icon" style="color: #F59E0B;"></i>
+                        </div>
+                        <div class="stat-card-content">
+                            <h3 class="stat-card-title">Active Listings</h3>
+                            <p class="stat-card-number" id="activeListings">0</p>
+                            <p class="stat-card-subtitle">Currently available</p>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Reviews -->
+                    <div class="stat-card">
+                        <div class="stat-card-icon-wrapper">
+                            <i class="ph-fill ph-star stat-card-icon" style="color: #FFC107;"></i>
+                        </div>
+                        <div class="stat-card-content">
+                            <h3 class="stat-card-title">Reviews</h3>
+                            <p class="stat-card-number" id="totalReviews">0</p>
+                            <p class="stat-card-subtitle">Average: <span id="avgRating">0.0</span> ★</p>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ======================================================== -->
+            <!-- RECENT BOOKINGS SECTION                                  -->
+            <!-- ======================================================== -->
+            <section class="recent-bookings-section">
+                <div class="section-header">
+                    <h2 class="section-title">Recent Bookings</h2>
+                    <a href="host-bookings.html" class="section-view-all">
+                        See all <i class="ph-bold ph-caret-right"></i>
+                    </a>
+                </div>
+
+                <div class="recent-bookings-list" id="recentBookingsList">
+                    <!-- Bookings will be rendered by JS -->
+                </div>
+            </section>
+
+            <!-- ======================================================== -->
+            <!-- MY LISTINGS SECTION                                      -->
+            <!-- ======================================================== -->
+            <section class="my-listings-section">
+                <div class="section-header">
+                    <h2 class="section-title">My Listings</h2>
+                    <a href="host-listings.html" class="section-view-all">
+                        See all <i class="ph-bold ph-caret-right"></i>
+                    </a>
+                </div>
+
+                <div class="my-listings-grid" id="myListingsGrid">
+                    <!-- Listings will be rendered by JS -->
+                </div>
+            </section>
+
+            <!-- ======================================================== -->
+            <!-- DEMO DATA BANNER                                         -->
+            <!-- ======================================================== -->
+            <div class="demo-banner" style="
+                background: #DDE8F5;
+                border: 1px solid #2862BC;
+                border-radius: 12px;
+                padding: 16px 20px;
+                margin-top: 24px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 12px;
+            ">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <i class="ph-fill ph-info" style="color: #2862BC; font-size: 24px;"></i>
+                    <div>
+                        <strong style="color: #2862BC;">Demo Mode</strong>
+                        <p style="margin: 0; font-size: 0.875rem; color: #5B6270;">This dashboard is showing mock data for demonstration purposes.</p>
+                    </div>
+                </div>
+                <button onclick="window.location.href='login.html'" style="
+                    background: #2862BC;
+                    color: white;
+                    border: none;
+                    padding: 8px 20px;
+                    border-radius: 9999px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    font-family: 'Inter', sans-serif;
+                ">
+                    Sign In <i class="ph-bold ph-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- ======================================================== -->
+            <!-- BOTTOM NAVIGATION (Mobile Only)                          -->
+            <!-- ======================================================== -->
+            <nav class="bottom-nav" aria-label="Main navigation">
+                <a href="host-dashboard.html" class="nav-item active" data-nav="home">
+                    <i class="ph-fill ph-house"></i>
+                    <span>Home</span>
+                </a>
+                <a href="host-listings.html" class="nav-item" data-nav="listings">
+                    <i class="ph ph-buildings"></i>
+                    <span>Listings</span>
+                </a>
+                <a href="host-bookings.html" class="nav-item" data-nav="bookings">
+                    <i class="ph ph-calendar-check"></i>
+                    <span>Bookings</span>
+                </a>
+                <a href="host-earnings.html" class="nav-item" data-nav="earnings">
+                    <i class="ph ph-currency-ngn"></i>
+                    <span>Earnings</span>
+                </a>
+                <a href="#" class="nav-item" data-nav="profile">
+                    <i class="ph ph-user"></i>
+                    <span>Profile</span>
+                </a>
+            </nav>
+
+        </div> <!-- End of Main Content Area -->
+
+    </div> <!-- End of Dashboard Wrapper -->
+
+    <!-- JS -->
+    <script type="module" src="../scripts/host-dashboard.js"></script>
+</body>
+</html>

@@ -13,7 +13,7 @@
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
 
-    <!-- PLACEHOLDER: CSS will be linked in the next step -->
+    <!-- CSS (separate file) -->
     <link rel="stylesheet" href="../styles/search-grid-view.css" />
 </head>
 <body>
@@ -40,15 +40,15 @@
                     <i class="ph ph-house"></i>
                     <span>Home</span>
                 </a>
-                <a href="booking.html" class="nav-item">
+                <a href="my-bookings.html" class="nav-item">
                     <i class="ph ph-calendar-blank"></i>
                     <span>Bookings</span>
                 </a>
                 <a href="favorite-spaces.html" class="nav-item active">
                     <i class="ph-fill ph-heart" style="color: #FF383C;"></i>
-                    <span>Favourite</span>
+                    <span>Favourites</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="#" class="nav-item" id="messagesLinkDesktop">
                     <i class="ph ph-chat"></i>
                     <span>Messages</span>
                 </a>
@@ -62,33 +62,22 @@
         <main class="main-content">
 
             <!-- ======================================================== -->
-            <!-- MOBILE SEARCH HEADER (Exact Match from Page 2 PDF)      -->
+            <!-- MOBILE SEARCH HEADER                                    -->
             <!-- ======================================================== -->
             <section class="mobile-search-header">
-                
-                <!-- Main Pill Container -->
                 <div class="search-pill-container">
-                    
-                    <!-- Left: Back Arrow -->
                     <button class="pill-back-btn" aria-label="Go back">
                         <i class="ph-bold ph-arrow-left"></i>
                     </button>
-
-                    <!-- Center: Location Pill -->
                     <div class="pill-location-wrapper">
                         <i class="ph-fill ph-map-pin"></i>
                         <span>Lekki, Lagos</span>
                     </div>
-
-                    <!-- Right: Filter Icon -->
                     <button class="pill-filter-btn" aria-label="Open filters">
                         <i class="ph-fill ph-sliders"></i>
                     </button>
                 </div>
-
-                <!-- Subtitle (Date & Time) -->
-                <p class="search-pill-subtitle">2nd Aug, 2026 &bull; 10:00 am</p>
-
+                <p class="search-pill-subtitle">2nd Aug, 2026 • 10:00 am</p>
             </section>
 
             <!-- ======================================================== -->
@@ -102,21 +91,20 @@
                     <span>Saved Workspaces (12)</span>
                 </div>
 
-                <!-- Right: List / Grid View Toggle -->
+                <!-- Right: List / Grid / Map Toggle -->
                 <div class="view-toggle-group">
-                    
-                    <!-- List View Button (Outline) -->
                     <a href="search-list-view.html" class="toggle-btn toggle-list">
                         <span>List View</span>
                         <i class="ph-bold ph-check"></i>
                     </a>
-
-                    <!-- Grid View Button (Active Blue) -->
-                    <button class="toggle-btn toggle-grid active">
+                    <a href="search-grid-view.html" class="toggle-btn toggle-grid active">
                         <span>Grid View</span>
                         <i class="ph-bold ph-check"></i>
-                    </button>
-
+                    </a>
+                    <a href="search-map-view.html" class="toggle-btn toggle-map">
+                        <span>Map View</span>
+                        <i class="ph-bold ph-check"></i>
+                    </a>
                 </div>
 
             </section>
@@ -126,25 +114,19 @@
             <!-- ======================================================== -->
             <section class="grid-view-container" id="gridViewContainer">
 
-                <!-- ==================================================== -->
-                <!-- CARD 1: Hub One Workspace                            -->
-                <!-- ==================================================== -->
+                <!-- CARD 1: Hub One Workspace -->
                 <article class="grid-card">
-                    <!-- Image Section -->
                     <div class="grid-card-image-wrapper">
                         <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80" alt="Hub One Workspace" class="grid-card-img" />
                         <button class="grid-card-fav-btn" aria-label="Add to favourites">
                             <i class="ph-fill ph-heart" style="color: #FF383C;"></i>
                         </button>
                     </div>
-
-                    <!-- Details Section -->
                     <div class="grid-card-details">
                         <div class="grid-card-header">
                             <h3 class="grid-card-title">Hub One Workspace</h3>
                         </div>
                         <p class="grid-card-subtitle">Coworking Space</p>
-                        
                         <div class="grid-card-meta">
                             <div class="meta-rating">
                                 <i class="ph-fill ph-star" style="color: #FFC107;"></i>
@@ -155,23 +137,21 @@
                                 <span>Lekki</span>
                             </div>
                         </div>
-
                         <div class="grid-card-amenities">
                             <span class="amenity-chip"><i class="ph-bold ph-wifi-high"></i> WiFi</span>
                             <span class="amenity-chip"><i class="ph-bold ph-snowflake"></i> AC</span>
                             <span class="amenity-chip"><i class="ph-fill ph-car-profile"></i> Parking</span>
                         </div>
-
                         <div class="grid-card-footer">
                             <p class="grid-card-price">₦15,000<small>/hr</small></p>
-                            <button class="btn-book-now">Book Now <i class="ph-bold ph-caret-right"></i></button>
+                            <a href="booking.html?id=1" class="btn-book-now">
+                                Book Now <i class="ph-bold ph-caret-right"></i>
+                            </a>
                         </div>
                     </div>
                 </article>
 
-                <!-- ==================================================== -->
-                <!-- CARD 2: Work Nest Hub                                -->
-                <!-- ==================================================== -->
+                <!-- CARD 2: Work Nest Hub -->
                 <article class="grid-card">
                     <div class="grid-card-image-wrapper">
                         <img src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=600&q=80" alt="Work Nest Hub" class="grid-card-img" />
@@ -179,13 +159,11 @@
                             <i class="ph-fill ph-heart" style="color: #FF383C;"></i>
                         </button>
                     </div>
-
                     <div class="grid-card-details">
                         <div class="grid-card-header">
                             <h3 class="grid-card-title">WorkNest Hub</h3>
                         </div>
                         <p class="grid-card-subtitle">Private Office</p>
-                        
                         <div class="grid-card-meta">
                             <div class="meta-rating">
                                 <i class="ph-fill ph-star" style="color: #FFC107;"></i>
@@ -196,23 +174,21 @@
                                 <span>Ikeja</span>
                             </div>
                         </div>
-
                         <div class="grid-card-amenities">
                             <span class="amenity-chip"><i class="ph-bold ph-coffee"></i> Coffee</span>
                             <span class="amenity-chip"><i class="ph-bold ph-snowflake"></i> AC</span>
                             <span class="amenity-chip"><i class="ph-bold ph-car-battery"></i> Generator</span>
                         </div>
-
                         <div class="grid-card-footer">
                             <p class="grid-card-price">₦30,000<small>/hr</small></p>
-                            <button class="btn-book-now">Book Now <i class="ph-bold ph-caret-right"></i></button>
+                            <a href="booking.html?id=2" class="btn-book-now">
+                                Book Now <i class="ph-bold ph-caret-right"></i>
+                            </a>
                         </div>
                     </div>
                 </article>
 
-                <!-- ==================================================== -->
-                <!-- CARD 3: Discovery Nest                               -->
-                <!-- ==================================================== -->
+                <!-- CARD 3: Discovery Nest -->
                 <article class="grid-card">
                     <div class="grid-card-image-wrapper">
                         <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=600&q=80" alt="Discovery Nest" class="grid-card-img" />
@@ -220,13 +196,11 @@
                             <i class="ph-fill ph-heart" style="color: #FF383C;"></i>
                         </button>
                     </div>
-
                     <div class="grid-card-details">
                         <div class="grid-card-header">
                             <h3 class="grid-card-title">Discovery Nest</h3>
                         </div>
                         <p class="grid-card-subtitle">Meeting Room</p>
-                        
                         <div class="grid-card-meta">
                             <div class="meta-rating">
                                 <i class="ph-fill ph-star" style="color: #FFC107;"></i>
@@ -237,23 +211,21 @@
                                 <span>Victoria Island</span>
                             </div>
                         </div>
-
                         <div class="grid-card-amenities">
                             <span class="amenity-chip"><i class="ph-bold ph-wifi-high"></i> WiFi</span>
                             <span class="amenity-chip"><i class="ph-bold ph-projector-screen"></i> Projector</span>
                             <span class="amenity-chip"><i class="ph-bold ph-chalkboard-simple"></i> Whiteboard</span>
                         </div>
-
                         <div class="grid-card-footer">
                             <p class="grid-card-price">₦75,000<small>/day</small></p>
-                            <button class="btn-book-now">Book Now <i class="ph-bold ph-caret-right"></i></button>
+                            <a href="booking.html?id=3" class="btn-book-now">
+                                Book Now <i class="ph-bold ph-caret-right"></i>
+                            </a>
                         </div>
                     </div>
                 </article>
 
-                <!-- ==================================================== -->
-                <!-- CARD 4: Creative Space                               -->
-                <!-- ==================================================== -->
+                <!-- CARD 4: Creative Space -->
                 <article class="grid-card">
                     <div class="grid-card-image-wrapper">
                         <img src="https://images.unsplash.com/photo-1527192491265-7e15c55b1ed2?auto=format&fit=crop&w=600&q=80" alt="Creative Space" class="grid-card-img" />
@@ -261,13 +233,11 @@
                             <i class="ph ph-heart"></i>
                         </button>
                     </div>
-
                     <div class="grid-card-details">
                         <div class="grid-card-header">
                             <h3 class="grid-card-title">Creative Space</h3>
                         </div>
                         <p class="grid-card-subtitle">Podcast Studio</p>
-                        
                         <div class="grid-card-meta">
                             <div class="meta-rating">
                                 <i class="ph-fill ph-star" style="color: #FFC107;"></i>
@@ -278,16 +248,16 @@
                                 <span>Ikorodu</span>
                             </div>
                         </div>
-
                         <div class="grid-card-amenities">
                             <span class="amenity-chip"><i class="ph-fill ph-microphone"></i> Sound System</span>
                             <span class="amenity-chip"><i class="ph-bold ph-speaker-simple-x"></i> Soundproof</span>
                             <span class="amenity-chip"><i class="ph-bold ph-coat-hanger"></i> Changing room</span>
                         </div>
-
                         <div class="grid-card-footer">
                             <p class="grid-card-price">₦50,000<small>/hr</small></p>
-                            <button class="btn-book-now">Book Now <i class="ph-bold ph-caret-right"></i></button>
+                            <a href="booking.html?id=4" class="btn-book-now">
+                                Book Now <i class="ph-bold ph-caret-right"></i>
+                            </a>
                         </div>
                     </div>
                 </article>
@@ -302,19 +272,19 @@
                     <i class="ph ph-house"></i>
                     <span>Home</span>
                 </a>
-                <a href="booking.html" class="nav-item">
+                <a href="search-list-view.html" class="nav-item">
+                    <i class="ph ph-magnifying-glass"></i>
+                    <span>Search</span>
+                </a>
+                <a href="favorite-spaces.html" class="nav-item active">
+                    <i class="ph-fill ph-heart" style="color: #2862BC;"></i>
+                    <span>Favourites</span>
+                </a>
+                <a href="my-bookings.html" class="nav-item">
                     <i class="ph ph-calendar-blank"></i>
                     <span>Bookings</span>
                 </a>
-                <a href="#" class="nav-item active">
-                    <i class="ph-fill ph-heart" style="color: #2862BC;"></i>
-                    <span>Favorites</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <i class="ph ph-chat"></i>
-                    <span>Messages</span>
-                </a>
-                <a href="#" class="nav-item">
+                <a href="#" class="nav-item" id="messagesLinkMobile">
                     <i class="ph ph-user"></i>
                     <span>Profile</span>
                 </a>
@@ -323,8 +293,7 @@
         </main>
     </div>
 
-    <!-- PLACEHOLDER: JS will be linked in the next step -->
+    <!-- JS (separate file) -->
     <script src="../scripts/search-grid-view.js"></script>
-
 </body>
 </html>

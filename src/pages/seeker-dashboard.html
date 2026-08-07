@@ -13,87 +13,100 @@
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
 
-    <!-- CSS -->
+    <!-- CSS (separate file) -->
     <link rel="stylesheet" href="../styles/seeker-dashboard.css" />
 </head>
-<body>
+<body class="app-layout">
 
-    <!-- ============================================================ -->
-    <!-- MAIN DASHBOARD WRAPPER                                        -->
-    <!-- ============================================================ -->
-    <div class="dashboard-wrapper">
+    <!-- Sidebar Backdrop / Click-Outside Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
 
-        <!-- ========================================================== -->
-        <!-- DESKTOP SIDEBAR (Visible on Large Screens)                  -->
-        <!-- ========================================================== -->
-        <aside class="desktop-sidebar">
-            
-            <!-- Logo -->
-            <div class="sidebar-logo">
-                <img src="../assets/BLUE%20LOGO.png" alt="SpaceShare" class="logo-img" />
-                <span class="logo-text">SpaceShare</span>
+    <!-- 1. Left Drawer Sidebar Navigation -->
+    <aside class="app-sidebar" id="appSidebar">
+        <div class="sidebar-top">
+            <!-- Brand Logo & Internal Close (X) Toggle -->
+            <div class="sidebar-brand-wrapper">
+                <a href="seeker-dashboard.html" class="logo-link">
+                    <img src="../assets/BLUE%20LOGO.png" alt="SpaceShare Logo" class="logo-img" id="appLogo">
+                    <span class="logo-text">SpaceShare</span>
+                </a>
+                <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Close menu">
+                    <i class="ph ph-x"></i>
+                </button>
             </div>
 
-            <!-- Navigation Links -->
+            <!-- Search Bar inside Sidebar -->
+            <div class="sidebar-search">
+                <i class="ph ph-magnifying-glass search-icon"></i>
+                <input type="text" id="globalSearchInput" placeholder="Search spaces, locations...">
+            </div>
+
+            <!-- Main Navigation Links -->
             <nav class="sidebar-menu">
-                <a href="seeker-dashboard.html" class="nav-item active">
+                <a href="seeker-dashboard.html" class="menu-item active">
                     <i class="ph-fill ph-house"></i>
                     <span>Home</span>
                 </a>
-                <a href="search-list-view.html" class="nav-item">
+                <a href="my-bookings.html" class="menu-item">
                     <i class="ph ph-calendar-blank"></i>
                     <span>Bookings</span>
                 </a>
-                <a href="favorite-spaces.html" class="nav-item">
+                <a href="favorite-spaces.html" class="menu-item">
                     <i class="ph-fill ph-heart" style="color: #FF383C;"></i>
-                    <span>Favourite</span>
+                    <span>Favourites</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="#" class="menu-item" id="messagesLinkDesktop">
                     <i class="ph ph-chat"></i>
                     <span>Messages</span>
                 </a>
             </nav>
+        </div>
 
-        </aside>
+        <!-- Sidebar User Profile Info -->
+        <div class="sidebar-footer">
+            <div class="user-avatar">
+                <span class="avatar-initials">ZD</span>
+            </div>
+            <div class="user-info">
+                <span class="user-name" id="sidebarUserName">Zara Danjuma</span>
+                <span class="user-role">Seeker</span>
+            </div>
+        </div>
+    </aside>
 
-        <!-- ========================================================== -->
-        <!-- MAIN CONTENT AREA                                           -->
-        <!-- ========================================================== -->
-        <div class="main-content-area">
+    <!-- Main Content Wrapper -->
+    <div class="main-wrapper">
 
-            <!-- ======================================================== -->
-            <!-- TOP HEADER (Logo, Search, Avatar)                        -->
-            <!-- ======================================================== -->
-            <header class="dashboard-header">
-                
-                <!-- Left: Logo & Brand (Hidden on Desktop Sidebar) -->
-                <div class="header-left">
-                    <a href="#" class="brand-link">
-                        <img src="../assets/BLUE%20LOGO.png" alt="SpaceShare" class="brand-logo" />
-                        <span class="brand-name">SpaceShare</span>
-                    </a>
+        <!-- Top Header Navigation Bar with Hamburger Trigger -->
+        <header class="top-bar">
+            <div class="top-bar-left">
+                <!-- Main Hamburger Trigger Button -->
+                <button class="sidebar-toggle-btn" id="sidebarToggleBtn" aria-label="Open navigation menu">
+                    <i class="ph ph-list" id="toggleIcon"></i>
+                </button>
+
+                <!-- Breadcrumb Navigation -->
+                <nav class="breadcrumb-nav">
+                    <a href="seeker-dashboard.html">Home</a>
+                    <span class="breadcrumb-separator"><i class="ph ph-caret-right"></i></span>
+                    <span class="breadcrumb-current">Dashboard</span>
+                </nav>
+            </div>
+
+            <!-- Right Side: Notifications & User Avatar -->
+            <div class="top-bar-right">
+                <button class="icon-btn notification-btn" aria-label="Notifications">
+                    <i class="ph ph-bell"></i>
+                    <span class="notification-dot"></span>
+                </button>
+                <div class="user-avatar-wrapper" tabindex="0" role="button" aria-label="User profile">
+                    <span class="avatar-initials">ZD</span>
                 </div>
+            </div>
+        </header>
 
-                <!-- Center: Search Input -->
-                <div class="header-center">
-                    <div class="search-bar-wrapper">
-                        <i class="ph ph-magnifying-glass search-icon"></i>
-                        <input type="text" placeholder="Search spaces, locations..." class="search-input" id="mainSearchInput" />
-                    </div>
-                </div>
-
-                <!-- Right: Notifications & User Profile -->
-                <div class="header-right">
-                    <button class="icon-btn notification-btn" aria-label="Notifications">
-                        <i class="ph ph-bell"></i>
-                        <span class="notification-dot"></span>
-                    </button>
-                    <div class="user-avatar-wrapper" tabindex="0" role="button" aria-label="User profile">
-                        <span class="avatar-initials">ZD</span>
-                    </div>
-                </div>
-
-            </header>
+        <!-- Main Dashboard Container -->
+        <main class="dashboard-container">
 
             <!-- ======================================================== -->
             <!-- GREETING SECTION                                         -->
@@ -103,15 +116,6 @@
                     <div class="greeting-text-block">
                         <span class="greeting-label">Good Morning</span>
                         <h1 class="greeting-name" id="userNameDisplay">Zara Danjuma</h1>
-                    </div>
-                    <!-- Mobile-only icons (Hidden on Desktop) -->
-                    <div class="greeting-actions-mobile">
-                        <a href="favorite-spaces.html" class="icon-btn mobile-fav-btn" aria-label="Favorites">
-                            <i class="ph-fill ph-heart" style="color: #FF383C;"></i>
-                        </a>
-                        <button class="icon-btn mobile-notif-btn" aria-label="Notifications">
-                            <i class="ph-fill ph-bell" style="color: #FFFFFF; background: #2862BC; border-radius: 50%; padding: 4px;"></i>
-                        </button>
                     </div>
                 </div>
             </section>
@@ -138,7 +142,6 @@
             <!-- FILTER BAR (PILLS)                                       -->
             <!-- ======================================================== -->
             <nav class="filter-bar" aria-label="Search filters">
-                <!-- These buttons will open filter modals or trigger search functions in JS -->
                 <button class="filter-chip active" data-filter="type">
                     Type <i class="ph-bold ph-caret-down"></i>
                 </button>
@@ -160,7 +163,6 @@
                 <button class="filter-chip" data-filter="availability">
                     Availability <i class="ph-bold ph-caret-down"></i>
                 </button>
-                <!-- Map toggle button -->
                 <a href="search-map-view.html" class="filter-chip map-toggle-btn" aria-label="Toggle map view">
                     <i class="ph-bold ph-map-trifold"></i>
                 </a>
@@ -184,7 +186,7 @@
                     </a>
 
                     <!-- Card 2: Bookings -->
-                    <a href="booking.html" class="summary-card">
+                    <a href="my-bookings.html" class="summary-card">
                         <div class="summary-card-icon-wrapper">
                             <i class="ph ph-calendar-blank summary-card-icon" style="color: #2862BC;"></i>
                         </div>
@@ -216,8 +218,6 @@
                         <a href="workspace-details.html?id=1" class="space-card-link">
                             <div class="space-card-image-wrapper">
                                 <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80" alt="Hub One Workspace" class="space-card-img" />
-                                
-                                <!-- Badges & Overlays -->
                                 <div class="space-card-overlays">
                                     <div class="space-card-badges-top">
                                         <span class="badge-power"><i class="ph-fill ph-lightning"></i> Power</span>
@@ -234,12 +234,10 @@
                                     <h3 class="space-card-title">Hub One Workspace</h3>
                                     <p class="space-card-price">₦15,000<small>/hr</small></p>
                                 </div>
-                                
                                 <div class="space-card-location-row">
                                     <i class="ph-bold ph-map-pin"></i>
                                     <span>Lekki Phase 1</span>
                                 </div>
-
                                 <div class="space-card-bottom-row">
                                     <div class="space-card-rating">
                                         <i class="ph-fill ph-star" style="color: #FFC107;"></i>
@@ -259,7 +257,6 @@
                         <a href="workspace-details.html?id=2" class="space-card-link">
                             <div class="space-card-image-wrapper">
                                 <img src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=600&q=80" alt="Work Nest Hub" class="space-card-img" />
-                                
                                 <div class="space-card-overlays">
                                     <div class="space-card-badges-top">
                                         <span class="badge-power"><i class="ph-fill ph-lightning"></i> Power</span>
@@ -276,12 +273,10 @@
                                     <h3 class="space-card-title">Work Nest Hub</h3>
                                     <p class="space-card-price">₦30,000<small>/hr</small></p>
                                 </div>
-                                
                                 <div class="space-card-location-row">
                                     <i class="ph-bold ph-map-pin"></i>
                                     <span>Ikeja, GRA</span>
                                 </div>
-
                                 <div class="space-card-bottom-row">
                                     <div class="space-card-rating">
                                         <i class="ph-fill ph-star" style="color: #FFC107;"></i>
@@ -301,14 +296,13 @@
                         <a href="workspace-details.html?id=3" class="space-card-link">
                             <div class="space-card-image-wrapper">
                                 <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=600&q=80" alt="Creative Space" class="space-card-img" />
-                                
                                 <div class="space-card-overlays">
                                     <div class="space-card-badges-top">
                                         <span class="badge-power"><i class="ph-fill ph-lightning"></i> Power</span>
                                         <span class="badge-type">Podcast studio</span>
                                     </div>
                                     <button class="space-card-fav-btn" aria-label="Add to favourites">
-                                        <i class="ph ph-heart"></i> <!-- Unfilled heart -->
+                                        <i class="ph ph-heart"></i>
                                     </button>
                                 </div>
                             </div>
@@ -318,12 +312,10 @@
                                     <h3 class="space-card-title">Creative Space</h3>
                                     <p class="space-card-price">₦50,000<small>/hr</small></p>
                                 </div>
-                                
                                 <div class="space-card-location-row">
                                     <i class="ph-bold ph-map-pin"></i>
                                     <span>Ikorodu</span>
                                 </div>
-
                                 <div class="space-card-bottom-row">
                                     <div class="space-card-rating">
                                         <i class="ph-fill ph-star" style="color: #FFC107;"></i>
@@ -341,37 +333,10 @@
                 </div>
             </section>
 
-            <!-- ======================================================== -->
-            <!-- BOTTOM NAVIGATION (Mobile Only)                          -->
-            <!-- ======================================================== -->
-            <nav class="bottom-nav" aria-label="Main navigation">
-                <a href="seeker-dashboard.html" class="nav-item active" data-nav="home">
-                    <i class="ph-fill ph-house"></i>
-                    <span>Home</span>
-                </a>
-                <a href="search-list-view.html" class="nav-item" data-nav="search">
-                    <i class="ph ph-magnifying-glass"></i>
-                    <span>Search</span>
-                </a>
-                <a href="favorite-spaces.html" class="nav-item" data-nav="favourites">
-                    <i class="ph-fill ph-heart" style="color: #FF383C;"></i>
-                    <span>Favourites</span>
-                </a>
-                <a href="booking.html" class="nav-item" data-nav="bookings">
-                    <i class="ph ph-calendar-blank"></i>
-                    <span>Bookings</span>
-                </a>
-                <a href="#" class="nav-item" data-nav="profile">
-                    <i class="ph ph-user"></i>
-                    <span>Profile</span>
-                </a>
-            </nav>
+        </main>
+    </div>
 
-        </div> <!-- End of Main Content Area -->
-
-    </div> <!-- End of Dashboard Wrapper -->
-
-    <!-- JS -->
+    <!-- JS (separate file) -->
     <script type="module" src="../scripts/seeker-dashboard.js"></script>
 </body>
 </html>

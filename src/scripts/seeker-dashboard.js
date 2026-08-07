@@ -1,8 +1,7 @@
 /* ================================================================
-   SPACESHARE — SEEKER DASHBOARD JS (UPDATED)
-   Full Backend Integration with Token Persistence
+   SPACESHARE — SEEKER DASHBOARD JS (FULL BACKEND INTEGRATION)
    API: https://spaceshare-backend-cor9.onrender.com
-   Includes: Desktop Sidebar + Mobile Bottom Nav support
+   Postman Collection: SpaceShare API v1.0
    ================================================================ */
 
 (function() {
@@ -16,7 +15,6 @@
         ? 'http://localhost:5000'
         : 'https://spaceshare-backend-cor9.onrender.com';
 
-    // ⚠️ CRITICAL: Matches login.js and role-selection.js exactly
     const STORAGE_KEYS = {
         ACCESS_TOKEN: 'access_token',
         REFRESH_TOKEN: 'refresh_token',
@@ -24,44 +22,43 @@
     };
 
     // ================================================================
-    // 2. DOM REFERENCES (Targeting the Header specifically)
+    // 2. DOM REFERENCES (Updated for new hamburger nav)
     // ================================================================
 
-    // We target the Header elements directly to avoid conflict with the Desktop Sidebar
-    const headerAvatar = document.querySelector('.dashboard-header .user-avatar-wrapper');
-    const headerAvatarInitials = headerAvatar ? headerAvatar.querySelector('.avatar-initials') : null;
-    const headerUserNameDisplay = document.getElementById('userNameDisplay');
-
     const DOM = {
-        // Header & Greeting
-        userNameDisplay: headerUserNameDisplay,
-        avatarInitials: headerAvatarInitials,
-        
+        // Sidebar
+        sidebar: document.getElementById('appSidebar'),
+        sidebarOverlay: document.getElementById('sidebarOverlay'),
+        sidebarToggleBtn: document.getElementById('sidebarToggleBtn'),
+        sidebarCloseBtn: document.getElementById('sidebarCloseBtn'),
+        sidebarAvatar: document.getElementById('sidebarAvatar'),
+        sidebarUserName: document.getElementById('sidebarUserName'),
+        sidebarSearchInput: document.getElementById('globalSearchInput'),
+
+        // Header
+        headerAvatar: document.getElementById('headerAvatar'),
+        greetingLabel: document.getElementById('greetingLabel'),
+        userNameDisplay: document.getElementById('userNameDisplay'),
+        notificationDot: document.getElementById('notificationDot'),
+        searchInput: document.querySelector('.top-bar .search-input'),
+
         // Instant Match
         instantMatchBtn: document.getElementById('instantMatchBtn'),
-        
+
         // Summary Cards
-        favouritesCount: document.querySelector('.summary-card:nth-child(1) .summary-card-subtitle'),
-        bookingsCount: document.querySelector('.summary-card:nth-child(2) .summary-card-subtitle'),
-        
-        // Nearby Spaces Grid
+        favouritesSubtitle: document.getElementById('favouritesSubtitle'),
+        bookingsSubtitle: document.getElementById('bookingsSubtitle'),
+
+        // Nearby Spaces
         spacesGrid: document.getElementById('spacesGrid'),
-        
+
         // Filter Chips
         filterChips: document.querySelectorAll('.filter-bar .filter-chip:not(.map-toggle-btn)'),
         mapToggleBtn: document.querySelector('.filter-bar .map-toggle-btn'),
-        
-        // Search Bar (Main Header)
-        searchInput: document.querySelector('.dashboard-header .search-input'),
-        
-        // Notifications
-        notificationDot: document.querySelector('.notification-dot'),
-        
-        // Bottom Nav (Mobile)
-        navItems: document.querySelectorAll('.bottom-nav .nav-item'),
-        
-        // Desktop Sidebar (For active state management)
-        sidebarItems: document.querySelectorAll('.desktop-sidebar .nav-item')
+
+        // Messages
+        messagesLinkDesktop: document.getElementById('messagesLinkDesktop'),
+        messagesLinkMobile: document.getElementById('messagesLinkMobile')
     };
 
     // ================================================================
@@ -79,7 +76,27 @@
     };
 
     // ================================================================
-    // 4. API HELPERS (Core Token Logic)
+    // 4. SIDEBAR TOGGLE LOGIC
+    // ================================================================
+
+    function openSidebar() {
+        DOM.sidebar.classList.add('open');
+        DOM.sidebarOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeSidebar() {
+        DOM.sidebar.classList.remove('open');
+        DOM.sidebarOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    DOM.sidebarToggleBtn.addEventListener('click', openSidebar);
+    DOM.sidebarCloseBtn.addEventListener('click', closeSidebar);
+    DOM.sidebarOverlay.addEventListener('click', closeSidebar);
+
+    // ================================================================
+    // 5. API HELPERS (Core Token Logic)
     // ================================================================
 
     function getAccessToken() {
@@ -88,6 +105,18 @@
 
     function getRefreshToken() {
         return localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN);
+    }
+
+    function getCurrentUser() {
+        const userStr = localStorage.getItem(STORAGE_KEYS.USER);
+        if (userStr) {
+            try {
+                return JSON.parse(userStr);
+            } catch (e) {
+                return null;
+            }
+        }
+        return null;
     }
 
     function isAuthenticated() {
@@ -123,11 +152,11 @@
 
         try {
             let response = await fetch(url, config);
-            
+
             if (response.status === 401) {
                 console.warn('🔄 Token expired. Attempting refresh...');
                 const refreshed = await refreshToken();
-                
+
                 if (refreshed) {
                     headers['Authorization'] = `Bearer ${getAccessToken()}`;
                     const retryConfig = { ...config, headers };
@@ -163,7 +192,7 @@
             });
 
             const data = await response.json();
-            
+
             if (response.ok && data.accessToken) {
                 localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, data.accessToken);
                 if (data.refreshToken) {
@@ -179,9 +208,12 @@
     }
 
     // ================================================================
-    // 5. API ENDPOINT FUNCTIONS
+    // 6. API ENDPOINT FUNCTIONS (Postman Collection)
     // ================================================================
 
+    /**
+     * GET /api/auth/me - Fetch current user profile
+     */
     async function fetchCurrentUser() {
         try {
             const data = await apiRequest('/api/auth/me', { method: 'GET' });
@@ -198,6 +230,9 @@
         }
     }
 
+    /**
+     * GET /api/favorites - Fetch user's favorites list
+     */
     async function fetchFavorites() {
         try {
             const data = await apiRequest('/api/favorites', { method: 'GET' });
@@ -216,6 +251,9 @@
         }
     }
 
+    /**
+     * POST /api/favorites/:workspaceId - Add to favorites
+     */
     async function addFavorite(workspaceId) {
         try {
             const data = await apiRequest(`/api/favorites/${workspaceId}`, { method: 'POST' });
@@ -226,6 +264,9 @@
         }
     }
 
+    /**
+     * DELETE /api/favorites/:workspaceId - Remove from favorites
+     */
     async function removeFavorite(workspaceId) {
         try {
             const data = await apiRequest(`/api/favorites/${workspaceId}`, { method: 'DELETE' });
@@ -236,6 +277,9 @@
         }
     }
 
+    /**
+     * GET /api/workspaces - Fetch all workspaces with filters
+     */
     async function fetchWorkspaces(filters = {}) {
         try {
             const queryParams = new URLSearchParams();
@@ -244,9 +288,9 @@
             });
             const queryString = queryParams.toString();
             const endpoint = `/api/workspaces${queryString ? `?${queryString}` : ''}`;
-            
+
             const data = await apiRequest(endpoint, { method: 'GET' });
-            
+
             let workspaces = [];
             if (data.success && data.data) {
                 workspaces = Array.isArray(data.data) ? data.data : data.data.workspaces || [];
@@ -262,11 +306,14 @@
         }
     }
 
+    /**
+     * GET /api/workspaces/find-me-power-now - Find power-verified spaces
+     */
     async function findMePowerNow(latitude, longitude) {
         try {
             const endpoint = `/api/workspaces/find-me-power-now?latitude=${latitude}&longitude=${longitude}&radius=10`;
             const data = await apiRequest(endpoint, { method: 'GET' });
-            
+
             let workspaces = [];
             if (data.success && data.data) {
                 workspaces = Array.isArray(data.data) ? data.data : data.data.workspaces || [];
@@ -282,30 +329,61 @@
         }
     }
 
+    /**
+     * GET /api/bookings?role=seeker - Fetch user's bookings
+     */
+    async function fetchBookings(filters = {}) {
+        try {
+            const queryParams = new URLSearchParams();
+            queryParams.append('role', 'seeker');
+            if (filters.status && filters.status !== 'all') {
+                queryParams.append('status', filters.status);
+            }
+            const queryString = queryParams.toString();
+            const endpoint = `/api/bookings${queryString ? `?${queryString}` : ''}`;
+
+            const data = await apiRequest(endpoint, { method: 'GET' });
+
+            let bookings = [];
+            if (data.success && data.data) {
+                bookings = Array.isArray(data.data) ? data.data : data.data.bookings || [];
+            } else if (Array.isArray(data)) {
+                bookings = data;
+            } else if (data.bookings) {
+                bookings = data.bookings;
+            }
+            return bookings;
+        } catch (error) {
+            console.error('Failed to fetch bookings:', error);
+            return [];
+        }
+    }
+
     // ================================================================
-    // 6. RENDER FUNCTIONS
+    // 7. RENDER FUNCTIONS
     // ================================================================
 
     function renderUserProfile() {
-        const userStr = localStorage.getItem(STORAGE_KEYS.USER);
-        if (!userStr) return;
-        
-        try {
-            const user = JSON.parse(userStr);
-            state.user = user;
+        const user = state.user || getCurrentUser();
+        if (!user) return;
 
-            if (DOM.userNameDisplay) {
-                DOM.userNameDisplay.textContent = user.full_name || user.name || 'User';
-            }
+        const fullName = user.full_name || user.name || 'User';
+        const initials = fullName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
 
-            if (DOM.avatarInitials) {
-                const name = (user.full_name || user.name || 'User');
-                const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-                DOM.avatarInitials.textContent = initials;
-            }
-        } catch (e) {
-            console.error('Failed to parse user data:', e);
-        }
+        // Update sidebar
+        if (DOM.sidebarUserName) DOM.sidebarUserName.textContent = fullName;
+        if (DOM.sidebarAvatar) DOM.sidebarAvatar.textContent = initials;
+
+        // Update header
+        if (DOM.userNameDisplay) DOM.userNameDisplay.textContent = fullName;
+        if (DOM.headerAvatar) DOM.headerAvatar.textContent = initials;
+
+        // Update greeting based on time of day
+        const hour = new Date().getHours();
+        let greeting = 'Good Evening';
+        if (hour < 12) greeting = 'Good Morning';
+        else if (hour < 17) greeting = 'Good Afternoon';
+        if (DOM.greetingLabel) DOM.greetingLabel.textContent = greeting;
     }
 
     function createSpaceCardHTML(space, isFavorite = false) {
@@ -393,18 +471,18 @@
     }
 
     function renderSummaryCards() {
-        if (DOM.favouritesCount) {
+        if (DOM.favouritesSubtitle) {
             const count = state.favorites.length;
-            DOM.favouritesCount.textContent = `${count} saved listing${count !== 1 ? 's' : ''}`;
+            DOM.favouritesSubtitle.textContent = `${count} saved listing${count !== 1 ? 's' : ''}`;
         }
 
-        if (DOM.bookingsCount) {
-            DOM.bookingsCount.textContent = `${state.activeBookings} active session${state.activeBookings !== 1 ? 's' : ''}`;
+        if (DOM.bookingsSubtitle) {
+            DOM.bookingsSubtitle.textContent = `${state.activeBookings} active session${state.activeBookings !== 1 ? 's' : ''}`;
         }
     }
 
     // ================================================================
-    // 7. EVENT HANDLERS
+    // 8. EVENT HANDLERS
     // ================================================================
 
     function attachCardEvents() {
@@ -420,6 +498,7 @@
         const workspaceId = btn.dataset.id;
         const isCurrentlyFav = btn.classList.contains('active');
 
+        // Optimistic UI update
         btn.classList.toggle('active');
         const icon = btn.querySelector('i');
         icon.className = btn.classList.contains('active') ? 'ph-fill ph-heart' : 'ph ph-heart';
@@ -496,11 +575,11 @@
     function handleFilterClick(e) {
         const chip = e.currentTarget;
         const filter = chip.dataset.filter;
-        
+
         DOM.filterChips.forEach(c => c.classList.remove('active'));
         chip.classList.add('active');
         state.currentFilter = filter;
-        
+
         const filterNames = {
             type: 'Workspace Type',
             price: 'Price Range',
@@ -510,7 +589,7 @@
             workspace: 'Workspace Type',
             availability: 'Availability'
         };
-        
+
         showToast(`Filter: ${filterNames[filter] || filter}`);
         loadWorkspaces({ filter: filter });
     }
@@ -528,7 +607,7 @@
             const { latitude, longitude } = position.coords;
 
             const result = await findMePowerNow(latitude, longitude);
-            
+
             if (result && result.length > 0) {
                 state.workspaces = result;
                 renderSpaces(result);
@@ -566,7 +645,7 @@
     }
 
     // ================================================================
-    // 8. LOAD DATA FUNCTIONS
+    // 9. LOAD DATA FUNCTIONS
     // ================================================================
 
     async function loadDashboardData() {
@@ -579,9 +658,20 @@
         showLoading(true);
 
         try {
+            // Fetch user profile
+            await fetchCurrentUser();
             renderUserProfile();
+
+            // Fetch favorites
             state.favorites = await fetchFavorites();
+
+            // Fetch active bookings count
+            const bookings = await fetchBookings({ status: 'in_progress' });
+            state.activeBookings = bookings.length;
+
+            // Fetch workspaces
             await loadWorkspaces();
+
             renderSummaryCards();
             showLoading(false);
         } catch (error) {
@@ -608,7 +698,7 @@
     }
 
     // ================================================================
-    // 9. TOAST NOTIFICATION SYSTEM
+    // 10. TOAST NOTIFICATION SYSTEM
     // ================================================================
 
     let toastTimeout = null;
@@ -635,38 +725,60 @@
     }
 
     // ================================================================
-    // 10. INITIALIZATION
+    // 11. MESSAGES "COMING SOON" POPUP
+    // ================================================================
+
+    function showMessagesPopup(e) {
+        e.preventDefault();
+        showToast('📨 Messages feature coming soon!');
+    }
+
+    // ================================================================
+    // 12. INITIALIZATION
     // ================================================================
 
     function init() {
         console.log('🚀 SpaceShare — Seeker Dashboard initializing...');
         console.log(`📍 API Base URL: ${API_BASE_URL}`);
 
+        // Authentication check
         if (!isAuthenticated()) {
             console.warn('🔒 Not authenticated, redirecting to login...');
             logout();
             return;
         }
 
+        // Instant Match button
         if (DOM.instantMatchBtn) {
             DOM.instantMatchBtn.addEventListener('click', handleInstantMatch);
         }
 
+        // Search input
         if (DOM.searchInput) {
             DOM.searchInput.addEventListener('input', handleSearchInput);
         }
 
+        // Filter chips
         DOM.filterChips.forEach(chip => {
             chip.addEventListener('click', handleFilterClick);
         });
 
+        // Messages links
+        if (DOM.messagesLinkDesktop) {
+            DOM.messagesLinkDesktop.addEventListener('click', showMessagesPopup);
+        }
+        if (DOM.messagesLinkMobile) {
+            DOM.messagesLinkMobile.addEventListener('click', showMessagesPopup);
+        }
+
+        // Load dashboard data
         loadDashboardData();
 
         console.log('✅ Dashboard ready!');
     }
 
     // ================================================================
-    // 11. START
+    // 13. START
     // ================================================================
 
     document.addEventListener('DOMContentLoaded', init);

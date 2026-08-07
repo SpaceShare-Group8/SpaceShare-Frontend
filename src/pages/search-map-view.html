@@ -13,10 +13,10 @@
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
 
-    <!-- PLACEHOLDER: CSS will be linked in the next step -->
+    <!-- CSS (separate file) -->
     <link rel="stylesheet" href="../styles/search-map-view.css" />
 
-    <!-- PLACEHOLDER: Leaflet.js CSS (Will be moved to CSS file later) -->
+    <!-- Leaflet.js CSS (will be moved later) -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body>
@@ -38,9 +38,9 @@
         <!-- 1. MOBILE SEARCH HEADER (Top, Floating) -->
         <section class="mobile-search-header">
             <div class="search-pill-container">
-                <button class="pill-back-btn" aria-label="Go back">
+                <a href="search-list-view.html" class="pill-back-btn" aria-label="Go back">
                     <i class="ph-bold ph-arrow-left"></i>
-                </button>
+                </a>
                 <div class="pill-location-wrapper">
                     <i class="ph-fill ph-map-pin"></i>
                     <span>Lekki, Lagos</span>
@@ -91,9 +91,9 @@
                     <button class="filter-chip">Availability <i class="ph-bold ph-caret-down"></i></button>
                 </div>
                 <!-- Toggle Map/List Button -->
-                <button class="map-toggle-btn">
+                <a href="search-list-view.html" class="map-toggle-btn">
                     <i class="ph-bold ph-map-trifold"></i>
-                </button>
+                </a>
             </div>
 
         </section>
@@ -156,7 +156,9 @@
 
                     <div class="bottom-sheet-footer">
                         <p class="bottom-sheet-price">₦15,000 <small>/hr</small></p>
-                        <button class="btn-view-space">View Space <i class="ph-bold ph-caret-right"></i></button>
+                        <a href="workspace-details.html?id=1" class="btn-view-space">
+                            View Space <i class="ph-bold ph-caret-right"></i>
+                        </a>
                     </div>
 
                 </div>
@@ -165,11 +167,10 @@
 
     </div>
 
-    <!-- PLACEHOLDER: Leaflet.js JS (Will be moved to JS file later) -->
+    <!-- Leaflet.js JS (will be moved later) -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-    <!-- PLACEHOLDER: JS will be linked in the next step -->
+    <!-- JS (separate file) -->
     <script src="../scripts/search-map-view.js"></script>
-
 </body>
 </html>

@@ -13,7 +13,7 @@
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
 
-    <!-- PLACEHOLDER: CSS will be linked in the next step -->
+    <!-- CSS (separate file) -->
     <link rel="stylesheet" href="../styles/my-bookings.css" />
 </head>
 <body>
@@ -36,7 +36,7 @@
                     <i class="ph ph-house"></i>
                     <span>Home</span>
                 </a>
-                <a href="#" class="nav-item active">
+                <a href="my-bookings.html" class="nav-item active">
                     <i class="ph-fill ph-calendar-blank" style="color: #2862BC;"></i>
                     <span>Bookings</span>
                 </a>
@@ -44,7 +44,7 @@
                     <i class="ph-fill ph-heart" style="color: #FF383C;"></i>
                     <span>Favourites</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="#" class="nav-item" id="messagesLinkDesktop">
                     <i class="ph ph-chat"></i>
                     <span>Messages</span>
                 </a>
@@ -121,7 +121,6 @@
             <!-- BOOKING CARDS LIST                                      -->
             <!-- ======================================================== -->
             <section class="bookings-list" id="bookingsList">
-
                 <!-- Card 1: Pending -->
                 <article class="booking-card" data-status="pending">
                     <div class="booking-card-image-wrapper">
@@ -276,7 +275,6 @@
                         </div>
                     </div>
                 </article>
-
             </section>
 
             <!-- ======================================================== -->
@@ -287,19 +285,19 @@
                     <i class="ph ph-house"></i>
                     <span>Home</span>
                 </a>
-                <a href="#" class="nav-item active">
-                    <i class="ph-fill ph-calendar-blank" style="color: #2862BC;"></i>
-                    <span>Bookings</span>
+                <a href="search-list-view.html" class="nav-item">
+                    <i class="ph ph-magnifying-glass"></i>
+                    <span>Search</span>
                 </a>
                 <a href="favorite-spaces.html" class="nav-item">
                     <i class="ph-fill ph-heart" style="color: #FF383C;"></i>
                     <span>Favourites</span>
                 </a>
-                <a href="#" class="nav-item">
-                    <i class="ph ph-chat"></i>
-                    <span>Messages</span>
+                <a href="my-bookings.html" class="nav-item active">
+                    <i class="ph-fill ph-calendar-blank" style="color: #2862BC;"></i>
+                    <span>Bookings</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="#" class="nav-item" id="messagesLinkMobile">
                     <i class="ph ph-user"></i>
                     <span>Profile</span>
                 </a>
@@ -308,8 +306,7 @@
         </main>
     </div>
 
-    <!-- PLACEHOLDER: JS will be linked in the next step -->
+    <!-- JS (separate file) -->
     <script src="../scripts/my-bookings.js"></script>
-
 </body>
 </html>

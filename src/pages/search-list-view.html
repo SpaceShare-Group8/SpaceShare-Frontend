@@ -13,7 +13,7 @@
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
 
-    <!-- PLACEHOLDER: CSS will be linked in the next step -->
+    <!-- CSS (separate file) -->
     <link rel="stylesheet" href="../styles/search-list-view.css" />
 </head>
 <body>
@@ -40,15 +40,15 @@
                     <i class="ph ph-house"></i>
                     <span>Home</span>
                 </a>
-                <a href="booking.html" class="nav-item">
+                <a href="my-bookings.html" class="nav-item">
                     <i class="ph ph-calendar-blank"></i>
                     <span>Bookings</span>
                 </a>
-                <a href="favorite-spaces.html" class="nav-item active">
+                <a href="favorite-spaces.html" class="nav-item">
                     <i class="ph-fill ph-heart" style="color: #FF383C;"></i>
-                    <span>Favourite</span>
+                    <span>Favourites</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="#" class="nav-item" id="messagesLinkDesktop">
                     <i class="ph ph-chat"></i>
                     <span>Messages</span>
                 </a>
@@ -126,9 +126,29 @@
                     <button class="filter-chip">Workspace <i class="ph-bold ph-caret-down"></i></button>
                     <button class="filter-chip">Availability <i class="ph-bold ph-caret-down"></i></button>
                     <!-- Map Toggle -->
-                    <button class="filter-chip map-toggle-btn">
+                    <a href="search-map-view.html" class="filter-chip map-toggle-btn">
                         <i class="ph-bold ph-map-trifold"></i>
-                    </button>
+                    </a>
+                </div>
+            </section>
+
+            <!-- ======================================================== -->
+            <!-- VIEW TOGGLE (List / Grid / Map)                          -->
+            <!-- ======================================================== -->
+            <section class="view-toggle-section">
+                <div class="view-toggle-group">
+                    <a href="search-list-view.html" class="toggle-btn active">
+                        <i class="ph-bold ph-list"></i>
+                        <span>List View</span>
+                    </a>
+                    <a href="search-grid-view.html" class="toggle-btn">
+                        <i class="ph-bold ph-grid-four"></i>
+                        <span>Grid View</span>
+                    </a>
+                    <a href="search-map-view.html" class="toggle-btn">
+                        <i class="ph-bold ph-map-trifold"></i>
+                        <span>Map View</span>
+                    </a>
                 </div>
             </section>
 
@@ -199,9 +219,9 @@
                         <!-- Footer: Price + Button -->
                         <div class="list-card-footer">
                             <p class="list-card-price">₦ 15,000 <small>/hr</small></p>
-                            <button class="btn-view-space">
+                            <a href="workspace-details.html?id=1" class="btn-view-space">
                                 View Space <i class="ph-bold ph-caret-right"></i>
-                            </button>
+                            </a>
                         </div>
 
                     </div>
@@ -249,9 +269,9 @@
 
                         <div class="list-card-footer">
                             <p class="list-card-price">₦ 30,000 <small>/hr</small></p>
-                            <button class="btn-view-space">
+                            <a href="workspace-details.html?id=2" class="btn-view-space">
                                 View Space <i class="ph-bold ph-caret-right"></i>
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </article>
@@ -298,9 +318,9 @@
 
                         <div class="list-card-footer">
                             <p class="list-card-price">₦ 50,000 <small>/hr</small></p>
-                            <button class="btn-view-space">
+                            <a href="workspace-details.html?id=3" class="btn-view-space">
                                 View Space <i class="ph-bold ph-caret-right"></i>
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </article>
@@ -310,8 +330,7 @@
         </main>
     </div>
 
-    <!-- PLACEHOLDER: JS will be linked in the next step -->
+    <!-- JS (separate file) -->
     <script src="../scripts/search-list-view.js"></script>
-
 </body>
 </html>
